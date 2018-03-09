@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import random
 
 import pandas as pd
@@ -72,18 +72,19 @@ class World:
     """
 
     solar_park: SolarPark
-    charging_stations: List[ChargingStation]
+    charging_stations: Dict[str, ChargingStation]
     current_step: int
     money: int
 
     def __init__(self,
                  solar_generation: pd.Series,
-                 charging_stations: List[ChargingStation]):
+                 charging_stations: Dict[str, ChargingStation]):
         assert(solar_generation.size == 8)
         for gen in solar_generation:
             assert(gen in range(1, 9))
         
         self.solar_park = SolarPark(solar_generation)
+        self.demand = [4, 4, 3, 2, 2, 4, 3, 0]
         self.charging_stations = charging_stations
 
         self.current_step = 0
@@ -91,14 +92,49 @@ class World:
 
     def imbalance_at(self, time_step: int):
         """
-        compute the imbalance over the whole game
+        Compute the imbalance over the whole game
         """
-        charging = sum([cs.actions.values[time_step] for cs in self.charging_stations])
-        solar = self.solar_park.generation.values[time_step]
-        return solar - charging
+        charging = 0
+        for station in self.charging_stations.values():
+            car = station.get_car_at(time_step)
+            if car is not None:
+                charging += car.charging_actions[time_step]
+        generation = self.solar_park.generation.values
+        return generation[time_step] - self.demand[time_step] - charging
     
     def imbalance(self, until: int=8):
         return sum([self.imbalance_at(i) for i in range(until)]) 
 
-    def step(self):
+    def calculate_profits(self, action: int) -> int:
+        result = 0
+        costs = [200, 100, 50, 20, 10, 5, 2, 1]
+        index = self.imbalance_at(self.current_step)
+        if action > 0:  # buy
+            for _ in range(action):
+                result -= costs[index]
+                index -= 1
+        elif action < 0:  # sell
+            for _ in range(action):
+                result += costs[index + 1]
+                index += 1
+        return result
+
+    def next(self, orders: Dict[str, int]) -> Tuple[int, int]:
+        # TODO: check for all orders if they do not breach station capacity or the car's charge level
         self.current_step += 1
+        imbalance_before_charging = self.imbalance_at(self.current_step)
+        # if self.current_step <= 8:
+        #    raise TODO
+
+        # First, get the costs/value of the combined actions
+        overall_action = sum(orders.values())
+        profits = self.calculate_profits(overall_action)
+        self.money += profits
+
+        # Now record the action on the cars
+        for station_id, action in orders.items():
+            station = self.charging_stations.get(station_id)
+            car = station.get_car_at(self.current_step)
+            car.charging_actions[self.current_step] = action
+        imbalance_after_charging = self.imbalance_at(self.current_step)
+        return imbalance_before_charging - imbalance_after_charging, profits

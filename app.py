@@ -12,7 +12,7 @@ world = None
 
 
 @app.route('/')
-def dashboard():
+def init():
     global world
     if world is None:
         solar_generation = pd.read_pickle("march9-9to16-8by8.pickle").forecast
@@ -20,6 +20,14 @@ def dashboard():
         world = World(solar_generation, stations)
     return render_template("dashboard.html", **dict(world=world))
 
+
+@app.route('/next')
+def next():
+    # put together which values we expect (using "order_" and number of stations)
+    # complain if the values are not sent
+    # call world.next, parse a dict with StationIDs as keys and actions as values
+    # render_template
+    pass
 
 if __name__ == '__main__':
     app.run()
