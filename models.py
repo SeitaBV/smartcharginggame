@@ -7,6 +7,7 @@ Models for the scc game. At the moment, we play on a simple 8 by 8 grid.
 (eight hours, eight possible chargin values)
 """
 
+
 class SolarPark:
     """
     """
@@ -33,15 +34,15 @@ class ChargingStation:
         self.actions = pd.Series([0] * 8)
 
     def level_at(self, step: int):
-        return sum([self.action[i] for i in range(step)])
+        return sum([self.actions[i] for i in range(step)])
 
     def has_car_at(self, step: int):
-        return step > self.arrival_time and step <= self.leave_time
+        return self.arrival_time < step <= self.leave_time
 
 
 class World:
     """
-    The game world. Intialise this to get the rest.
+    The game world. Initialise this to get the rest.
     """
 
     solar_park: SolarPark
@@ -56,6 +57,7 @@ class World:
             assert(gen in range(1, 9))
         
         self.solar_park = SolarPark(solar_generation)
+        self.charging_stations = charging_stations
 
         self.current_step = 0
 
@@ -63,14 +65,12 @@ class World:
         """
         compute the imbalance over the whole game
         """
-        imbalance = 0
-        charging = sum([cs.action.values[time_step] for cs in self.charging_stations])
+        charging = sum([cs.actions.values[time_step] for cs in self.charging_stations])
         solar = self.solar_park.generation.values[time_step]
         return solar - charging
     
-    def imbalance(self, until:int=8):
+    def imbalance(self, until: int=8):
         return sum([self.imbalance_at(i) for i in range(until)]) 
 
     def step(self):
         self.current_step += 1
-
