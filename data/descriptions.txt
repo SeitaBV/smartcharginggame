@@ -1,0 +1,169 @@
+ICARUS LOCAL ENERGY FLOWS
+
+Description:
+
+iCarus predicts local energy flows. Both generated energy by sun or wind, but also energy consumption, for example by electric cars.
+
+This data is available per municipality, per province, and for the Netherlands as a whole. For this hackathon, only the data for municipalities from the province of Noord-Holland is available at municipal level.
+
+Historical and predicted energy flows are available via an API (and, if internet connection is not working properly, as a backup via a file).
+
+THIS IS WHAT YOU NEED
+
+The API is protected with a username + password: icarusaccapi + By4rInyr
+
+https://acc-data.icarus.energy/api/forecast?key=Nederland&fromDate=2018-02-28
+
+https://acc-data.icarus.energy/api/forecast?key=Provincies&fromDate=2018-02-28
+
+https://acc-data.icarus.energy/api/forecast?key=Provincie_Noord-Holland&fromDate=2018-02-28
+
+ 
+
+Download API-iCarus: Containing:
+
+Nederland.json
+Provincie_Noord-Holland.json
+Provincies.json 
+DAILY PROFILES
+
+Description:
+
+Charging behavior of EV’s bases on charging data for public, workplace and private charges whereby a distinction is made between weekdays and weekend days.
+
+Per sheet you can find the following columns;
+
+·         Time of day (k)
+
+·         Proportion of sessions started in k.
+
+WHAT YOU NEED:
+
+Download: Daily_profiles.xlsx
+
+ 
+
+DISTRIBUTION ENERGY DURATION
+
+ 
+
+Description:
+
+Contains distribution tables for connection time and energy volumes per category of chargers.  
+
+Based dataset 1 & dataset 2 one should be able to simulate charging data.
+
+The dataset includes an overview of 1000 random transactions from public charging stations. The following data will be provided under this agreement:
+
+ 
+
+Dataset 1: Transactions data
+
+ 
+
+Transaction ID
+The unique transaction code.
+
+ChargePoint ID
+The unique code of a charging station.
+
+Connector ID
+Many charging stations have two connections (two sockets for charge plugs) and this indicates what connector was used for the transactions.
+
+Started
+The moment the transaction was started (logged in locale time zone).
+
+Ended
+The moment the plug was disconnected and the transaction was stopped.
+
+MeterStart
+The meter value (Wh) at the start of a transaction.
+
+MeterStop
+The meter value (Wh) at the end of a transaction.
+
+ConnectedTime
+
+Time difference between the start and end of a transaction. 
+
+ 
+
+Dataset 2: Meterreadings
+
+ 
+
+Transaction ID
+The unique transaction code.
+
+ChargePoint ID
+The unique code of a charging station.
+
+Connector ID
+Many charging stations have two connections (two sockets for charge plugs) and this indicates what connector was used for the transactions.
+
+UTCTime
+Date and time stamp of the meter reading in UTC time zone.
+
+LocaleTime15m
+Date and time (rounded to the nearest 15 min.) stamp of the meter reading in locale time zone.
+
+Collectedvalue 
+Meter readings in kWh with 15 minutes intervals.
+
+EnergyInterval
+
+Total energy (kWh) transfer between two consecutive meter readings.
+
+AveragePower
+Average power in kW between two consecutive meter readings. 
+
+WHAT YOU NEED:
+
+ 
+
+Download: Distribution_energy_duration.xlsx
+
+ 
+
+CHARGING PROFILE
+
+Description:
+
+Contains 1000 random charging profiles that belong to full electric vehicles at public chargers. See also attached a description of this data.
+
+WHAT YOU NEED:
+
+Download: Charging_profiles.xlsx
+
+ 
+
+TRANSFORMER PROFILE
+
+Contains mean, minimum, and maximum power demand for a typical 400 kVA medium voltage substation. You can find weekly profiles per season.
+
+WHAT YOU NEED:
+
+Confidential, ask for permission of this dataset at the organization.
+
+ 
+
+Other relevant data
+
+ 
+
+Description:
+
+ 
+
+Climate monitor; logs several demographic information concerning energy and environment. Datalog of company cars per municipality.
+ 
+
+Tennet TSO data; several files of historic electricity prices, electricity balances, power availability
+ 
+
+ 
+
+Multiple energy data sets and information on energy techniques and innovation.
+ 
+
+Data about performances of multiple electric vehicles that are available in the market.
