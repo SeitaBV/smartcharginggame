@@ -8,6 +8,6 @@ Challenges Engie in Rotterdam *(In bold are the main challenges we address)*:
 	-	Reliability network can be better
 	-	Findability
 -	__Green energy__
--	__Net balancing / eneryg storage__
+-	__Net balancing / energy storage__
 -	Ensure network stability
 -	Ensure a charger for your car
