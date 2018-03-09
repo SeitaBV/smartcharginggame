@@ -5,51 +5,101 @@
         <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <!-- Bootstrap -->
+        <link href="static/css/external/bootstrap.min.css" rel="stylesheet"/>
+
         <!-- Custom CSS -->
         <link href="static/css/scc.css" rel="stylesheet"/>
 
     </head>
     <body>
-        This is a test: {{ test }}
-        {{ variable }}
-        <form action="dashboard" method="get">
-            <table>
-                <tr>
-                    {% for col in grid[0] %}
-                    <th>
-                        <i class="icon-{{ col }}"></i>
-                    </th>
-                    {% endfor %}
-                </tr>
-            {% for row in grid[1:] %}
-                {% set i = loop.index %}
-                <tr>
-                    {% for cell in row %}
-                    {% set j = loop.index %}
-                    <td>
-                        <p>
-                            Row {{ i }}
-                            Col {{ j }}
-                        </p>
-                        {{ cell|safe }}
-                        {% if j>1 %}
-                            {% set station = station_id[j-2] %}
-                            <button id="add_one_{{ i }}_{{ j }}" type="button">Charge</button>
-                            <button id="remove_one_{{ i }}_{{ j }}" type="button">Discharge</button>
-                            <div id="my_counter_{{ i }}_{{ j }}">0</div>
-                            <input id="my_input_{{ i }}_{{ j }}" type="hidden" name="order_{{ station }}" value="0">
-                        {% endif %}
-                    </td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-            </table>
-            <button id="next_turn" type="submit">Next turn</button>
-        </form>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1>
+                        Welcome to the charging game!
+                    </h1>
+                    <p>
+                        Game rules here.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="" method="get">
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    Turn
+                                </th>
+                                <th>
+                                    <i class="icon-solar"></i>
+                                </th>
+                                {% for production_chip in range(max_production) %}
+                                    <th>
+                                        <i class="icon-coin-10"></i>
+                                    </th>
+                                {% endfor %}
+                                {% for station in range(num_stations) %}
+                                    <th>
+                                        <i class="icon-charging_station"></i>
+                                        Max {{ max_capacity[station] }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        {% for turn in range(num_turns) %}
+                            <tr {% if turn==current_turn %}class="info"{% endif %}>
+                                <td>
+                                    {% if turn==current_turn %}
+                                        <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
+                                    {% endif %}
+                                </td>
 
+                                <td>
+                                    {{ production[turn] }}
+                                </td>
+
+                                {% for production_chip in range(production[turn]|int) %}
+                                    <th>
+                                        <i class="icon-chip"></i>
+                                    </th>
+                                {% endfor %}
+                                {% for empty_production_chip in range((max_production - production[turn])|int) %}
+                                    <th>
+
+                                    </th>
+                                {% endfor %}
+
+                                {% for station in range(num_stations) %}
+                                <td style='white-space: nowrap' class="text-nowrap">
+                                    {% if turn==current_turn %}
+                                        {% set station_id = station_id[station-2] %}
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <button id="add_one_{{ turn }}_{{ station }}" class="btn btn-sm btn-success" type="button">Charge</button>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                Consume <span id="my_counter_{{ turn }}_{{ station }}">0</span>
+                                                <input id="my_input_{{ turn }}_{{ station }}" type="hidden" name="order_{{ station_id }}" value="0">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button id="remove_one_{{ turn }}_{{ station }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 
         <script src="static/js/external/jquery-3.1.0.min.js"></script>
+        <script src="static/js/external/bootstrap.min.js"></script>
         {{ safe_js|safe }}
         <!--<script>-->
             <!--$('#my_button_{{ i }}_{{ j }}').click(function() {-->
