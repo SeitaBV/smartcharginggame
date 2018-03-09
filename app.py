@@ -2,7 +2,8 @@ from flask import Flask, render_template
 import pandas as pd
 
 from models import World, ChargingStation
-from utils import install_secret_key
+from utils import install_secret_key, init_charging_stations
+
 
 app = Flask(__name__)
 install_secret_key(app)
@@ -15,10 +16,7 @@ def dashboard():
     global world
     if world is None:
         solar_generation = pd.read_pickle("march9-9to16-8by8.pickle").forecast
-        stations = list()
-        stations.append(ChargingStation(capacity=1, arrival_time=2, leave_time=5))
-        stations.append(ChargingStation(capacity=2, arrival_time=4, leave_time=8))
-        stations.append(ChargingStation(capacity=3, arrival_time=3, leave_time=5))
+        stations = init_charging_stations()
         world = World(solar_generation, stations)
     return render_template("dashboard.html", **dict(world=world))
 
