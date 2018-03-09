@@ -1,0 +1,73 @@
+/* custom icons - replace this when updating seita-webfonts with Fontello */
+
+@font-face {
+  font-family: 'seita-webfont';
+  src: url('../font/seita-webfont.eot?76732123');
+  src: url('../font/seita-webfont.eot?76732123#iefix') format('embedded-opentype'),
+       url('../font/seita-webfont.woff2?76732123') format('woff2'),
+       url('../font/seita-webfont.woff?76732123') format('woff'),
+       url('../font/seita-webfont.ttf?76732123') format('truetype'),
+       url('../font/seita-webfont.svg?76732123#seita-webfont') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'seita-webfont';
+    src: url('../font/seita-webfont.svg?76732123#seita-webfont') format('svg');
+  }
+}
+*/
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "seita-webfont";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-solar:before { content: '\e800'; } /* '' */
+.icon-attribution:before { content: '\e801'; } /* '' */
+.icon-charging_station:before { content: '\e802'; } /* '' */
+.icon-chip:before { content: '\e803'; } /* '' */
+.icon-coin-5:before { content: '\e804'; } /* '' */
+.icon-coin-10:before { content: '\e805'; } /* '' */
+.icon-coin-50:before { content: '\e806'; } /* '' */
+.icon-coin-100:before { content: '\e807'; } /* '' */
+.icon-coin-100-alt:before { content: '\e808'; } /* '' */
+.icon-coin-500:before { content: '\e809'; } /* '' */
+.icon-ev:before { content: '\e80a'; } /* '' */
+.icon-pawn:before { content: '\e80b'; } /* '' */
+.icon-arrival:before { content: '\e80c'; } /* '' */
+.icon-departure:before { content: '\e80d'; } /* '' */
