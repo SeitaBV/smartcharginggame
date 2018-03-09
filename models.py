@@ -54,9 +54,13 @@ class ChargingStation:
         self.id = station_id
         self.capacity = capacity
         self.car_attendances = attendances
-        for car_number in [n for n in pd.DataFrame(attendances).drop_duplicates() if n > 0]:
+        self.cars = dict()
+        for car_number in [n for n in pd.Series(attendances).drop_duplicates().values if n > 0]:
             car_id = "Car%s" % car_number
             self.cars[car_id] = Car(car_id=car_id, target_charge=random.randint(2, 4))
+
+    def __repr__(self):
+        return "<%s: cap:%d att: %s>" % (self.id, self.capacity, self.car_attendances)
 
     def has_car_at(self, step: int):
         return self.car_attendances[step] > 0
@@ -90,6 +94,10 @@ class World:
         self.current_step = 0
         self.money = 0
 
+    def __repr__(self):
+        return "<step: %d money: %d,\ngeneration: %s,\ndemand: %s,\nstations: %s>"\
+               % (self.current_step, self.money, self.solar_park.generation.values, self.demand, self.charging_stations)
+
     def imbalance_at(self, time_step: int):
         """
         Compute the imbalance over the whole game
@@ -100,7 +108,7 @@ class World:
             if car is not None:
                 charging += car.charging_actions[time_step]
         generation = self.solar_park.generation.values
-        return generation[time_step] - self.demand[time_step] - charging
+        return int(generation[time_step]) - self.demand[time_step] - charging
     
     def imbalance(self, until: int=8):
         return sum([self.imbalance_at(i) for i in range(until)]) 
@@ -111,17 +119,16 @@ class World:
         index = self.imbalance_at(self.current_step)
         if action > 0:  # buy
             for _ in range(action):
-                result -= costs[index]
+                result -= costs[index - 1]
                 index -= 1
         elif action < 0:  # sell
-            for _ in range(action):
-                result += costs[index + 1]
+            for _ in range(abs(action)):
+                result += costs[index]
                 index += 1
         return result
 
-    def next(self, orders: Dict[str, int]) -> Tuple[int, int]:
+    def next_step(self, orders: Dict[str, int]) -> Tuple[int, int]:
         # TODO: check for all orders if they do not breach station capacity or the car's charge level
-        self.current_step += 1
         imbalance_before_charging = self.imbalance_at(self.current_step)
         # if self.current_step <= 8:
         #    raise TODO
@@ -136,5 +143,8 @@ class World:
             station = self.charging_stations.get(station_id)
             car = station.get_car_at(self.current_step)
             car.charging_actions[self.current_step] = action
+            # account transaction costs for charging
+            self.money -= abs(action)
         imbalance_after_charging = self.imbalance_at(self.current_step)
-        return imbalance_before_charging - imbalance_after_charging, profits
+        self.current_step += 1
+        return imbalance_after_charging - imbalance_before_charging, profits

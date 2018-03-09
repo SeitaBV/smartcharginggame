@@ -19,9 +19,7 @@ def make_attendance_grid() -> List[List[int]]:
 
     attendance_grid = [[0 for _ in range(CHARGING_STATIONS)] for _ in range(SIMULATION_TIME)]
 
-    # charging = []
     cars = 0
-    # arrivals = random.randint()
     for i in range(SIMULATION_TIME):
         val = random.uniform(0, 1)
         if val < prob_arrival[i]:
