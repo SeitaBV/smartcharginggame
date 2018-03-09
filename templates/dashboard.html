@@ -12,5 +12,50 @@
     <body>
         This is a test: {{ test }}
         {{ variable }}
+        <form action="dashboard" method="get">
+            <table>
+                <tr>
+                    {% for col in grid[0] %}
+                    <th>
+                        <i class="icon-{{ col }}"></i>
+                    </th>
+                    {% endfor %}
+                </tr>
+            {% for row in grid[1:] %}
+                {% set i = loop.index %}
+                <tr>
+                    {% for cell in row %}
+                    {% set j = loop.index %}
+                    <td>
+                        <p>
+                            Row {{ i }}
+                            Col {{ j }}
+                        </p>
+                        {{ cell|safe }}
+                        {% if j>1 %}
+                            {% set station = station_id[j-2] %}
+                            <button id="add_one_{{ i }}_{{ j }}" type="button">Charge</button>
+                            <button id="remove_one_{{ i }}_{{ j }}" type="button">Discharge</button>
+                            <div id="my_counter_{{ i }}_{{ j }}">0</div>
+                            <input id="my_input_{{ i }}_{{ j }}" type="hidden" name="order_{{ station }}" value="0">
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </table>
+            <button id="next_turn" type="submit">Next turn</button>
+        </form>
+
+
+
+        <script src="static/js/external/jquery-3.1.0.min.js"></script>
+        {{ safe_js|safe }}
+        <!--<script>-->
+            <!--$('#my_button_{{ i }}_{{ j }}').click(function() {-->
+                <!--$('#my_counter_{{ i }}_{{ j }}').html(function(i, val) { return +val+1 });-->
+            <!--});-->
+        <!--</script>-->
+        <!--<script src="static/js/scc.js"></script>-->
     </body>
 </html>
