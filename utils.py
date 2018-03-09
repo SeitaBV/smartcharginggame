@@ -9,7 +9,7 @@ from attendance import make_attendance_grid
 from models import ChargingStation
 
 
-def init_charging_stations() -> Dict[ChargingStation]:
+def init_charging_stations() -> Dict[str, ChargingStation]:
     """We believe Daphne that attendances will not collide or be interrupted."""
     attendance_grid = make_attendance_grid()
     stations = dict()

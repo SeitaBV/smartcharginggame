@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import pandas as pd
 
-from models import World, ChargingStation
+from models import World
 from utils import install_secret_key, init_charging_stations
 
 
@@ -22,12 +22,13 @@ def init():
 
 
 @app.route('/next')
-def next():
+def next_step():
     # put together which values we expect (using "order_" and number of stations)
     # complain if the values are not sent
     # call world.next, parse a dict with StationIDs as keys and actions as values
     # render_template
     pass
+
 
 if __name__ == '__main__':
     app.run()
