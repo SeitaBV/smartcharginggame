@@ -84,6 +84,7 @@ def next_step():
                            max_imbalance=max_imbalance,
                            max_capacity=max_capacity,
                            station_id=station_id,
+                           completed_a_move=True,
                            imbalance_change=imbalance_change,
                            profit_made=profit_made,
                            turn_id=turn_id,

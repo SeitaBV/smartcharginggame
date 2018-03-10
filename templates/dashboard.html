@@ -13,6 +13,9 @@
 
     </head>
     <body>
+        <script src="static/js/external/jquery-3.1.0.min.js"></script>
+        <script src="static/js/external/bootstrap.min.js"></script>
+
         <div class="container-fluid">
             <div class="row">
 
@@ -81,6 +84,36 @@
                         back in rewards. Balance and charge to the max to max your charge.
                     </p>
                 </div>
+
+                {% if completed_a_move %}
+                    {% if imbalance_change != 0 and profit_made != 0 %}
+                    <!-- Display move results in modal dialogue -->
+                    <div class="modal fade" id="ssc-modal-dialog-move-results" role="dialog">
+                        <div class="modal-dialog">
+
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Move completed!</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>You changed imbalance by {{ imbalance_change }}.</p>
+                                <p>Your score changed by {{ profit_made }}.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $('#ssc-modal-dialog-move-results').modal("show");
+                        });
+                    </script>
+                    {% endif %}
+                {% endif %}
 
                 <div class="col-sm-9">
                     <!--<h1>Your score is {{ profit_made }}</h1>-->
@@ -221,8 +254,6 @@
             </div>
         </div>
 
-        <script src="static/js/external/jquery-3.1.0.min.js"></script>
-        <script src="static/js/external/bootstrap.min.js"></script>
         {{ safe_js|safe }}
 
         <!--<script src="static/js/scc.js"></script>-->

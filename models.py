@@ -36,7 +36,7 @@ class Car:
         self.current_charge = 0
 
     def get_final_payoff(self) -> int:
-        return 2 * self.current_charge - self.target_charge
+        return 50 * self.current_charge - self.target_charge
 
 
 class ChargingStation:
@@ -177,9 +177,12 @@ class World:
                 car.charging_actions[self.current_step] = action
                 car.current_charge += action
                 if station.get_car_at(self.current_step + 1) != car:
-                    self.money += car.get_final_payoff() * 25
+                    final_payoff = car.get_final_payoff()
+                    self.money += final_payoff
+                    profits += final_payoff
                 # account transaction costs for charging
                 self.money -= abs(action)
+                profits -= abs(action)
         imbalance_after_charging = self.imbalance_at(self.current_step)
         self.current_step += 1
         return imbalance_after_charging - imbalance_before_charging, profits
