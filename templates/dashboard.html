@@ -83,7 +83,8 @@
                 </div>
 
                 <div class="col-sm-8">
-                    <h1>Your score is {{ profit_made }}</h1>
+                    <!--<h1>Your score is {{ profit_made }}</h1>-->
+                    <h1>Your score is {{ world.money }}</h1>
                     <form action="reset" method="get">
                         <button id="reset_button" class="btn btn-sm btn-warning" type="submit">Reset game</button>
                     </form>
@@ -157,12 +158,12 @@
                                     {{ imbalance[turn] }}
                                 </td>
 
-                                {% for imbalance_chip in range(imbalance[turn]|int) %}
+                                {% for imbalance_chip in range(imbalance_coin[turn]|int) %}
                                     <th>
                                         <i class="icon-chip"></i>
                                     </th>
                                 {% endfor %}
-                                {% for empty_imbalance_chip in range((max_imbalance- imbalance[turn])|int) %}
+                                {% for empty_imbalance_chip in range((max_imbalance - imbalance_coin[turn])|int) %}
                                     <th>
 
                                     </th>

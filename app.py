@@ -27,7 +27,8 @@ def init():
     production = world.solar_park.generation
     consumption = world.demand
     imbalance = [world.imbalance_at(i) for i in range(num_turns)]
-    max_imbalance = int(max(imbalance))
+    imbalance_coin = [world.imbalance_coin(i) for i in range(num_turns)]
+    max_imbalance = int(max(imbalance_coin))
     station_id = [station for station in world.charging_stations]
     max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
     turn_id = range(9, 9+num_turns)
@@ -41,6 +42,7 @@ def init():
                            production=production,
                            consumption=consumption,
                            imbalance=imbalance,
+                           imbalance_coin=imbalance_coin,
                            max_imbalance=max_imbalance,
                            max_capacity=max_capacity,
                            station_id=station_id,
@@ -67,7 +69,8 @@ def next_step():
     production = world.solar_park.generation
     consumption = world.demand
     imbalance = [world.imbalance_at(i) for i in range(num_turns)]
-    max_imbalance = int(max(imbalance))
+    imbalance_coin = [world.imbalance_coin(i) for i in range(num_turns)]
+    max_imbalance = int(max(imbalance_coin))
     station_id = [station for station in world.charging_stations]
     max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
     turn_id = range(9, 9+num_turns)
@@ -81,6 +84,7 @@ def next_step():
                            production=production,
                            consumption=consumption,
                            imbalance=imbalance,
+                           imbalance_coin=imbalance_coin,
                            max_imbalance=max_imbalance,
                            max_capacity=max_capacity,
                            station_id=station_id,

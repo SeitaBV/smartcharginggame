@@ -138,7 +138,7 @@ class World:
 
     def check_validity_of_orders(self, orders: Dict[str, int]) -> bool:
         combined_action = sum(orders.values())
-        if combined_action + self.imbalance_at(self.current_step) not in range(-4, 3):
+        if self.imbalance_at(self.current_step) - combined_action not in range(-4, 3):
             raise Exception('Resulting imbalance outside of allowed range')
         for station_id, action in orders.items():
             station = self.charging_stations.get(station_id)
