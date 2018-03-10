@@ -1,25 +1,20 @@
-from flask import Flask, request, render_template
-from flask_sslify import SSLify
-import pandas as pd
+import os
 
-from models import World, ChargingStation
-from utils import install_secret_key, init_charging_stations, make_custom_js
+from flask import Flask, request, session, render_template
+from flask_sslify import SSLify
+
+from utils import install_secret_key, load_world, save_world, make_custom_js
 
 app = Flask(__name__)
 sslify = SSLify(app)
 install_secret_key(app)
 
-world = None
-
 
 @app.route('/')
 def init():
-    global world
-    if world is None:
-        solar_generation = pd.read_pickle("march9-9to16-8by8.pickle").forecast
-        stations = init_charging_stations()
-        world = World(solar_generation, stations)
-
+    if not os.path.exists("worlds"):
+        raise Exception("Admin, please create the 'worlds' directory to save worlds!")
+    world = load_world()
     current_turn = world.current_step  # We start at turn 0
     transaction_costs = 5  # in number of coins
     num_stations = len(world.charging_stations)
@@ -54,13 +49,14 @@ def init():
 
 @app.route('/next', methods=['GET', 'POST'])
 def next_step():
-    global world
+    world = load_world()
     orders = dict()
     for sid, station in world.charging_stations.items():
         if "order_%s" % sid not in request.form:
             raise Exception("Missing order_%s in request." % sid)
         orders[sid] = int(request.form.get("order_%s" % sid))
     imbalance_change, profit_made = world.next_step(orders)
+    save_world(world)
 
     current_turn = world.current_step  # We start at turn 0
     transaction_costs = 5  # in number of coins
@@ -92,6 +88,13 @@ def next_step():
                            profit_made=profit_made,
                            turn_id=turn_id,
                            safe_js=safe_js)
+
+
+@app.route('/reset', methods=['GET'])
+def reset():
+    if "world_id" in session:
+        del session["world_id"]
+    return init()
 
 
 if __name__ == '__main__':

@@ -1,12 +1,47 @@
 import os
 import sys
 import random
+import time
+import pickle
+import uuid
 from typing import Dict
 
 import pandas as pd
+from flask import session
 
 from attendance import make_attendance_grid
-from models import ChargingStation
+from models import World, ChargingStation
+
+
+def init_world():
+    """Make a new world for this session and save it.
+    We save and load the world as pickles (it's a hackathon!)."""
+    world_id = uuid.uuid4()
+    print("Initialising world %s" % world_id)
+    random.seed(time.time())
+    solar_generation = pd.read_pickle("march9-9to16-8by8.pickle").forecast
+    stations = init_charging_stations()
+    world = World(solar_generation, stations)
+    session["world_id"] = world_id
+    save_world(world)
+
+
+def load_world() -> World:
+    """Load an existing or otherwise new world"""
+    if "world_id" not in session:
+        init_world()
+    print("Loading world %s" % session["world_id"])
+    with open("worlds/%s.pickle" % session["world_id"], "rb") as world_pickle:
+        world = pickle.load(world_pickle)
+    return world
+
+
+def save_world(world: World):
+    if "world_id" not in session:
+        raise Exception("You have a world but no world_id. That should not happen.")
+    print("Saving world %s" % session["world_id"])
+    with open("worlds/%s.pickle" % session["world_id"], "wb") as world_pickle:
+        pickle.dump(world, world_pickle)
 
 
 def init_charging_stations() -> Dict[str, ChargingStation]:
