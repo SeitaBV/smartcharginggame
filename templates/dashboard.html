@@ -17,6 +17,24 @@
         <script src="static/js/external/bootstrap.min.js"></script>
 
         <div class="container-fluid">
+
+                <header class="page-header font-small pt-4 mt-4">
+                      <div class="header text-center">
+                          <div class="container-fluid">
+                              <p>Made first as <a href="#physical-board-img">a serious boardgame</a>, then as a digital prototype for the
+                                  <a href="https://www.livinglabsmartcharging.nl/nl/smartchargingchallenge/smartchargingchallenge" target="_blank">Smart Charging Challenge 2018</a>.
+                              </p>
+
+                              <p>Team: <a href="https://www.linkedin.com/in/janaendemann" target="_blank">Jana Endemann</a>,
+                              <a href="https://www.linkedin.com/in/daphne-van-leeuwen-0856b049/" target="_blank">Daphne van Leeuwen</a>,
+                              <a href="https://www.linkedin.com/in/felix-c-337039144/" target="_blank">Felix Claessen</a> (<a href="https://seita.nl/" target="_blank">Seita B.V.</a>)
+                              and <a href="https://www.linkedin.com/in/nhoening/" target="_blank">Nicolas H&ouml;ning</a> (<a href="https://seita.nl/" target="_blank">Seita B.V.</a>).
+                              </p>
+                          </div>
+                      </div>
+                </header>
+
+
             <div class="row">
 
                 <div class="col-sm-3">
@@ -86,6 +104,11 @@
                 </div>
 
                 {% if completed_a_move %}
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            location.hash = "#game";
+                        });
+                    </script>}
                     {% if imbalance_change != 0 and profit_made != 0 %}
                     <!-- Display move results in modal dialogue -->
                     <div class="modal fade" id="ssc-modal-dialog-move-results" role="dialog">
@@ -117,6 +140,7 @@
 
                 <div class="col-sm-9">
                     <!--<h1>Your score is {{ profit_made }}</h1>-->
+                    <a name="game"></a>
                     <h1>Your score is {{ world.money }}</h1>
                     <form action="reset" method="get">
                         <button id="reset_button" class="btn btn-sm btn-warning" type="submit">Reset game</button>
@@ -252,8 +276,10 @@
                 </div>
 
             </div>
+
             <div class="row">
                 <div class="imgwrapper">
+                    <a name="physical-board-img"></a>
                     <img src="static/board.jpg" class="img-responsive"/>
                 </div>
             </div>
