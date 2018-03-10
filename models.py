@@ -35,6 +35,9 @@ class Car:
         self.charging_actions = [0] * 8
         self.current_charge = 0
 
+    def get_final_payoff(self) -> int:
+        return 2 * self.current_charge - self.target_charge
+
 
 class ChargingStation:
     """
@@ -115,11 +118,12 @@ class World:
 
     def imbalance_coin(self, time_step: int) -> int:
         """
-        # Compute the coins to display at time_step
+        Compute the coins to display at time_step
         """
         return self.imbalance_at(time_step) + 4
 
     def imbalance(self, until: int=8):
+        """Aggregated imbalance up until a time step"""
         return sum([self.imbalance_at(i) for i in range(until)]) 
 
     def calculate_profits(self, action: int) -> int:
@@ -152,10 +156,6 @@ class World:
                     raise Exception('Cars cannot have negative charge: ' + str(car.id))
         return True
 
-    def pay_off(self, car: Car) -> int:
-        pay = 2 * car.current_charge - car.target_charge
-        return pay
-
     def next_step(self, orders: Dict[str, int]) -> Tuple[int, int]:
         self.check_validity_of_orders(orders)
         imbalance_before_charging = self.imbalance_at(self.current_step)
@@ -175,7 +175,7 @@ class World:
                 car.charging_actions[self.current_step] = action
                 car.current_charge += action
                 if station.get_car_at(self.current_step + 1) != car:
-                    self.money += self.pay_off(car)
+                    self.money += car.get_final_payoff()
                 # account transaction costs for charging
                 self.money -= abs(action)
         imbalance_after_charging = self.imbalance_at(self.current_step)
