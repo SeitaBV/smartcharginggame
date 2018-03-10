@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, request, render_template
 import pandas as pd
 
 from models import World, ChargingStation
@@ -56,11 +56,19 @@ def init():
 
 @app.route('/next')
 def next_step():
-    # put together which values we expect (using "order_" and number of stations)
-    # complain if the values are not sent
-    # call world.next, parse a dict with StationIDs as keys and actions as values
-    # render_template
-    pass
+    global world
+    orders = dict()
+    for sid, station in world.charging_stations:
+        if "order_%s" % sid not in request.form:
+            raise Exception("Missing order_%s in request." % sid)
+        orders[sid] = request.form.get("order_%s" % sid)
+    imbalance_change, profit_made = world.next_step(orders)
+
+    safe_js = make_custom_js(len(world.charging_stations), len(world.solar_park.generation))
+    return render_template("dashboard.html", **dict(world=world),
+                           imbalance_change=imbalance_change,
+                           profit_made=profit_made,
+                           safe_js=safe_js)
 
 
 if __name__ == '__main__':
