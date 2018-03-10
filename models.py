@@ -91,7 +91,7 @@ class World:
             assert(gen in range(1, 9))
         
         self.solar_park = SolarPark(solar_generation)
-        self.demand = [4, 4, 3, 2, 2, 4, 3, 0]
+        self.demand = [7, 7, 5, 3, 6, 6, 7, 2]
         self.charging_stations = charging_stations
 
         self.current_step = 0
@@ -103,7 +103,7 @@ class World:
 
     def imbalance_at(self, time_step: int):
         """
-        Compute the imbalance over the whole game
+        Compute the imbalance at time_step
         """
         charging = 0
         for station in self.charging_stations.values():
@@ -112,6 +112,12 @@ class World:
                 charging += car.charging_actions[time_step]
         generation = self.solar_park.generation.values
         return int(generation[time_step]) - self.demand[time_step] - charging
+
+    def imbalance_coin(self, time_step: int) -> int:
+        """
+        # Compute the coins to display at time_step
+        """
+        return self.imbalance_at(time_step) + 4
     
     def imbalance(self, until: int=8):
         return sum([self.imbalance_at(i) for i in range(until)]) 
@@ -119,7 +125,7 @@ class World:
     def calculate_profits(self, action: int) -> int:
         result = 0
         costs = [200, 100, 50, 20, 10, 5, 2, 1]
-        index = self.imbalance_at(self.current_step)
+        index = self.imbalance_at(self.current_step) + 4
         if action > 0:  # buy
             for _ in range(action):
                 result -= costs[index - 1]
@@ -132,7 +138,7 @@ class World:
 
     def check_validity_of_orders(self, orders: Dict[str, int]) -> bool:
         combined_action = sum(orders.values())
-        if combined_action + self.imbalance_at(self.current_step) not in range(-4, 4):
+        if combined_action + self.imbalance_at(self.current_step) not in range(-4, 3):
             raise Exception('Resulting imbalance outside of allowed range')
         for station_id, action in orders.items():
             station = self.charging_stations.get(station_id)
@@ -165,6 +171,7 @@ class World:
             station = self.charging_stations.get(station_id)
             car = station.get_car_at(self.current_step)
             car.charging_actions[self.current_step] = action
+            car.current_charge += action
             if station.get_car_at(self.current_step + 1) != car:
                 self.money += self.pay_off(car)
             # account transaction costs for charging
