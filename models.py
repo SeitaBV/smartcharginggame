@@ -127,8 +127,23 @@ class World:
                 index += 1
         return result
 
+    def check_validity_of_orders(self, orders: Dict[str, int]) -> bool:
+        combined_action = sum(orders.values())
+        if combined_action + self.imbalance_at(self.current_step) not in range(-4, 4):
+            raise Exception('Resulting imbalance outside of allowed range')
+        for station_id, action in orders.items():
+            station = self.charging_stations.get(station_id)
+            car = station.get_car_at(self.current_step)
+            if car is None:
+                raise Exception('An action is attempted on a station where there is no car: ' + station_id)
+            elif abs(action) > station.capacity:
+                raise Exception('Action is larger than station capacity: ' + station_id)
+            elif car.current_charge + action < 0:
+                raise Exception('Cars cannot have negative charge: ' + str(car.id))
+        return True
+
     def next_step(self, orders: Dict[str, int]) -> Tuple[int, int]:
-        # TODO: check for all orders if they do not breach station capacity or the car's charge level
+        self.check_validity_of_orders(orders)
         imbalance_before_charging = self.imbalance_at(self.current_step)
         # if self.current_step <= 8:
         #    raise TODO
