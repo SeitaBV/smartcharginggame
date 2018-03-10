@@ -43,8 +43,8 @@ def install_secret_key(app, filename='secret_key'):
 
 def make_custom_js(num_stations, num_turns):
     safe_js = "<script type='text/javascript'>"
-    for i in range(num_stations):
-        for j in range(num_turns):
+    for i in range(num_turns):
+        for j in range(num_stations):
             safe_js = safe_js + "$('#add_one_" + str(i) + "_" + str(j) + "').click(function() {" \
                                                                          "$('#my_counter_" + str(i) + "_" + str(
                 j) + "').html(function(i, val) { return +val+1 });" \

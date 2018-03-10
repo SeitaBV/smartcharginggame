@@ -95,7 +95,7 @@ class World:
         self.charging_stations = charging_stations
 
         self.current_step = 0
-        self.money = 0
+        self.money = 1000
 
     def __repr__(self):
         return "<step: %d money: %d,\ngeneration: %s,\ndemand: %s,\nstations: %s>"\
