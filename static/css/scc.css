@@ -1,13 +1,41 @@
+.Car1 {
+    color: rgb(10,60,195);
+}
+.Car2 {
+    color: rgb(35,190,205);
+}
+.Car3 {
+    color: rgb(77,99,49);
+}
+.Car4 {
+    color: rgb(29,72,83);
+}
+.Car5 {
+    color: rgb(17,190,230);
+}
+.Car6 {
+    color: rgb(95,4,252);
+}
+.Car7 {
+    color: rgb(41,40,3);
+}
+.Car8 {
+    color: rgb(252,190,182);
+}
+.Car9 {
+    color: rgb(2,89,70);
+}
+
 /* custom icons - replace this when updating seita-webfonts with Fontello */
 
 @font-face {
   font-family: 'seita-webfont';
-  src: url('../font/seita-webfont.eot?76732123');
-  src: url('../font/seita-webfont.eot?76732123#iefix') format('embedded-opentype'),
-       url('../font/seita-webfont.woff2?76732123') format('woff2'),
-       url('../font/seita-webfont.woff?76732123') format('woff'),
-       url('../font/seita-webfont.ttf?76732123') format('truetype'),
-       url('../font/seita-webfont.svg?76732123#seita-webfont') format('svg');
+  src: url('../font/seita-webfont.eot?1332818');
+  src: url('../font/seita-webfont.eot?1332818#iefix') format('embedded-opentype'),
+       url('../font/seita-webfont.woff2?1332818') format('woff2'),
+       url('../font/seita-webfont.woff?1332818') format('woff'),
+       url('../font/seita-webfont.ttf?1332818') format('truetype'),
+       url('../font/seita-webfont.svg?1332818#seita-webfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -17,7 +45,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'seita-webfont';
-    src: url('../font/seita-webfont.svg?76732123#seita-webfont') format('svg');
+    src: url('../font/seita-webfont.svg?1332818#seita-webfont') format('svg');
   }
 }
 */
@@ -58,16 +86,18 @@
 }
 
 .icon-solar:before { content: '\e800'; } /* '' */
-.icon-attribution:before { content: '\e801'; } /* '' */
-.icon-charging_station:before { content: '\e802'; } /* '' */
-.icon-chip:before { content: '\e803'; } /* '' */
-.icon-coin-5:before { content: '\e804'; } /* '' */
-.icon-coin-10:before { content: '\e805'; } /* '' */
-.icon-coin-50:before { content: '\e806'; } /* '' */
-.icon-coin-100:before { content: '\e807'; } /* '' */
-.icon-coin-100-alt:before { content: '\e808'; } /* '' */
-.icon-coin-500:before { content: '\e809'; } /* '' */
-.icon-ev:before { content: '\e80a'; } /* '' */
-.icon-pawn:before { content: '\e80b'; } /* '' */
-.icon-arrival:before { content: '\e80c'; } /* '' */
-.icon-departure:before { content: '\e80d'; } /* '' */
+.icon-arrival:before { content: '\e801'; } /* '' */
+.icon-attribution:before { content: '\e802'; } /* '' */
+.icon-balance:before { content: '\e803'; } /* '' */
+.icon-charging_station:before { content: '\e804'; } /* '' */
+.icon-chip:before { content: '\e805'; } /* '' */
+.icon-coin-5:before { content: '\e806'; } /* '' */
+.icon-coin-10:before { content: '\e807'; } /* '' */
+.icon-coin-50:before { content: '\e808'; } /* '' */
+.icon-coin-100:before { content: '\e809'; } /* '' */
+.icon-coin-100-alt:before { content: '\e80a'; } /* '' */
+.icon-coin-500:before { content: '\e80b'; } /* '' */
+.icon-departure:before { content: '\e80c'; } /* '' */
+.icon-ev:before { content: '\e80d'; } /* '' */
+.icon-iron:before { content: '\e80e'; } /* '' */
+.icon-pawn:before { content: '\e80f'; } /* '' */
