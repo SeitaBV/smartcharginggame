@@ -142,6 +142,9 @@ class World:
                 raise Exception('Cars cannot have negative charge: ' + str(car.id))
         return True
 
+    def Pay_off(self, car) -> int:
+        2 * car.current_charge - car.target_charge
+
     def next_step(self, orders: Dict[str, int]) -> Tuple[int, int]:
         self.check_validity_of_orders(orders)
         imbalance_before_charging = self.imbalance_at(self.current_step)

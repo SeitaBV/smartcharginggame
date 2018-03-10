@@ -15,6 +15,125 @@
     <body>
         <div class="container-fluid">
             <div class="row">
+                <p class="col-sm-12">
+                    <h1>
+                        Max your charge
+                    </h1>
+                    <p>
+                        In this game you are the operator of several EV charging stations. EV owners will come to one of
+                        your stations and want to charge their cars. When they leave, the car should be charged, or you
+                        will have to pay a penalty.
+                        On the other hand, you must buy the energy that you charge with from the grid. You pay a
+                        variable price, depending on the supply in the system at the moment. When imbalance is negative,
+                        you pay a higher price than when imbalance is positive.
+                        You can also use this to your advantage, by using the stationed cars as batteries. Charge when
+                        energy is cheap and discharge when energy is expensive. But be careful not to let the cars leave
+                        empty!
+                    </p>
+                    <p>
+                        The aim of the game
+                    </p>
+                    <p>
+                        By balancing your import and export to the grid while having all the cars leave fully charged
+                        will give you the greatest profit. All the while you are helping balance the grid and charging
+                        cars for users. Win-win-win!!!
+                    </p>
+                    <p>
+                        Steps
+                    </p>
+                    <p>
+                        Each turn you have several options available. For each car in your network of chargers you can
+                        decide:
+                    </p>
+                    <ul>
+                        <li>Charge the car (with anything up to the capacity of the charger)</li>
+                        <li>Discharge the car (with anything up to the capacity of the charger)</li>
+                        <li>Do nothing/wait</li>
+                    </ul>
+                    <p>
+                    When you’re happy with the changes in all your chargers, you can commit them by clicking ‘next
+                    turn’. The transactions are now included in the game grid and the active turn-line now moves down
+                    one.
+                    Your €€€ will increase of decrease with each turn you play. Starting you will have to make
+                    investments to buy energy for the charging EV owners. Soon though you may start seeing your money
+                    back in rewards. Balance and charge to the max to max your charge.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="" method="get">
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    Turn
+                                </th>
+                                <th>
+                                    <i class="icon-solar"></i>
+                                </th>
+                                {% for production_chip in range(max_production) %}
+                                    <th>
+                                        <i class="icon-coin-10"></i>
+                                    </th>
+                                {% endfor %}
+                                {% for station in range(num_stations) %}
+                                    <th>
+                                        <i class="icon-charging_station"></i>
+                                        Max {{ max_capacity[station] }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        {% for turn in range(num_turns) %}
+                            <tr {% if turn==current_turn %}class="info"{% endif %}>
+                                <td>
+                                    {% if turn==current_turn %}
+                                        <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {{ production[turn] }}
+                                </td>
+
+                                {% for production_chip in range(production[turn]|int) %}
+                                    <th>
+                                        <i class="icon-chip"></i>
+                                    </th>
+                                {% endfor %}
+                                {% for empty_production_chip in range((max_production - production[turn])|int) %}
+                                    <th>
+
+                                    </th>
+                                {% endfor %}
+
+                                {% for station in range(num_stations) %}
+                                <td style='white-space: nowrap' class="text-nowrap">
+                                    {% if turn==current_turn %}
+                                        {% set station_id = station_id[station-2] %}
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <button id="add_one_{{ turn }}_{{ station }}" class="btn btn-sm btn-success" type="button">Charge</button>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                Consume <span id="my_counter_{{ turn }}_{{ station }}">0</span>
+                                                <input id="my_input_{{ turn }}_{{ station }}" type="hidden" name="order_{{ station_id }}" value="0">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button id="remove_one_{{ turn }}_{{ station }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
                 <div class="col-sm-12">
                     <h1>
                         Welcome to the charging game!
