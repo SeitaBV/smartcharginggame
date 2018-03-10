@@ -26,8 +26,7 @@ def init():
     num_turns = len(world.solar_park.generation)
     production = world.solar_park.generation
     consumption = world.demand
-    imbalance = [world.imbalance(i) for i in range(num_turns)]
-    imbalance = [float(i) for i in production]  # convert to integers
+    imbalance = [world.imbalance_at(i) for i in range(num_turns)]
     max_imbalance = int(max(imbalance))
     consumption_car = [[0, 0, 0, 1, 0, 0, 0],
                        [0, 0, 0, 1, 1, 0, 0],
