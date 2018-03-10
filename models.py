@@ -62,7 +62,9 @@ class ChargingStation:
     def __repr__(self):
         return "<%s: cap:%d att: %s>" % (self.id, self.capacity, self.car_attendances)
 
-    def has_car_at(self, step: int):
+    def has_car_at(self, step: int) -> bool:
+        if step < 0 or step >= len(self.car_attendances):
+            return False
         return self.car_attendances[step] > 0
 
     def get_car_at(self, step: int):
@@ -76,6 +78,7 @@ class World:
     """
 
     solar_park: SolarPark
+    demand: List[int]
     charging_stations: Dict[str, ChargingStation]
     current_step: int
     money: int
