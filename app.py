@@ -30,6 +30,7 @@ def init():
     max_imbalance = int(max(imbalance))
     station_id = [station for station in world.charging_stations]
     max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
+    turn_id = range(9, 9+num_turns)
 
     safe_js = make_custom_js(num_stations, num_turns)
 
@@ -44,6 +45,7 @@ def init():
                            max_capacity=max_capacity,
                            station_id=station_id,
                            profit_made=0,
+                           turn_id=turn_id,
                            safe_js=safe_js
                            )
 
@@ -68,6 +70,7 @@ def next_step():
     max_imbalance = int(max(imbalance))
     station_id = [station for station in world.charging_stations]
     max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
+    turn_id = range(9, 9+num_turns)
 
     safe_js = make_custom_js(len(world.charging_stations), len(world.solar_park.generation))
 
@@ -83,6 +86,7 @@ def next_step():
                            station_id=station_id,
                            imbalance_change=imbalance_change,
                            profit_made=profit_made,
+                           turn_id=turn_id,
                            safe_js=safe_js)
 
 

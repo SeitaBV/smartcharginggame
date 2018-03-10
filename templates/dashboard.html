@@ -91,7 +91,9 @@
                         <table class="table col-sm-8">
                             <tr>
                                 <th>
-                                    Turn
+                                    Hour
+                                    <br>
+                                    <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
                                 </th>
                                 <th>
                                     <i class="icon-solar"></i>
@@ -142,9 +144,7 @@
                         {% for turn in range(num_turns) %}
                             <tr {% if turn==current_turn %}class="info"{% endif %}>
                                 <td>
-                                    {% if turn==current_turn %}
-                                        <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
-                                    {% endif %}
+                                    {{ turn_id[turn] }}
                                 </td>
 
                                 <td>
