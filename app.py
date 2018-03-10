@@ -23,13 +23,16 @@ def init():
     num_stations = len(world.charging_stations)
     num_turns = len(world.solar_park.generation)
     production = world.solar_park.generation
-    production = [float(i) for i in production]  # convert to integers
-    max_production = int(max(production))
-    consumption = [[0, 0, 0, 1, 0, 0, 0],
-                   [0, 0, 0, 1, 1, 0, 0],
-                   [0, 0, 0, 0, 1, 2, 0]]
+    consumption = world.demand
+    imbalance = [world.imbalance(i) for i in range(num_turns)]
+    imbalance = [float(i) for i in production]  # convert to integers
+    max_imbalance = int(max(imbalance))
+    consumption_car = [[0, 0, 0, 1, 0, 0, 0],
+                       [0, 0, 0, 1, 1, 0, 0],
+                       [0, 0, 0, 0, 1, 2, 0]]
     station_id = [station for station in world.charging_stations]
     max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
+
     arrivals = [[0, 1, 0, 0, 0, 0, 0],
                 [0, 0, 1, 0, 0, 0, 0],
                 [0, 0, 0, 0, 1, 0, 0]]
@@ -47,7 +50,9 @@ def init():
                            num_turns=num_turns,
                            current_turn=current_turn,
                            production=production,
-                           max_production=max_production,
+                           consumption=consumption,
+                           imbalance=imbalance,
+                           max_imbalance=max_imbalance,
                            max_capacity=max_capacity,
                            station_id=station_id,
                            safe_js=safe_js

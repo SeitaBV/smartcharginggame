@@ -15,9 +15,20 @@
     <body>
         <div class="container-fluid">
             <div class="row">
-                <p class="col-sm-12">
+
+                <div class="col-sm-4">
                     <h1>
                         Max your charge
+                    </h1>
+                    <p>
+                        What happens after you plug in your electric car?
+                        Every time you and your friends plug in you create a problem: who to charge when?
+                        This game challenges you to find the best schedule.
+                        Can you beat the score of your friends?
+                        Remember: you can earn a little extra by helping to balance the grid.
+                    </p>
+                    <h1>
+                        The rules
                     </h1>
                     <p>
                         In this game you are the operator of several EV charging stations. EV owners will come to one of
@@ -51,19 +62,19 @@
                         <li>Do nothing/wait</li>
                     </ul>
                     <p>
-                    When you’re happy with the changes in all your chargers, you can commit them by clicking ‘next
-                    turn’. The transactions are now included in the game grid and the active turn-line now moves down
-                    one.
-                    Your €€€ will increase of decrease with each turn you play. Starting you will have to make
-                    investments to buy energy for the charging EV owners. Soon though you may start seeing your money
-                    back in rewards. Balance and charge to the max to max your charge.
+                        When you're happy with the changes in all your chargers, you can commit them by clicking 'next
+                        turn'. The transactions are now included in the game grid and the active turn-line now moves down
+                        one.
+                        Your score will increase of decrease with each turn you play. Starting you will have to make
+                        investments to buy energy for the charging EV owners. Soon though you may start seeing your money
+                        back in rewards. Balance and charge to the max to max your charge.
                     </p>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <form action="" method="get">
-                        <table class="table">
+
+                <div class="col-sm-8">
+                    <h1>Your score</h1>
+                    <form action="next" method="post">
+                        <table class="table col-sm-8">
                             <tr>
                                 <th>
                                     Turn
@@ -71,15 +82,38 @@
                                 <th>
                                     <i class="icon-solar"></i>
                                 </th>
-                                {% for production_chip in range(max_production) %}
+                                <th>
+                                    <i class="icon-iron"></i>
+                                </th>
+                                <th>
+                                    <i class="icon-balance"></i>
+                                </th>
+                                {% for imbalance_chip in range(max_imbalance) %}
                                     <th>
-                                        <i class="icon-coin-10"></i>
+                                        {% if imbalance_chip==0 %}
+                                            <!--<i class="icon-coin-10"></i>-->
+                                            200
+                                        {% elif imbalance_chip==1 %}
+                                            100
+                                        {% elif imbalance_chip==2 %}
+                                            50
+                                        {% elif imbalance_chip==3 %}
+                                            20
+                                        {% elif imbalance_chip==4 %}
+                                            10
+                                        {% elif imbalance_chip==5 %}
+                                            5
+                                        {% elif imbalance_chip==6 %}
+                                            2
+                                        {% elif imbalance_chip==7 %}
+                                            1
+                                        {% endif %}
                                     </th>
                                 {% endfor %}
-                                {% for station in range(num_stations) %}
+                                {% for station_i in range(num_stations) %}
                                     <th>
                                         <i class="icon-charging_station"></i>
-                                        Max {{ max_capacity[station] }}
+                                        Max {{ max_capacity[station_i] }}
                                     </th>
                                 {% endfor %}
                             </tr>
@@ -94,137 +128,63 @@
                                 <td>
                                     {{ production[turn] }}
                                 </td>
+                                <td>
+                                    {{ consumption[turn] }}
+                                </td>
+                                <td>
+                                    {{ imbalance[turn] }}
+                                </td>
 
-                                {% for production_chip in range(production[turn]|int) %}
+                                {% for imbalance_chip in range(imbalance[turn]|int) %}
                                     <th>
                                         <i class="icon-chip"></i>
                                     </th>
                                 {% endfor %}
-                                {% for empty_production_chip in range((max_production - production[turn])|int) %}
+                                {% for empty_imbalance_chip in range((max_imbalance- imbalance[turn])|int) %}
                                     <th>
 
                                     </th>
                                 {% endfor %}
 
-                                {% for station in range(num_stations) %}
-                                <td style='white-space: nowrap' class="text-nowrap">
-                                    {% if turn==current_turn %}
-                                        {% set station_id = station_id[station-2] %}
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <button id="add_one_{{ turn }}_{{ station }}" class="btn btn-sm btn-success" type="button">Charge</button>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                Consume <span id="my_counter_{{ turn }}_{{ station }}">0</span>
-                                                <input id="my_input_{{ turn }}_{{ station }}" type="hidden" name="order_{{ station_id }}" value="0">
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <button id="remove_one_{{ turn }}_{{ station }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </td>
+                                {% for station_i in range(num_stations) %}
+                                    {% set station_id = station_id[station_i-2] %}
+                                    {% set station = world.charging_stations.get(station_id) %}
+                                    <td style='white-space: nowrap' class="text-nowrap">
+                                        {% if turn==current_turn %}
+                                            <!--<div class="row">-->
+                                                <!--<div class="col-sm-4">-->
+                                                    <button id="add_one_{{ turn }}_{{ station_i }}" class="btn btn-sm btn-success" type="button">Charge</button>
+                                                <!--</div>-->
+                                                <!--<div class="col-sm-4">-->
+                                                    Consume <span id="my_counter_{{ turn }}_{{ station }}">0</span>
+                                                    <input id="my_input_{{ turn }}_{{ station_i }}" type="hidden" name="order_{{ station_id }}" value="0">
+                                                <!--</div>-->
+                                                <!--<div class="col-sm-4">-->
+                                                    <button id="remove_one_{{ turn }}_{{ station_i }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        {% endif %}
+                                        {% if station.has_car_at(step=turn) %}
+                                            {% set car_id = station.get_car_at(step=turn).id %}
+                                            {% set car_target = station.get_car_at(step=turn).target_charge %}
+                                            <i class="icon-ev {{ car_id }}"></i>
+                                            <br>Your target is {{ car_target }}
+                                        {% endif %}
+                                    </td>
                                 {% endfor %}
                             </tr>
                         {% endfor %}
                         </table>
                     </form>
                 </div>
+
             </div>
         </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1>
-                        Welcome to the charging game!
-                    </h1>
-                    <p>
-                        Game rules here.
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <form action="" method="get">
-                        <table class="table">
-                            <tr>
-                                <th>
-                                    Turn
-                                </th>
-                                <th>
-                                    <i class="icon-solar"></i>
-                                </th>
-                                {% for production_chip in range(max_production) %}
-                                    <th>
-                                        <i class="icon-coin-10"></i>
-                                    </th>
-                                {% endfor %}
-                                {% for station in range(num_stations) %}
-                                    <th>
-                                        <i class="icon-charging_station"></i>
-                                        Max {{ max_capacity[station] }}
-                                    </th>
-                                {% endfor %}
-                            </tr>
-                        {% for turn in range(num_turns) %}
-                            <tr {% if turn==current_turn %}class="info"{% endif %}>
-                                <td>
-                                    {% if turn==current_turn %}
-                                        <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
-                                    {% endif %}
-                                </td>
-
-                                <td>
-                                    {{ production[turn] }}
-                                </td>
-
-                                {% for production_chip in range(production[turn]|int) %}
-                                    <th>
-                                        <i class="icon-chip"></i>
-                                    </th>
-                                {% endfor %}
-                                {% for empty_production_chip in range((max_production - production[turn])|int) %}
-                                    <th>
-
-                                    </th>
-                                {% endfor %}
-
-                                {% for station in range(num_stations) %}
-                                <td style='white-space: nowrap' class="text-nowrap">
-                                    {% if turn==current_turn %}
-                                        {% set station_id = station_id[station-2] %}
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <button id="add_one_{{ turn }}_{{ station }}" class="btn btn-sm btn-success" type="button">Charge</button>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                Consume <span id="my_counter_{{ turn }}_{{ station }}">0</span>
-                                                <input id="my_input_{{ turn }}_{{ station }}" type="hidden" name="order_{{ station_id }}" value="0">
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <button id="remove_one_{{ turn }}_{{ station }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </table>
-                    </form>
-                </div>
-            </div>
-        </div>
-
 
         <script src="static/js/external/jquery-3.1.0.min.js"></script>
         <script src="static/js/external/bootstrap.min.js"></script>
         {{ safe_js|safe }}
-        <!--<script>-->
-            <!--$('#my_button_{{ i }}_{{ j }}').click(function() {-->
-                <!--$('#my_counter_{{ i }}_{{ j }}').html(function(i, val) { return +val+1 });-->
-            <!--});-->
-        <!--</script>-->
+
         <!--<script src="static/js/scc.js"></script>-->
     </body>
 </html>
