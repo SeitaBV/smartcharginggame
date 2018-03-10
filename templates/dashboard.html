@@ -16,7 +16,7 @@
         <div class="container-fluid">
             <div class="row">
 
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <h1>
                         Max your charge
                     </h1>
@@ -82,7 +82,7 @@
                     </p>
                 </div>
 
-                <div class="col-sm-8">
+                <div class="col-sm-9">
                     <!--<h1>Your score is {{ profit_made }}</h1>-->
                     <h1>Your score is {{ world.money }}</h1>
                     <form action="reset" method="get">
@@ -115,17 +115,27 @@
                                     <th>
                                         {% if imbalance_chip==0 %}
                                             <!--<i class="icon-coin-10"></i>-->
-                                            200
-                                        {% elif imbalance_chip==1 %}
+                                            <!--200-->
+                                            <!--128-->
                                             100
+                                        {% elif imbalance_chip==1 %}
+                                            <!--100-->
+                                            <!--64-->
+                                            60
                                         {% elif imbalance_chip==2 %}
-                                            50
+                                            <!--50-->
+                                            <!--32-->
+                                            30
                                         {% elif imbalance_chip==3 %}
-                                            20
+                                            <!--20-->
+                                            <!--16-->
+                                            15
                                         {% elif imbalance_chip==4 %}
-                                            10
+                                            <!--10-->
+                                            8
                                         {% elif imbalance_chip==5 %}
-                                            5
+                                            <!--5-->
+                                            4
                                         {% elif imbalance_chip==6 %}
                                             2
                                         {% elif imbalance_chip==7 %}
@@ -138,7 +148,11 @@
                                     {% set station = world.charging_stations.get(station_id) %}
                                     <th>
                                         <i class="icon-charging_station"></i>
-                                        Max {{ max_capacity[station_i] }}
+                                        Max {{ max_capacity[station_i] -}}/turn
+                                        <br>
+                                        {% for chip in range(max_capacity[station_i]) %}
+                                            <i class="icon-chip"></i>
+                                        {% endfor %}
                                         {% if station.has_car_at(step=current_turn) %}
                                             <br>
                                             <button id="add_one_{{ current_turn }}_{{ station_i }}" class="btn btn-sm btn-success" type="button">Charge</button>
@@ -184,9 +198,9 @@
                                             {% set car_target = station.get_car_at(step=turn).target_charge %}
                                             <i class="icon-ev {{ car_id }}"></i>
                                             <p>
-                                                Your target is {{ car_target }}.
+                                                Target: {{ car_target }}.
                                             {% if turn==current_turn %}
-                                                Your car already has {{ station.get_car_at(step=turn).current_charge }} chips.
+                                                Current: {{ station.get_car_at(step=turn).current_charge }}.
                                                 </p>
                                                 <p>
                                                     Get <span id="my_counter_{{ turn }}_{{ station_i }}">0</span> chips.

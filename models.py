@@ -124,11 +124,13 @@ class World:
 
     def imbalance(self, until: int=8):
         """Aggregated imbalance up until a time step"""
-        return sum([self.imbalance_at(i) for i in range(until)]) 
+        return sum([self.imbalance_at(i) for i in range(until)])
 
     def calculate_profits(self, action: int) -> int:
         result = 0
-        costs = [200, 100, 50, 20, 10, 5, 2, 1]
+        # costs = [200, 100, 50, 20, 10, 5, 2, 1]
+        # costs = [128, 64, 32, 16, 8, 4, 2, 1]
+        costs = [100, 60, 30, 15, 8, 4, 2, 1]
         index = self.imbalance_at(self.current_step) + 4
         if action > 0:  # buy
             for _ in range(action):
@@ -142,7 +144,7 @@ class World:
 
     def check_validity_of_orders(self, orders: Dict[str, int]) -> bool:
         combined_action = sum(orders.values())
-        if self.imbalance_at(self.current_step) - combined_action not in range(-4, 3):
+        if self.imbalance_at(self.current_step) - combined_action not in range(-4, 4):
             raise Exception('Resulting imbalance outside of allowed range')
         for station_id, action in orders.items():
             station = self.charging_stations.get(station_id)
@@ -175,7 +177,7 @@ class World:
                 car.charging_actions[self.current_step] = action
                 car.current_charge += action
                 if station.get_car_at(self.current_step + 1) != car:
-                    self.money += car.get_final_payoff()
+                    self.money += car.get_final_payoff() * 25
                 # account transaction costs for charging
                 self.money -= abs(action)
         imbalance_after_charging = self.imbalance_at(self.current_step)
