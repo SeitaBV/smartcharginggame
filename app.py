@@ -28,21 +28,8 @@ def init():
     consumption = world.demand
     imbalance = [world.imbalance_at(i) for i in range(num_turns)]
     max_imbalance = int(max(imbalance))
-    consumption_car = [[0, 0, 0, 1, 0, 0, 0],
-                       [0, 0, 0, 1, 1, 0, 0],
-                       [0, 0, 0, 0, 1, 2, 0]]
     station_id = [station for station in world.charging_stations]
     max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
-
-    arrivals = [[0, 1, 0, 0, 0, 0, 0],
-                [0, 0, 1, 0, 0, 0, 0],
-                [0, 0, 0, 0, 1, 0, 0]]
-    departures = [[0, 0, 0, 1, 0, 0, 0],
-                  [0, 0, 0, 0, 1, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 1]]
-    target_consumption = [[0, 0, 0, 3, 0, 0, 0],
-                          [0, 0, 0, 0, 5, 0, 0],
-                          [0, 0, 0, 0, 0, 0, 1]]
 
     safe_js = make_custom_js(num_stations, num_turns)
 
@@ -64,14 +51,35 @@ def init():
 def next_step():
     global world
     orders = dict()
-    for sid, station in world.charging_stations:
+    for sid, station in world.charging_stations.items():
         if "order_%s" % sid not in request.form:
             raise Exception("Missing order_%s in request." % sid)
-        orders[sid] = request.form.get("order_%s" % sid)
+        orders[sid] = int(request.form.get("order_%s" % sid))
     imbalance_change, profit_made = world.next_step(orders)
 
+    current_turn = world.current_step  # We start at turn 0
+    transaction_costs = 5  # in number of coins
+    num_stations = len(world.charging_stations)
+    num_turns = len(world.solar_park.generation)
+    production = world.solar_park.generation
+    consumption = world.demand
+    imbalance = [world.imbalance_at(i) for i in range(num_turns)]
+    max_imbalance = int(max(imbalance))
+    station_id = [station for station in world.charging_stations]
+    max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
+
     safe_js = make_custom_js(len(world.charging_stations), len(world.solar_park.generation))
+
     return render_template("dashboard.html", **dict(world=world),
+                           num_stations=num_stations,
+                           num_turns=num_turns,
+                           current_turn=current_turn,
+                           production=production,
+                           consumption=consumption,
+                           imbalance=imbalance,
+                           max_imbalance=max_imbalance,
+                           max_capacity=max_capacity,
+                           station_id=station_id,
                            imbalance_change=imbalance_change,
                            profit_made=profit_made,
                            safe_js=safe_js)

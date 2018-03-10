@@ -118,7 +118,7 @@ class World:
         # Compute the coins to display at time_step
         """
         return self.imbalance_at(time_step) + 4
-    
+
     def imbalance(self, until: int=8):
         return sum([self.imbalance_at(i) for i in range(until)]) 
 
@@ -143,12 +143,13 @@ class World:
         for station_id, action in orders.items():
             station = self.charging_stations.get(station_id)
             car = station.get_car_at(self.current_step)
-            if car is None:
-                raise Exception('An action is attempted on a station where there is no car: ' + station_id)
-            elif abs(action) > station.capacity:
-                raise Exception('Action is larger than station capacity: ' + station_id)
-            elif car.current_charge + action < 0:
-                raise Exception('Cars cannot have negative charge: ' + str(car.id))
+            if action is not 0:
+                if car is None:
+                    raise Exception('An action is attempted on a station where there is no car: ' + station_id)
+                elif abs(action) > station.capacity:
+                    raise Exception('Action is larger than station capacity: ' + station_id)
+                elif car.current_charge + action < 0:
+                    raise Exception('Cars cannot have negative charge: ' + str(car.id))
         return True
 
     def pay_off(self, car: Car) -> int:
@@ -170,12 +171,13 @@ class World:
         for station_id, action in orders.items():
             station = self.charging_stations.get(station_id)
             car = station.get_car_at(self.current_step)
-            car.charging_actions[self.current_step] = action
-            car.current_charge += action
-            if station.get_car_at(self.current_step + 1) != car:
-                self.money += self.pay_off(car)
-            # account transaction costs for charging
-            self.money -= abs(action)
+            if car is not None:
+                car.charging_actions[self.current_step] = action
+                car.current_charge += action
+                if station.get_car_at(self.current_step + 1) != car:
+                    self.money += self.pay_off(car)
+                # account transaction costs for charging
+                self.money -= abs(action)
         imbalance_after_charging = self.imbalance_at(self.current_step)
         self.current_step += 1
         return imbalance_after_charging - imbalance_before_charging, profits
