@@ -61,7 +61,7 @@ def init():
                            )
 
 
-@app.route('/next')
+@app.route('/next', methods=['GET', 'POST'])
 def next_step():
     global world
     orders = dict()
