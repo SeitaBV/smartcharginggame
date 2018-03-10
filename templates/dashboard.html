@@ -93,8 +93,14 @@
                             <tr>
                                 <th>
                                     Hour
-                                    <br>
-                                    <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
+                                    {{ world.current_step }}
+                                    {% if current_turn < num_turns %}
+                                        <br>
+                                        <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
+                                    {% else %}
+                                        <br>
+                                        Great score. Want to try again?
+                                    {% endif %}
                                 </th>
                                 <th>
                                     <i class="icon-solar"></i>
