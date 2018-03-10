@@ -43,6 +43,7 @@ def init():
                            max_imbalance=max_imbalance,
                            max_capacity=max_capacity,
                            station_id=station_id,
+                           profit_made=0,
                            safe_js=safe_js
                            )
 

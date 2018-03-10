@@ -83,7 +83,10 @@
                 </div>
 
                 <div class="col-sm-8">
-                    <h1>Your score</h1>
+                    <h1>Your score is {{ profit_made }}</h1>
+                    <form action="reset" method="get">
+                        <button id="reset_button" class="btn btn-sm btn-warning" type="submit">Reset game</button>
+                    </form>
                     <form action="next" method="post">
                         <table class="table col-sm-8">
                             <tr>
