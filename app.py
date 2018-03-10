@@ -1,10 +1,12 @@
 from flask import Flask, request, render_template
+from flask_sslify import SSLify
 import pandas as pd
 
 from models import World, ChargingStation
 from utils import install_secret_key, init_charging_stations, make_custom_js
 
 app = Flask(__name__)
+sslify = SSLify(app)
 install_secret_key(app)
 
 world = None
