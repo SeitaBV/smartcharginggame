@@ -80,16 +80,15 @@ def make_custom_js(num_stations, num_turns):
     safe_js = "<script type='text/javascript'>"
     for i in range(num_turns):
         for j in range(num_stations):
-            safe_js = safe_js + "$('#add_one_" + str(i) + "_" + str(j) + "').click(function() {" \
-                                                                         "$('#my_counter_" + str(i) + "_" + str(
-                j) + "').html(function(i, val) { return +val+1 });" \
-                     "$('#my_input_" + str(i) + "_" + str(j) + "').val(function(i, val) { return +val+1 });" \
-                                                               "});" \
-                                                               "$('#remove_one_" + str(i) + "_" + str(
-                j) + "').click(function() {" \
-                     "$('#my_counter_" + str(i) + "_" + str(j) + "').html(function(i, val) { return +val-1 });" \
-                                                                 "$('#my_input_" + str(i) + "_" + str(
-                j) + "').val(function(i, val) { return +val-1 });" \
-                     "});"
+            safe_js = safe_js + f"""
+                $('#add_one_{i}_{j}').click(function() {{
+                    $('#my_counter_{i}_{j}').html(function(i, val) {{ return +val+1 }});
+                    $('#my_input_{i}_{j}').val(function(i, val) {{ return +val+1 }});
+                }});
+                $('#remove_one_{i}_{j}').click(function() {{
+                    $('#my_counter_{i}_{j}').html(function(i, val) {{ return +val-1 }});
+                    $('#my_input_{i}_{j}').val(function(i, val) {{ return +val-1 }});
+                }});
+            """
     safe_js = safe_js + "</script>"
     return safe_js
