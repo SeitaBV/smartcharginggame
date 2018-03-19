@@ -150,7 +150,6 @@
                             <tr>
                                 <th>
                                     Hour
-                                    {{ world.current_step }}
                                     {% if current_turn < num_turns %}
                                         <br>
                                         <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
@@ -159,15 +158,15 @@
                                         Great score. Want to try again?
                                     {% endif %}
                                 </th>
-                                <th>
-                                    <i class="icon-solar"></i>
-                                </th>
-                                <th>
-                                    <i class="icon-iron"></i>
-                                </th>
-                                <th>
-                                    <i class="icon-balance"></i>
-                                </th>
+                                <!--<th>-->
+                                    <!--<i class="icon-solar"></i>-->
+                                <!--</th>-->
+                                <!--<th>-->
+                                    <!--<i class="icon-iron"></i>-->
+                                <!--</th>-->
+                                <!--<th>-->
+                                    <!--<i class="icon-balance"></i>-->
+                                <!--</th>-->
                                 {% for imbalance_chip in range(max_imbalance) %}
                                     <th>
                                         {% if imbalance_chip==0 %}
@@ -222,18 +221,18 @@
                         {% for turn in range(num_turns) %}
                             <tr {% if turn==current_turn %}class="info"{% endif %}>
                                 <td>
-                                    {{ turn_id[turn] }}
+                                    {{ turn_id[turn] }}:00
                                 </td>
 
-                                <td>
-                                    {{ production[turn] }}
-                                </td>
-                                <td>
-                                    {{ consumption[turn] }}
-                                </td>
-                                <td>
-                                    {{ imbalance[turn] }}
-                                </td>
+                                <!--<td>-->
+                                    <!--{{ production[turn] }}-->
+                                <!--</td>-->
+                                <!--<td>-->
+                                    <!--{{ consumption[turn] }}-->
+                                <!--</td>-->
+                                <!--<td>-->
+                                    <!--{{ imbalance[turn] }}-->
+                                <!--</td>-->
 
                                 {% for imbalance_chip in range(imbalance_coin[turn]|int) %}
                                     <th>
