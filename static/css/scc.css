@@ -1,23 +1,23 @@
 .Car1 {
-    color: rgb(10,60,195);
+    color: rgb(240,90,100);
 }
 .Car2 {
     color: rgb(35,190,205);
 }
 .Car3 {
-    color: rgb(77,99,49);
+    color: rgb(77,199,49);
 }
 .Car4 {
-    color: rgb(29,72,83);
+    color: rgb(209,172,83);
 }
 .Car5 {
-    color: rgb(17,190,230);
+    color: rgb(107,240,230);
 }
 .Car6 {
-    color: rgb(95,4,252);
+    color: rgb(253,104,252);
 }
 .Car7 {
-    color: rgb(41,40,3);
+    color: rgb(141,140,93);
 }
 .Car8 {
     color: rgb(252,190,182);
@@ -26,16 +26,69 @@
     color: rgb(2,89,70);
 }
 
+
+.icon-token {
+    font-size: 150%;
+}
+.icon-token-empty {
+    font-size: 150%;
+}
+
+.edit_hover_class a{
+  visibility:hidden;
+}
+.edit_hover_class:hover a {
+ visibility:visible;
+}
+
+
+.fa-lg {
+  font-size: 1.33333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+.fa-stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+.fa-stack-1x,
+.fa-stack-2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.fa-stack-1x {
+  line-height: inherit;
+}
+.fa-stack-2x {
+  font-size: 2em;
+}
+
+
+#alerts {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 25%;
+    min-width: 200px;
+}
+
+
 /* custom icons - replace this when updating seita-webfonts with Fontello */
 
 @font-face {
   font-family: 'seita-webfont';
-  src: url('../font/seita-webfont.eot?1332818');
-  src: url('../font/seita-webfont.eot?1332818#iefix') format('embedded-opentype'),
-       url('../font/seita-webfont.woff2?1332818') format('woff2'),
-       url('../font/seita-webfont.woff?1332818') format('woff'),
-       url('../font/seita-webfont.ttf?1332818') format('truetype'),
-       url('../font/seita-webfont.svg?1332818#seita-webfont') format('svg');
+  src: url('../font/seita-webfont.eot?90182301');
+  src: url('../font/seita-webfont.eot?90182301#iefix') format('embedded-opentype'),
+       url('../font/seita-webfont.woff2?90182301') format('woff2'),
+       url('../font/seita-webfont.woff?90182301') format('woff'),
+       url('../font/seita-webfont.ttf?90182301') format('truetype'),
+       url('../font/seita-webfont.svg?90182301#seita-webfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -45,7 +98,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'seita-webfont';
-    src: url('../font/seita-webfont.svg?1332818#seita-webfont') format('svg');
+    src: url('../font/seita-webfont.svg?90182301#seita-webfont') format('svg');
   }
 }
 */
@@ -85,19 +138,9 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-solar:before { content: '\e800'; } /* '' */
-.icon-arrival:before { content: '\e801'; } /* '' */
-.icon-attribution:before { content: '\e802'; } /* '' */
-.icon-balance:before { content: '\e803'; } /* '' */
-.icon-charging_station:before { content: '\e804'; } /* '' */
-.icon-chip:before { content: '\e805'; } /* '' */
-.icon-coin-5:before { content: '\e806'; } /* '' */
-.icon-coin-10:before { content: '\e807'; } /* '' */
-.icon-coin-50:before { content: '\e808'; } /* '' */
-.icon-coin-100:before { content: '\e809'; } /* '' */
-.icon-coin-100-alt:before { content: '\e80a'; } /* '' */
-.icon-coin-500:before { content: '\e80b'; } /* '' */
-.icon-departure:before { content: '\e80c'; } /* '' */
-.icon-ev:before { content: '\e80d'; } /* '' */
-.icon-iron:before { content: '\e80e'; } /* '' */
-.icon-pawn:before { content: '\e80f'; } /* '' */
+.icon-token-empty:before { content: '\e800'; } /* '' */
+.icon-charging_station:before { content: '\e801'; } /* '' */
+.icon-ev:before { content: '\e802'; } /* '' */
+.icon-minus:before { content: '\e803'; } /* '' */
+.icon-plus:before { content: '\e804'; } /* '' */
+.icon-token:before { content: '\e805'; } /* '' */

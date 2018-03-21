@@ -76,18 +76,91 @@ def install_secret_key(app, filename='secret_key'):
         sys.exit(1)
 
 
-def make_custom_js(num_stations, num_turns):
-    safe_js = "<script type='text/javascript'>"
-    for i in range(num_turns):
-        for j in range(num_stations):
+def make_custom_js(num_stations, num_turns, current_imbalance_coins, max_imbalance, max_capacity, station_has_car):
+
+    safe_js = f"""
+        <script type='text/javascript'>
+        True = true;
+        False = false;
+        
+        function update_market() {{
+            for (i = 0; i < $('#my_input_market').val(); i++) {{
+                $('#token-holder-' + i).html('<i class="icon-token"></i>');
+            }}
+            for (i = $('#my_input_market').val(); i < {max_imbalance}; i++) {{
+                $('#token-holder-' + i).html('');
+            }}
+        }}
+        
+        function update_station(station_i, turn_j, station_max, max_imbalance) {{
+            
+            car_target = parseInt($('#target-station-' + station_i).data("target"));
+            car_current = parseInt($('#target-station-' + station_i).data("current"));
+            car_change = parseInt($('#my_input_' + station_i + '_' + turn_j).val());
+            car_id = $('#target-station-' + station_i).data("car_id");
+            
+            tokenstring = '';
+            for (i = 0; i < (car_current + car_change); i++) {{
+                if (i < car_current) {{
+                    tokenstring += '<i class="icon-token ' + car_id + '"></i>';                    
+                }} else {{
+                    tokenstring += '<i class="icon-token"></i>';
+                }}
+            }}
+            // $('#remove_one_' + station_i + '_' + turn_j).html(tokenstring);
+            // tokenstring = '';
+            if (car_change > 0) {{
+                for (i = 0; i < (car_target - (car_current + car_change)); i++) {{
+                    tokenstring += '<i class="icon-token-empty"></i>';
+                }}
+            }} else {{
+                for (i = 0; i < -car_change; i++) {{
+                    tokenstring += '<i class="icon-token-empty ' + car_id + '"></i>';
+                }}
+                for (i = 0; i < (car_target - car_current); i++) {{
+                    tokenstring += '<i class="icon-token-empty"></i>';
+                }}
+            }}
+            // $('#add_one_' + station_i + '_' + turn_j).html(tokenstring);
+            $('#token-holder-station-' + station_i).html(tokenstring);
+            
+            if (car_change < station_max && car_current + car_change < car_target && $('#my_input_market').val() > 0) {{
+                $('#add_one_' + station_i + '_' + turn_j).addClass('btn-success').prop("disabled", false);
+            }} else {{
+                $('#add_one_' + station_i + '_' + turn_j).removeClass('btn-success').prop("disabled", true);
+            }}
+            if (-car_change < station_max && car_current + car_change > 0 && $('#my_input_market').val() < max_imbalance) {{
+                $('#remove_one_' + station_i + '_' + turn_j).addClass('btn-danger').prop("disabled", false);
+            }} else {{
+                $('#remove_one_' + station_i + '_' + turn_j).removeClass('btn-danger').prop("disabled", true);
+            }}
+            
+        }}
+    """
+    for i in range(num_stations):
+        for j in range(num_turns):
             safe_js = safe_js + f"""
                 $('#add_one_{i}_{j}').click(function() {{
-                    $('#my_counter_{i}_{j}').html(function(i, val) {{ return +val+1 }});
                     $('#my_input_{i}_{j}').val(function(i, val) {{ return +val+1 }});
+                    $('#my_input_market').val(function(i, val) {{ return +val-1 }});
+                    update_market();
+                    for (station_i = 0; station_i < {num_stations}; station_i++) {{
+                        station_has_car = {station_has_car};
+                        if (station_has_car[station_i]) {{
+                            update_station(station_i, {j}, {max_capacity[i]}, {max_imbalance});
+                        }}                        
+                    }}
                 }});
                 $('#remove_one_{i}_{j}').click(function() {{
-                    $('#my_counter_{i}_{j}').html(function(i, val) {{ return +val-1 }});
                     $('#my_input_{i}_{j}').val(function(i, val) {{ return +val-1 }});
+                    $('#my_input_market').val(function(i, val) {{ return +val+1 }});
+                    update_market();
+                    for (station_i = 0; station_i < {num_stations}; station_i++) {{
+                        station_has_car = {station_has_car};
+                        if (station_has_car[station_i]) {{
+                            update_station(station_i, {j}, {max_capacity[i]}, {max_imbalance});
+                        }}                        
+                    }}
                 }});
             """
     safe_js = safe_js + "</script>"

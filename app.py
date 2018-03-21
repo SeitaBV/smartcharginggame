@@ -27,8 +27,9 @@ def init():
     station_id = [station for station in world.charging_stations]
     max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
     turn_id = range(9, 9+num_turns)
+    station_has_car = [world.charging_stations.get(station).has_car_at(step=current_turn) for station in world.charging_stations]
 
-    safe_js = make_custom_js(num_stations, num_turns)
+    safe_js = make_custom_js(num_stations, num_turns, imbalance_coin[current_turn], max_imbalance, max_capacity, station_has_car)
 
     return render_template("dashboard.html", **dict(world=world),
                            num_stations=num_stations,
@@ -70,8 +71,13 @@ def next_step():
     station_id = [station for station in world.charging_stations]
     max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
     turn_id = range(9, 9+num_turns)
+    station_has_car = [world.charging_stations.get(station).has_car_at(step=current_turn) for station in world.charging_stations]
 
-    safe_js = make_custom_js(len(world.charging_stations), len(world.solar_park.generation))
+    if current_turn < num_turns:
+        safe_js = make_custom_js(len(world.charging_stations), len(world.solar_park.generation),
+                                 imbalance_coin[current_turn], max_imbalance, max_capacity, station_has_car)
+    else:
+        safe_js = ""
 
     return render_template("dashboard.html", **dict(world=world),
                            num_stations=num_stations,

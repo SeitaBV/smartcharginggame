@@ -107,39 +107,14 @@
                     <script type="text/javascript">
                         $(document).ready(function(){
                             location.hash = "#game";
+                            {% for station_i in range(num_stations) %}
+                                update_station({{station_i}}, {{current_turn}}, {{max_capacity[station_i]}}, {{max_imbalance}})
+                            {% endfor %}
                         });
                     </script>
-                    {% if imbalance_change != 0 and profit_made != 0 %}
-                    <!-- Display move results in modal dialogue -->
-                    <div class="modal fade" id="ssc-modal-dialog-move-results" role="dialog">
-                        <div class="modal-dialog">
-
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              <h4 class="modal-title">Move completed!</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>You changed imbalance by {{ imbalance_change }}.</p>
-                                <p>Your score changed by {{ profit_made }}.</p>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-
-                        </div>
-                    </div>
-                    <script type="text/javascript">
-                        $(document).ready(function(){
-                            $('#ssc-modal-dialog-move-results').modal("show");
-                        });
-                    </script>
-                    {% endif %}
                 {% endif %}
 
                 <div class="col-sm-9">
-                    <!--<h1>Your score is {{ profit_made }}</h1>-->
                     <a name="game"></a>
                     <h1>Your score is {{ world.money }}</h1>
                     <form action="reset" method="get">
@@ -167,34 +142,34 @@
                                 <!--<th>-->
                                     <!--<i class="icon-balance"></i>-->
                                 <!--</th>-->
-                                {% for imbalance_chip in range(max_imbalance) %}
+                                {% for imbalance_token in range(max_imbalance) %}
                                     <th>
-                                        {% if imbalance_chip==0 %}
+                                        {% if imbalance_token==0 %}
                                             <!--<i class="icon-coin-10"></i>-->
                                             <!--200-->
                                             <!--128-->
                                             100
-                                        {% elif imbalance_chip==1 %}
+                                        {% elif imbalance_token==1 %}
                                             <!--100-->
                                             <!--64-->
                                             60
-                                        {% elif imbalance_chip==2 %}
+                                        {% elif imbalance_token==2 %}
                                             <!--50-->
                                             <!--32-->
                                             30
-                                        {% elif imbalance_chip==3 %}
+                                        {% elif imbalance_token==3 %}
                                             <!--20-->
                                             <!--16-->
                                             15
-                                        {% elif imbalance_chip==4 %}
+                                        {% elif imbalance_token==4 %}
                                             <!--10-->
                                             8
-                                        {% elif imbalance_chip==5 %}
+                                        {% elif imbalance_token==5 %}
                                             <!--5-->
                                             4
-                                        {% elif imbalance_chip==6 %}
+                                        {% elif imbalance_token==6 %}
                                             2
-                                        {% elif imbalance_chip==7 %}
+                                        {% elif imbalance_token==7 %}
                                             1
                                         {% endif %}
                                     </th>
@@ -206,65 +181,99 @@
                                         <i class="icon-charging_station"></i>
                                         Max {{ max_capacity[station_i] -}}/turn
                                         <br>
-                                        {% for chip in range(max_capacity[station_i]) %}
-                                            <i class="icon-chip"></i>
+                                        {% for token in range(max_capacity[station_i]) %}
+                                            <i class="icon-token"></i>
                                         {% endfor %}
                                         {% if station.has_car_at(step=current_turn) %}
+                                            {% set car = station.get_car_at(step=current_turn) %}
+                                            {% set car_id = car.id %}
+                                            {% set car_target = car.target_charge %}
+                                            {% set car_current = car.current_charge %}
                                             <br>
-                                            <button id="add_one_{{ current_turn }}_{{ station_i }}" class="btn btn-sm btn-success" type="button">Charge</button>
-                                            <button id="remove_one_{{ current_turn }}_{{ station_i }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
+                                            {% if car_current < car_target and imbalance_coin[current_turn] > 0 %}
+                                                <button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-success" type="button">Charge</button>
+                                            {% else %}
+                                                <button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm" type="button" disabled>Charge</button>
+                                            {% endif %}
+                                            {% if car_current > 0 and imbalance_coin[current_turn] < max_imbalance %}
+                                                <button id="remove_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
+                                            {% else %}
+                                                <button id="remove_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm" type="button" disabled>Discharge</button>
+                                            {% endif %}
                                         {% endif %}
-                                        <input id="my_input_{{ current_turn }}_{{ station_i }}" type="hidden" name="order_{{ station_id }}" value="0">
+                                        <input id="my_input_{{ station_i }}_{{ current_turn }}" type="hidden" name="order_{{ station_id }}" value="0">
                                     </th>
                                 {% endfor %}
                             </tr>
-                        {% for turn in range(num_turns) %}
-                            <tr {% if turn==current_turn %}class="info"{% endif %}>
+                        {% for turn_j in range(num_turns) %}
+                            {% if turn_j==current_turn %}
+                                <input id="my_input_market" type="hidden" name="market" value="{{ imbalance_coin[turn_j] }}">
+                            {% endif %}
+                            <tr {% if turn_j==current_turn %}class="info current-turn"{% endif %}>
                                 <td>
-                                    {{ turn_id[turn] }}:00
+                                    {{ turn_id[turn_j] }}:00
                                 </td>
 
                                 <!--<td>-->
-                                    <!--{{ production[turn] }}-->
+                                    <!--{{ production[turn_j] }}-->
                                 <!--</td>-->
                                 <!--<td>-->
-                                    <!--{{ consumption[turn] }}-->
+                                    <!--{{ consumption[turn_j] }}-->
                                 <!--</td>-->
                                 <!--<td>-->
-                                    <!--{{ imbalance[turn] }}-->
+                                    <!--{{ imbalance[turn_j] }}-->
                                 <!--</td>-->
 
-                                {% for imbalance_chip in range(imbalance_coin[turn]|int) %}
-                                    <th>
-                                        <i class="icon-chip"></i>
+                                {% for imbalance_token in range(imbalance_coin[turn_j]|int) %}
+                                    <th {% if turn_j==current_turn %}id="token-holder-{{imbalance_token}}"{% endif %}>
+                                        <i class="icon-token"></i>
                                     </th>
                                 {% endfor %}
-                                {% for empty_imbalance_chip in range((max_imbalance - imbalance_coin[turn])|int) %}
-                                    <th>
-
-                                    </th>
+                                {% for empty_imbalance_token in range((max_imbalance - imbalance_coin[turn_j])|int) %}
+                                    <th {% if turn_j==current_turn %}id="token-holder-{{empty_imbalance_token+imbalance_coin[turn_j]}}"{% endif %}></th>
                                 {% endfor %}
 
                                 {% for station_i in range(num_stations) %}
                                     {% set station_id = station_id[station_i] %}
                                     {% set station = world.charging_stations.get(station_id) %}
-                                    <td style='white-space: nowrap'>
-                                        {% if station.has_car_at(step=turn) %}
-                                            {% set car_id = station.get_car_at(step=turn).id %}
-                                            {% set car_target = station.get_car_at(step=turn).target_charge %}
-                                            <i class="icon-ev {{ car_id }}"></i>
-                                            <p>
-                                                Target: {{ car_target }}.
-                                            {% if turn==current_turn %}
-                                                Current: {{ station.get_car_at(step=turn).current_charge }}.
-                                                </p>
-                                                <p>
-                                                    Get <span id="my_counter_{{ turn }}_{{ station_i }}">0</span> chips.
-                                                </p>
-                                            {% else %}
-                                                </p>
+                                    <td style="white-space: nowrap">
+                                        {%- if station.has_car_at(step=turn_j) %}
+                                            {% set car = station.get_car_at(step=turn_j) %}
+                                            {% set car_id = car.id %}
+                                            {% set car_target = car.target_charge %}
+                                            {% set car_current = car.current_charge %}
+                                            {% if turn_j==current_turn %}
+                                                <span {% if turn_j==current_turn %} id="token-holder-station-{{station_i}}" {% endif %}>
+                                                    {%- for i in range(car_current) -%}
+                                                        <i class="icon-token {{car_id}}"></i>
+                                                    {%- endfor -%}
+                                                    {%- for i in range(car_target - car_current) -%}
+                                                        <i class="icon-token-empty"></i>
+                                                    {%- endfor -%}
+                                                </span>
+                                                <!--<button id="remove_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-danger" type="button">Discharge</button>-->
+                                                <!--<button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-success" type="button">Charge</button>-->
+                                                <meta id="target-station-{{station_i}}" data-car_id="{{car_id}}" data-target="{{car_target}}" data-current="{{car_current}}">
+
+
+                                                <!--<div class="station-status"></div>-->
+                                                <!--<button onclick="doFunction();"></button>-->
+                                                <!--<i class="icon-token"></i>-->
+                                                <!--<i class="icon-token"></i>-->
+                                                <!--<button class="btn btn-xs btn-danger" type="button">-->
+                                                    <!--<span class="fa-stack">-->
+                                                        <!--<i class="icon-token-empty fa-stack-2x"></i>-->
+                                                        <!--<i class="icon-plus fa-stack-1x"></i>-->
+                                                    <!--</span>-->
+                                                <!--</button>-->
+                                                <!--<i class="icon-token-empty"></i>-->
+                                                <!--<i class="icon-token-empty"></i>-->
                                             {% endif %}
-                                        {% endif %}
+                                            <p class="{{ car_id }}">
+                                                <i class="icon-ev {{ car_id }}" style="margin-right:50px;"></i>
+                                                wants {{car_target}} <i class="icon-token" style="font-size: 100%;"></i>
+                                            </p>
+                                        {% endif -%}
                                     </td>
 
                                 {% endfor %}
@@ -282,6 +291,27 @@
                     <img src="static/board.jpg" class="img-responsive"/>
                 </div>
             </div>
+        </div>
+        <div id="alerts">
+            {% if completed_a_move %}
+                {% if imbalance_change != 0 and profit_made != 0 %}
+                    <!-- Display move results in alert dialogue -->
+                    <div class="alert alert-warning" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4>Move completed!</h4>
+                        <p>You changed imbalance by {{ imbalance_change }}.</p>
+                        <p>Your score changed by {{ profit_made }}.</p>
+                    </div>
+                    <script>
+                        alert = $('.alert');
+                        alert.delay(5000).fadeOut('slow', function () {
+                            $(this).alert('close');
+                        });
+                    </script>
+                {% endif %}
+            {% endif %}
         </div>
 
         {{ safe_js|safe }}
