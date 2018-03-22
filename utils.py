@@ -119,7 +119,7 @@ def make_custom_js(charging_stations, max_tokens, current_turn):
                     tokenstring += '<i class="icon-token-empty"></i>';
                 }}
             }}
-            $('#token-holder-station-' + station_id).html(tokenstring);
+            $('#token-holder-station-' + station_id + '-{current_turn}').html(tokenstring);
         }}
     
         function update_all_station_actions() {{    
