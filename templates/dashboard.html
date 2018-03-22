@@ -103,7 +103,7 @@
                     </p>
                 </div>
 
-                {% if completed_a_move %}
+                {% if completed_a_move or resetted_the_game%}
                     <script type="text/javascript">
                         $(document).ready(function(){
                             location.hash = "#game";

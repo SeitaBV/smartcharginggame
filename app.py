@@ -11,7 +11,7 @@ install_secret_key(app)
 
 
 @app.route('/')
-def init():
+def init(is_reset=False):
     if not os.path.exists("worlds"):
         raise Exception("Admin, please create the 'worlds' directory to save worlds!")
     world = load_world()
@@ -44,7 +44,8 @@ def init():
                            station_id=station_id,
                            profit_made=0,
                            turn_id=turn_id,
-                           safe_js=safe_js
+                           safe_js=safe_js,
+                           resetted_the_game=is_reset
                            )
 
 
@@ -101,7 +102,7 @@ def next_step():
 def reset():
     if "world_id" in session:
         del session["world_id"]
-    return init()
+    return init(is_reset=True)
 
 
 if __name__ == '__main__':
