@@ -27,6 +27,12 @@
 }
 
 
+.table td{
+    text-align: center;
+}
+.table th{
+    text-align: center;
+}
 .icon-token {
     font-size: 150%;
 }

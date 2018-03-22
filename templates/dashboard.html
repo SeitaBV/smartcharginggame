@@ -161,7 +161,7 @@
                                     <!--<i class="icon-balance"></i>-->
                                 <!--</th>-->
                                 {% for imbalance_token in range(max_imbalance) %}
-                                    <th style="text-align: center;">
+                                    <th style="text-align: center; padding-left: 0; padding-right: 0;">
                                         {% if imbalance_token==0 %}
                                             <!--<i class="icon-coin-10"></i>-->
                                             <!--200-->
@@ -242,7 +242,7 @@
                                 <!--</td>-->
 
                                 {% for imbalance_token in range(imbalance_coin[turn_j]|int) %}
-                                    <th {% if turn_j==current_turn %}id="token-holder-{{imbalance_token}}"{% endif %}>
+                                    <th {% if turn_j==current_turn %}id="token-holder-{{imbalance_token}}"{% endif %} style="text-align: center; padding-left: 0; padding-right: 0;">
                                         <i class="icon-token"></i>
                                     </th>
                                 {% endfor %}
@@ -267,7 +267,7 @@
                                                         <i class="icon-token {{car_id}}"></i>
                                                     {%- endfor -%}
                                                     {%- for i in range(car_target - car.charging_actions[0:turn_j+1]|sum) -%}
-                                                        <i class="icon-token-empty"></i>
+                                                        <i class="icon-token-empty {% if turn_j < current_turn %}{{car_id}}{% endif %}"></i>
                                                     {%- endfor -%}
                                                 </span>
                                             {% else %}
