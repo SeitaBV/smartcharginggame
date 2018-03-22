@@ -93,7 +93,8 @@
                     </ul>
                     <p>
                         When you're happy with the changes in all your chargers, you can commit them by clicking 'next
-                        turn'. The transactions are now included in the game grid and the active turn-line now moves down
+                        turn' or simply hitting the Return key.
+                        The transactions are now included in the game grid and the active turn-line now moves down
                         one.
                     </p>
                     <p>
@@ -331,6 +332,13 @@
 
         {{ safe_js|safe }}
 
-        <!--<script src="static/js/scc.js"></script>-->
+        <script type="text/javascript">
+            $(document).keypress(function(e) {
+                if(e.which == 13) {
+                    console.log("Enter key pressed - clicking next move.");
+                    $("#next_turn").click();
+                }
+            });
+        </script>
     </body>
 </html>
