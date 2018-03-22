@@ -107,26 +107,42 @@
                     <script type="text/javascript">
                         $(document).ready(function(){
                             location.hash = "#game";
-                            {% for station_i in range(num_stations) %}
-                                update_station({{station_i}}, {{current_turn}}, {{max_capacity[station_i]}}, {{max_imbalance}})
-                            {% endfor %}
+                            $('[data-toggle="tooltip"]').tooltip();
+                        });
+                    </script>
+                {% else %}
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $('[data-toggle="tooltip"]').tooltip();
                         });
                     </script>
                 {% endif %}
 
                 <div class="col-sm-9">
                     <a name="game"></a>
-                    <h1>Your score is {{ world.money }}</h1>
+                    <h1>Your score is {{ world.money -}}<i class="icon-coin"></i></h1>
                     <form action="reset" method="get">
                         <button id="reset_button" class="btn btn-sm btn-warning" type="submit">Reset game</button>
                     </form>
+                    <br>
                     <form action="next" method="post">
                         <table class="table col-sm-8">
                             <tr>
                                 <th>
+
+                                </th>
+                                <th colspan={{max_imbalance}}>
+                                    Available tokens (<i class="icon-token" style="font-size: 100%;"></i>) and their worth (<i class="icon-coin"></i>)
+                                </th>
+                                <th colspan={{num_stations}}>
+                                    Charging stations<!-- (max <i class="icon-token" style="font-size: 100%;"></i> per turn)-->
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
                                     Hour
                                     {% if current_turn < num_turns %}
-                                        <br>
+                                        <br><br>
                                         <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
                                     {% else %}
                                         <br>
@@ -143,53 +159,52 @@
                                     <!--<i class="icon-balance"></i>-->
                                 <!--</th>-->
                                 {% for imbalance_token in range(max_imbalance) %}
-                                    <th>
+                                    <th style="text-align: center;">
                                         {% if imbalance_token==0 %}
                                             <!--<i class="icon-coin-10"></i>-->
                                             <!--200-->
                                             <!--128-->
-                                            100
+                                            100<i class="icon-coin"></i>
                                         {% elif imbalance_token==1 %}
                                             <!--100-->
                                             <!--64-->
-                                            60
+                                            60<i class="icon-coin"></i>
                                         {% elif imbalance_token==2 %}
                                             <!--50-->
                                             <!--32-->
-                                            30
+                                            30<i class="icon-coin"></i>
                                         {% elif imbalance_token==3 %}
                                             <!--20-->
                                             <!--16-->
-                                            15
+                                            15<i class="icon-coin"></i>
                                         {% elif imbalance_token==4 %}
                                             <!--10-->
-                                            8
+                                            8<i class="icon-coin"></i>
                                         {% elif imbalance_token==5 %}
                                             <!--5-->
-                                            4
+                                            4<i class="icon-coin"></i>
                                         {% elif imbalance_token==6 %}
-                                            2
+                                            2<i class="icon-coin"></i>
                                         {% elif imbalance_token==7 %}
-                                            1
+                                            1<i class="icon-coin"></i>
                                         {% endif %}
                                     </th>
                                 {% endfor %}
                                 {% for station_i in range(num_stations) %}
                                     {% set station_id = station_id[station_i] %}
                                     {% set station = world.charging_stations.get(station_id) %}
-                                    <th>
-                                        <i class="icon-charging_station"></i>
-                                        Max {{ max_capacity[station_i] -}}/turn
+                                    <th style="text-align: center;">
+                                        <i class="icon-charging_station" data-toggle="tooltip" data-html="true" title='Max {{ max_capacity[station_i] -}} <i class="icon-token" style="font-size: 100%;"></i> per turn'></i>
                                         <br>
-                                        {% for token in range(max_capacity[station_i]) %}
-                                            <i class="icon-token"></i>
-                                        {% endfor %}
+                                        <br>
+                                        <!--{% for token in range(max_capacity[station_i]) %}-->
+                                            <!--<i class="icon-token"></i>-->
+                                        <!--{% endfor %}-->
                                         {% if station.has_car_at(step=current_turn) %}
                                             {% set car = station.get_car_at(step=current_turn) %}
                                             {% set car_id = car.id %}
                                             {% set car_target = car.target_charge %}
                                             {% set car_current = car.current_charge %}
-                                            <br>
                                             {% if car_current < car_target and imbalance_coin[current_turn] > 0 %}
                                                 <button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-success" type="button">Charge</button>
                                             {% else %}
@@ -271,7 +286,7 @@
                                             {% endif %}
                                             <p class="{{ car_id }}">
                                                 <i class="icon-ev {{ car_id }}" style="margin-right:50px;"></i>
-                                                wants {{car_target}} <i class="icon-token" style="font-size: 100%;"></i>
+                                                wants {{car_target-}} <i class="icon-token" style="font-size: 100%;"></i>
                                             </p>
                                         {% endif -%}
                                     </td>

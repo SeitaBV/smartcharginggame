@@ -83,12 +83,12 @@
 
 @font-face {
   font-family: 'seita-webfont';
-  src: url('../font/seita-webfont.eot?90182301');
-  src: url('../font/seita-webfont.eot?90182301#iefix') format('embedded-opentype'),
-       url('../font/seita-webfont.woff2?90182301') format('woff2'),
-       url('../font/seita-webfont.woff?90182301') format('woff'),
-       url('../font/seita-webfont.ttf?90182301') format('truetype'),
-       url('../font/seita-webfont.svg?90182301#seita-webfont') format('svg');
+  src: url('../font/seita-webfont.eot?12471679');
+  src: url('../font/seita-webfont.eot?12471679#iefix') format('embedded-opentype'),
+       url('../font/seita-webfont.woff2?12471679') format('woff2'),
+       url('../font/seita-webfont.woff?12471679') format('woff'),
+       url('../font/seita-webfont.ttf?12471679') format('truetype'),
+       url('../font/seita-webfont.svg?12471679#seita-webfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -98,7 +98,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'seita-webfont';
-    src: url('../font/seita-webfont.svg?90182301#seita-webfont') format('svg');
+    src: url('../font/seita-webfont.svg?12471679#seita-webfont') format('svg');
   }
 }
 */
@@ -144,3 +144,4 @@
 .icon-minus:before { content: '\e803'; } /* '' */
 .icon-plus:before { content: '\e804'; } /* '' */
 .icon-token:before { content: '\e805'; } /* '' */
+.icon-coin:before { content: '\e80a'; } /* '' */
