@@ -310,28 +310,21 @@
             </div>
         </div>
         <div id="alerts">
-            {% if completed_a_move %}
-                {% if imbalance_change != 0 and profit_made != 0 %}
-                    <!-- Display move results in alert dialogue -->
-                    <div class="alert alert-warning" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4>Move completed!</h4>
-                        <p>You changed imbalance by {{ imbalance_change }}.</p>
-                        {% if profit_made < 0 %}
-                            <p>You spent {{ -profit_made }}.</p>
-                        {% else %}
-                            <p>You earned {{ profit_made }}.</p>
-                        {% endif %}
-                    </div>
-                    <script>
-                        alert = $('.alert');
-                        alert.delay(5000).fadeOut('slow', function () {
-                            $(this).alert('close');
-                        });
-                    </script>
-                {% endif %}
+            {% if completed_a_move and move_summary%}
+                <!-- Display move results in alert dialogue -->
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4>Move completed!</h4>
+                    <p>{{ move_summary | safe }}</p>
+                </div>
+                <script>
+                    alert = $('.alert');
+                    alert.delay(9000).fadeOut('slow', function () {
+                        $(this).alert('close');
+                    });
+                </script>
             {% endif %}
         </div>
 

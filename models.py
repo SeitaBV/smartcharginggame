@@ -36,7 +36,7 @@ class Car:
         self.current_charge = 0
 
     def get_final_payoff(self) -> int:
-        return 50 * self.current_charge - self.target_charge
+        return 50 * self.current_charge  # - self.target_charge
 
 
 class ChargingStation:
@@ -128,8 +128,6 @@ class World:
 
     def calculate_profits(self, action: int) -> int:
         result = 0
-        # costs = [200, 100, 50, 20, 10, 5, 2, 1]
-        # costs = [128, 64, 32, 16, 8, 4, 2, 1]
         costs = [100, 60, 30, 15, 8, 4, 2, 1]
         index = self.imbalance_at(self.current_step) + 4
         if action > 0:  # buy
@@ -160,14 +158,22 @@ class World:
 
     def next_step(self, orders: Dict[str, int]) -> Tuple[int, int]:
         self.check_validity_of_orders(orders)
-        imbalance_before_charging = self.imbalance_at(self.current_step)
-        # if self.current_step <= 8:
-        #    raise TODO
 
         # First, get the costs/value of the combined actions
         overall_action = sum(orders.values())
         profits = self.calculate_profits(overall_action)
         self.money += profits
+        summary = ""
+        if overall_action > 0:
+            summary = "Overall you charged %d token(s)." % overall_action
+        elif overall_action < 0:
+            summary = "Overall you discharged %d token(s)." % -overall_action
+        if profits > 0:
+            summary += " This earned you %d coins (minus %d coin(s) due to charging inefficiency)."\
+                % (profits, -overall_action)
+        elif profits < 0:
+            summary += " This cost you %d coins, as well as %d coin(s) due to charging inefficiency."\
+                % (-profits, overall_action)
 
         # Now record the action on the cars
         for station_id, action in orders.items():
@@ -177,12 +183,18 @@ class World:
                 car.charging_actions[self.current_step] = action
                 car.current_charge += action
                 if station.get_car_at(self.current_step + 1) != car:
+                    # account for payoff when a car leaves
                     final_payoff = car.get_final_payoff()
                     self.money += final_payoff
                     profits += final_payoff
+                    if final_payoff != 0:
+                        if summary != "":
+                            summary += "<br/>"
+                        summary += "The car at %s left." \
+                                   "Your reward for achieving a charge level of %d was %d coins."\
+                                   % (station_id, car.current_charge, final_payoff)
                 # account transaction costs for charging
                 self.money -= abs(action)
                 profits -= abs(action)
-        imbalance_after_charging = self.imbalance_at(self.current_step)
         self.current_step += 1
-        return imbalance_after_charging - imbalance_before_charging, profits
+        return summary

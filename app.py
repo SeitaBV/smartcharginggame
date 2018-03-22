@@ -57,11 +57,10 @@ def next_step():
         if "order_%s" % sid not in request.form:
             raise Exception("Missing order_%s in request." % sid)
         orders[sid] = int(request.form.get("order_%s" % sid))
-    imbalance_change, profit_made = world.next_step(orders)
+    move_summary = world.next_step(orders)
     save_world(world)
 
     current_turn = world.current_step  # We start at turn 0
-    transaction_costs = 5  # in number of coins
     num_stations = len(world.charging_stations)
     num_turns = len(world.solar_park.generation)
     production = world.solar_park.generation
@@ -92,8 +91,7 @@ def next_step():
                            max_capacity=max_capacity,
                            station_id=station_id,
                            completed_a_move=True,
-                           imbalance_change=imbalance_change,
-                           profit_made=profit_made,
+                           move_summary=move_summary,
                            turn_id=turn_id,
                            safe_js=safe_js)
 
