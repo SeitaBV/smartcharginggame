@@ -162,7 +162,7 @@
                                     <!--<i class="icon-balance"></i>-->
                                 <!--</th>-->
                                 {% for imbalance_token in range(max_tokens) %}
-                                    <th style="text-align: center;">
+                                    <th style="text-align: center; padding-left: 0; padding-right: 0;">
                                         {% if imbalance_token==0 %}
                                             <!--<i class="icon-coin-10"></i>-->
                                             <!--200-->
@@ -228,7 +228,7 @@
                                 </td>
 
                                 {% for imbalance_token in range(available_tokens[turn_j]|int) %}
-                                    <th {% if turn_j==current_turn %}id="token-holder-{{imbalance_token}}"{% endif %}>
+                                    <th {% if turn_j==current_turn %}id="token-holder-{{imbalance_token}}"{% endif %} style="text-align: center; padding-left: 0; padding-right: 0;">
                                         <i class="icon-token"></i>
                                     </th>
                                 {% endfor %}
@@ -250,7 +250,7 @@
                                                         <i class="icon-token {{car_id}}"></i>
                                                     {%- endfor -%}
                                                     {%- for i in range(car_target - car_actions) -%}
-                                                        <i class="icon-token-empty"></i>
+                                                        <i class="icon-token-empty {% if turn_j < current_turn %}{{car_id}}{% endif %}"></i>
                                                     {%- endfor -%}
                                                 </span>
                                             {% else %}
@@ -263,7 +263,6 @@
                                             <!--<button id="remove_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-danger" type="button">Discharge</button>-->
                                             <!--<button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-success" type="button">Charge</button>-->
                                             <meta id="target-station-{{station_id}}" data-car_id="{{car_id}}" data-target="{{car_target}}" data-current="{{car_current}}">
-
 
                                             <!--<div class="station-status"></div>-->
                                             <!--<button onclick="doFunction();"></button>-->

@@ -77,7 +77,6 @@ def install_secret_key(app, filename='secret_key'):
 
 
 def make_custom_js(charging_stations, max_tokens, current_turn):
-
     safe_js = f"""
         <script type='text/javascript'>
         True = true;

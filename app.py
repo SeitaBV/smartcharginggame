@@ -33,8 +33,7 @@ def init(is_reset=False):
                            max_tokens=max_tokens,
                            turn_hours=turn_hours,
                            safe_js=safe_js,
-                           resetted_the_game=is_reset
-                           )
+                           resetted_the_game=is_reset)
 
 
 @app.route('/next', methods=['GET', 'POST'])
