@@ -76,7 +76,7 @@ def install_secret_key(app, filename='secret_key'):
         sys.exit(1)
 
 
-def make_custom_js(num_stations, num_turns, current_imbalance_coins, max_imbalance, max_capacity, station_has_car):
+def make_custom_js(num_stations, num_turns, current_imbalance_coins, max_imbalance, max_capacity, station_has_car, station_has_car_matrix):
 
     safe_js = f"""
         <script type='text/javascript'>
@@ -122,7 +122,7 @@ def make_custom_js(num_stations, num_turns, current_imbalance_coins, max_imbalan
                 }}
             }}
             // $('#add_one_' + station_i + '_' + turn_j).html(tokenstring);
-            $('#token-holder-station-' + station_i).html(tokenstring);
+            $('#token-holder-station-' + station_i + '-' + turn_j).html(tokenstring);
             
             if (car_change < station_max && car_current + car_change < car_target && $('#my_input_market').val() > 0) {{
                 $('#add_one_' + station_i + '_' + turn_j).addClass('btn-success').prop("disabled", false);
