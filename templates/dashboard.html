@@ -330,13 +330,6 @@
 
         {{ safe_js|safe }}
 
-        <script type="text/javascript">
-            $(document).keypress(function(e) {
-                if(e.which == 13) {
-                    console.log("Enter key pressed - clicking next move.");
-                    $("#next_turn").click();
-                }
-            });
-        </script>
+        <script type="text/javascript" src="/static/js/scc.js"></script>
     </body>
 </html>
