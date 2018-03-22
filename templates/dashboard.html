@@ -121,7 +121,8 @@
 
                 <div class="col-sm-9">
                     <a name="game"></a>
-                    <h1>Your score is {{ world.money -}}<i class="icon-coin"></i></h1>
+                    <h1>Fill the cars with energy tokens, taking advantage of price differences</h1>
+                    <h2>Your budget is {{ world.money -}}<i class="icon-coin"></i></h2>
                     <form action="reset" method="get">
                         <button id="reset_button" class="btn btn-sm btn-warning" type="submit">Reset game</button>
                     </form>
@@ -318,7 +319,11 @@
                         </button>
                         <h4>Move completed!</h4>
                         <p>You changed imbalance by {{ imbalance_change }}.</p>
-                        <p>Your score changed by {{ profit_made }}.</p>
+                        {% if profit_made < 0 %}
+                            <p>You spent {{ -profit_made }}.</p>
+                        {% else %}
+                            <p>You earned {{ profit_made }}.</p>
+                        {% endif %}
                     </div>
                     <script>
                         alert = $('.alert');
