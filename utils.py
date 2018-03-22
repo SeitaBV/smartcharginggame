@@ -76,7 +76,7 @@ def install_secret_key(app, filename='secret_key'):
         sys.exit(1)
 
 
-def make_custom_js(num_stations, num_turns, current_imbalance_coins, max_imbalance, max_capacity, station_has_car):
+def make_custom_js(charging_stations, max_tokens, current_turn):
 
     safe_js = f"""
         <script type='text/javascript'>
@@ -87,17 +87,17 @@ def make_custom_js(num_stations, num_turns, current_imbalance_coins, max_imbalan
             for (i = 0; i < $('#my_input_market').val(); i++) {{
                 $('#token-holder-' + i).html('<i class="icon-token"></i>');
             }}
-            for (i = $('#my_input_market').val(); i < {max_imbalance}; i++) {{
+            for (i = $('#my_input_market').val(); i < {max_tokens}; i++) {{
                 $('#token-holder-' + i).html('');
             }}
         }}
         
-        function update_station(station_i, turn_j, station_max, max_imbalance) {{
+        function update_station_tokens(station_id) {{
             
-            car_target = parseInt($('#target-station-' + station_i).data("target"));
-            car_current = parseInt($('#target-station-' + station_i).data("current"));
-            car_change = parseInt($('#my_input_' + station_i + '_' + turn_j).val());
-            car_id = $('#target-station-' + station_i).data("car_id");
+            car_target = parseInt($('#target-station-' + station_id).data("target"));
+            car_current = parseInt($('#target-station-' + station_id).data("current"));
+            car_change = parseInt($('#my_input_' + station_id).val());
+            car_id = $('#target-station-' + station_id).data("car_id");
             
             tokenstring = '';
             for (i = 0; i < (car_current + car_change); i++) {{
@@ -107,8 +107,6 @@ def make_custom_js(num_stations, num_turns, current_imbalance_coins, max_imbalan
                     tokenstring += '<i class="icon-token"></i>';
                 }}
             }}
-            // $('#remove_one_' + station_i + '_' + turn_j).html(tokenstring);
-            // tokenstring = '';
             if (car_change > 0) {{
                 for (i = 0; i < (car_target - (car_current + car_change)); i++) {{
                     tokenstring += '<i class="icon-token-empty"></i>';
@@ -121,46 +119,47 @@ def make_custom_js(num_stations, num_turns, current_imbalance_coins, max_imbalan
                     tokenstring += '<i class="icon-token-empty"></i>';
                 }}
             }}
-            // $('#add_one_' + station_i + '_' + turn_j).html(tokenstring);
-            $('#token-holder-station-' + station_i).html(tokenstring);
-            
-            if (car_change < station_max && car_current + car_change < car_target && $('#my_input_market').val() > 0) {{
-                $('#add_one_' + station_i + '_' + turn_j).addClass('btn-success').prop("disabled", false);
+            $('#token-holder-station-' + station_id).html(tokenstring);
+        }}
+    
+        function update_all_station_actions() {{    
+    """
+    for station_id, station in charging_stations.items():
+        safe_js = safe_js + f"""
+            car_target = parseInt($('#target-station-' + '{station_id}').data("target"));
+            car_current = parseInt($('#target-station-' + '{station_id}').data("current"));
+            car_change = parseInt($('#my_input_' + '{station_id}').val());
+            if (car_change < {station.capacity} && car_current + car_change < car_target && $('#my_input_market').val() > 0) {{
+                $('#add_one_' + '{station_id}').addClass('btn-success').prop("disabled", false);
             }} else {{
-                $('#add_one_' + station_i + '_' + turn_j).removeClass('btn-success').prop("disabled", true);
+                $('#add_one_' + '{station_id}').removeClass('btn-success').prop("disabled", true);
             }}
-            if (-car_change < station_max && car_current + car_change > 0 && $('#my_input_market').val() < max_imbalance) {{
-                $('#remove_one_' + station_i + '_' + turn_j).addClass('btn-danger').prop("disabled", false);
+            if (-car_change < {station.capacity} && car_current + car_change > 0 && $('#my_input_market').val() < {max_tokens}) {{
+                $('#remove_one_' + '{station_id}').addClass('btn-danger').prop("disabled", false);
             }} else {{
-                $('#remove_one_' + station_i + '_' + turn_j).removeClass('btn-danger').prop("disabled", true);
+                $('#remove_one_' + '{station_id}').removeClass('btn-danger').prop("disabled", true);
             }}
-            
+    """
+    safe_js = safe_js + f"""
         }}
     """
-    for i in range(num_stations):
-        for j in range(num_turns):
+    
+    for station_id, station in charging_stations.items():
+        if station.has_car_at(step=current_turn):
             safe_js = safe_js + f"""
-                $('#add_one_{i}_{j}').click(function() {{
-                    $('#my_input_{i}_{j}').val(function(i, val) {{ return +val+1 }});
+                $('#add_one_{station_id}').click(function() {{
+                    $('#my_input_{station_id}').val(function(i, val) {{ return +val+1 }});
                     $('#my_input_market').val(function(i, val) {{ return +val-1 }});
                     update_market();
-                    for (station_i = 0; station_i < {num_stations}; station_i++) {{
-                        station_has_car = {station_has_car};
-                        if (station_has_car[station_i]) {{
-                            update_station(station_i, {j}, {max_capacity[i]}, {max_imbalance});
-                        }}                        
-                    }}
+                    update_station_tokens('{station_id}', {station.capacity});
+                    update_all_station_actions();
                 }});
-                $('#remove_one_{i}_{j}').click(function() {{
-                    $('#my_input_{i}_{j}').val(function(i, val) {{ return +val-1 }});
+                $('#remove_one_{station_id}').click(function() {{
+                    $('#my_input_{station_id}').val(function(i, val) {{ return +val-1 }});
                     $('#my_input_market').val(function(i, val) {{ return +val+1 }});
                     update_market();
-                    for (station_i = 0; station_i < {num_stations}; station_i++) {{
-                        station_has_car = {station_has_car};
-                        if (station_has_car[station_i]) {{
-                            update_station(station_i, {j}, {max_capacity[i]}, {max_imbalance});
-                        }}                        
-                    }}
+                    update_station_tokens('{station_id}', {station.capacity});
+                    update_all_station_actions();
                 }});
             """
     safe_js = safe_js + "</script>"

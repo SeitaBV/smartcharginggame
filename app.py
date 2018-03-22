@@ -16,34 +16,22 @@ def init(is_reset=False):
         raise Exception("Admin, please create the 'worlds' directory to save worlds!")
     world = load_world()
     current_turn = world.current_step  # We start at turn 0
-    transaction_costs = 5  # in number of coins
-    num_stations = len(world.charging_stations)
     num_turns = len(world.solar_park.generation)
-    production = world.solar_park.generation
-    consumption = world.demand
-    imbalance = [world.imbalance_at(i) for i in range(num_turns)]
-    imbalance_coin = [world.imbalance_coin(i) for i in range(num_turns)]
-    max_imbalance = int(max(imbalance_coin))
-    station_id = [station for station in world.charging_stations]
-    max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
-    turn_id = range(9, 9+num_turns)
-    station_has_car = [world.charging_stations.get(station).has_car_at(step=current_turn) for station in world.charging_stations]
+    # production = world.solar_park.generation
+    # consumption = world.demand
+    # imbalance = [world.imbalance_at(i) for i in range(num_turns)]
+    available_tokens = [world.available_tokens(i) for i in range(num_turns)]
+    max_tokens = int(max(available_tokens))
+    turn_hours = [str(h).rjust(2, "0") for h in range(9, 9+num_turns)]
 
-    safe_js = make_custom_js(num_stations, num_turns, imbalance_coin[current_turn], max_imbalance, max_capacity, station_has_car)
+    safe_js = make_custom_js(world.charging_stations, max_tokens, world.current_step)
 
     return render_template("dashboard.html", **dict(world=world),
-                           num_stations=num_stations,
                            num_turns=num_turns,
                            current_turn=current_turn,
-                           production=production,
-                           consumption=consumption,
-                           imbalance=imbalance,
-                           imbalance_coin=imbalance_coin,
-                           max_imbalance=max_imbalance,
-                           max_capacity=max_capacity,
-                           station_id=station_id,
-                           profit_made=0,
-                           turn_id=turn_id,
+                           available_tokens=available_tokens,
+                           max_tokens=max_tokens,
+                           turn_hours=turn_hours,
                            safe_js=safe_js,
                            resetted_the_game=is_reset
                            )
@@ -61,38 +49,27 @@ def next_step():
     save_world(world)
 
     current_turn = world.current_step  # We start at turn 0
-    num_stations = len(world.charging_stations)
     num_turns = len(world.solar_park.generation)
-    production = world.solar_park.generation
-    consumption = world.demand
-    imbalance = [world.imbalance_at(i) for i in range(num_turns)]
-    imbalance_coin = [world.imbalance_coin(i) for i in range(num_turns)]
-    max_imbalance = int(max(imbalance_coin))
-    station_id = [station for station in world.charging_stations]
-    max_capacity = [world.charging_stations.get(station).capacity for station in world.charging_stations]
-    turn_id = range(9, 9+num_turns)
-    station_has_car = [world.charging_stations.get(station).has_car_at(step=current_turn) for station in world.charging_stations]
+    # production = world.solar_park.generation
+    # consumption = world.demand
+    # imbalance = [world.imbalance_at(i) for i in range(num_turns)]
+    available_tokens = [world.available_tokens(i) for i in range(num_turns)]
+    max_tokens = int(max(available_tokens))
+    turn_hours = [str(h).rjust(2, "0") for h in range(9, 9+num_turns)]
 
     if current_turn < num_turns:
-        safe_js = make_custom_js(len(world.charging_stations), len(world.solar_park.generation),
-                                 imbalance_coin[current_turn], max_imbalance, max_capacity, station_has_car)
+        safe_js = make_custom_js(world.charging_stations, max_tokens, world.current_step)
     else:
         safe_js = ""
 
     return render_template("dashboard.html", **dict(world=world),
-                           num_stations=num_stations,
                            num_turns=num_turns,
                            current_turn=current_turn,
-                           production=production,
-                           consumption=consumption,
-                           imbalance=imbalance,
-                           imbalance_coin=imbalance_coin,
-                           max_imbalance=max_imbalance,
-                           max_capacity=max_capacity,
-                           station_id=station_id,
+                           available_tokens=available_tokens,
+                           max_tokens=max_tokens,
                            completed_a_move=True,
                            move_summary=move_summary,
-                           turn_id=turn_id,
+                           turn_hours=turn_hours,
                            safe_js=safe_js)
 
 

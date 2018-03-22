@@ -61,8 +61,9 @@
                     </p>
                     <p>
                         On the other hand, you must buy the energy that you charge with from the grid. You pay a
-                        variable price, depending on the supply in the system at the moment. When imbalance is negative,
-                        you pay a higher price than when imbalance is positive.
+                        variable price, depending on the supply in the system at the moment. When there is little energy
+                        (negative imbalance, i.e. more demand than supply), you pay a higher price than when there is a
+                        lot available (imbalance is positive, i.e. more supply than demand).
                     </p>
                     <p>
                         You can also use this to your advantage, by using the stationed cars as batteries. Charge when
@@ -133,10 +134,10 @@
                                 <th>
 
                                 </th>
-                                <th colspan={{max_imbalance}}>
+                                <th colspan={{max_tokens}}>
                                     Available tokens (<i class="icon-token" style="font-size: 100%;"></i>) and their worth (<i class="icon-coin"></i>)
                                 </th>
-                                <th colspan={{num_stations}}>
+                                <th colspan={{ world.charging_stations | length }}>
                                     Charging stations<!-- (max <i class="icon-token" style="font-size: 100%;"></i> per turn)-->
                                 </th>
                             </tr>
@@ -160,7 +161,7 @@
                                 <!--<th>-->
                                     <!--<i class="icon-balance"></i>-->
                                 <!--</th>-->
-                                {% for imbalance_token in range(max_imbalance) %}
+                                {% for imbalance_token in range(max_tokens) %}
                                     <th style="text-align: center;">
                                         {% if imbalance_token==0 %}
                                             <!--<i class="icon-coin-10"></i>-->
@@ -192,67 +193,50 @@
                                         {% endif %}
                                     </th>
                                 {% endfor %}
-                                {% for station_i in range(num_stations) %}
-                                    {% set station_id = station_id[station_i] %}
-                                    {% set station = world.charging_stations.get(station_id) %}
+                                {% for station_id, station in world.charging_stations.items() %}
                                     <th style="text-align: center;">
-                                        <i class="icon-charging_station" data-toggle="tooltip" data-html="true" title='Max {{ max_capacity[station_i] -}} <i class="icon-token" style="font-size: 100%;"></i> per turn'></i>
-                                        <br>
-                                        <br>
-                                        <!--{% for token in range(max_capacity[station_i]) %}-->
-                                            <!--<i class="icon-token"></i>-->
-                                        <!--{% endfor %}-->
+                                        <i class="icon-charging_station" data-toggle="tooltip" data-html="true" title='Max {{ station.capacity -}} <i class="icon-token" style="font-size: 100%;"></i> per turn'></i>
+                                        <br/>
+                                        <br/>
                                         {% if station.has_car_at(step=current_turn) %}
                                             {% set car = station.get_car_at(step=current_turn) %}
                                             {% set car_id = car.id %}
                                             {% set car_target = car.target_charge %}
                                             {% set car_current = car.current_charge %}
-                                            {% if car_current < car_target and imbalance_coin[current_turn] > 0 %}
-                                                <button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-success" type="button">Charge</button>
+                                            {% if car_current < car_target and available_tokens[current_turn] > 0 %}
+                                                <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button">Charge</button>
                                             {% else %}
-                                                <button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm" type="button" disabled>Charge</button>
+                                                <button id="add_one_{{ station_id }}" class="btn btn-sm" type="button" disabled>Charge</button>
                                             {% endif %}
-                                            {% if car_current > 0 and imbalance_coin[current_turn] < max_imbalance %}
-                                                <button id="remove_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
+                                            {% if car_current > 0 and available_tokens[current_turn] < max_tokens %}
+                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
                                             {% else %}
-                                                <button id="remove_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm" type="button" disabled>Discharge</button>
+                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm" type="button" disabled>Discharge</button>
                                             {% endif %}
                                         {% endif %}
-                                        <input id="my_input_{{ station_i }}_{{ current_turn }}" type="hidden" name="order_{{ station_id }}" value="0">
+                                        <input id="my_input_{{ station_id }}" type="hidden" name="order_{{ station_id }}" value="0">
                                     </th>
                                 {% endfor %}
                             </tr>
                         {% for turn_j in range(num_turns) %}
                             {% if turn_j==current_turn %}
-                                <input id="my_input_market" type="hidden" name="market" value="{{ imbalance_coin[turn_j] }}">
+                                <input id="my_input_market" type="hidden" name="market" value="{{ available_tokens[turn_j] }}">
                             {% endif %}
                             <tr {% if turn_j==current_turn %}class="info current-turn"{% endif %}>
                                 <td>
-                                    {{ turn_id[turn_j] }}:00
+                                    {{ turn_hours[turn_j] }}:00
                                 </td>
 
-                                <!--<td>-->
-                                    <!--{{ production[turn_j] }}-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--{{ consumption[turn_j] }}-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--{{ imbalance[turn_j] }}-->
-                                <!--</td>-->
-
-                                {% for imbalance_token in range(imbalance_coin[turn_j]|int) %}
+                                {% for imbalance_token in range(available_tokens[turn_j]|int) %}
                                     <th {% if turn_j==current_turn %}id="token-holder-{{imbalance_token}}"{% endif %}>
                                         <i class="icon-token"></i>
                                     </th>
                                 {% endfor %}
-                                {% for empty_imbalance_token in range((max_imbalance - imbalance_coin[turn_j])|int) %}
-                                    <th {% if turn_j==current_turn %}id="token-holder-{{empty_imbalance_token+imbalance_coin[turn_j]}}"{% endif %}></th>
+                                {% for empty_token in range((max_tokens - available_tokens[turn_j])|int) %}
+                                    <th {% if turn_j==current_turn %}id="token-holder-{{empty_token+available_tokens[turn_j]}}"{% endif %}></th>
                                 {% endfor %}
 
-                                {% for station_i in range(num_stations) %}
-                                    {% set station_id = station_id[station_i] %}
-                                    {% set station = world.charging_stations.get(station_id) %}
+                                {% for station_id, station in world.charging_stations.items() %}
                                     <td style="white-space: nowrap">
                                         {%- if station.has_car_at(step=turn_j) %}
                                             {% set car = station.get_car_at(step=turn_j) %}
@@ -260,7 +244,7 @@
                                             {% set car_target = car.target_charge %}
                                             {% set car_current = car.current_charge %}
                                             {% if turn_j==current_turn %}
-                                                <span {% if turn_j==current_turn %} id="token-holder-station-{{station_i}}" {% endif %}>
+                                                <span {% if turn_j==current_turn %} id="token-holder-station-{{station_id}}" {% endif %}>
                                                     {%- for i in range(car_current) -%}
                                                         <i class="icon-token {{car_id}}"></i>
                                                     {%- endfor -%}
@@ -270,7 +254,7 @@
                                                 </span>
                                                 <!--<button id="remove_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-danger" type="button">Discharge</button>-->
                                                 <!--<button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-success" type="button">Charge</button>-->
-                                                <meta id="target-station-{{station_i}}" data-car_id="{{car_id}}" data-target="{{car_target}}" data-current="{{car_current}}">
+                                                <meta id="target-station-{{station_id}}" data-car_id="{{car_id}}" data-target="{{car_target}}" data-current="{{car_current}}">
 
 
                                                 <!--<div class="station-status"></div>-->

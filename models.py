@@ -116,9 +116,9 @@ class World:
         generation = self.solar_park.generation.values
         return int(generation[time_step]) - self.demand[time_step] - charging
 
-    def imbalance_coin(self, time_step: int) -> int:
+    def available_tokens(self, time_step: int) -> int:
         """
-        Compute the coins to display at time_step
+        Compute the tokens to display at time_step
         """
         return self.imbalance_at(time_step) + 4
 
