@@ -325,9 +325,16 @@
                 <h2>Background information on the data used in the game engine</h2>
                 <a href="#game">Back to top</a>
 
+                <p>
+                    We got this data from ...
+                    The game can of course also be based on other data sources.
+                </p>
+
                 <div class="col-sm-12">
-                {{ data_plots_html | safe }}
-                {{ data_plots_js | safe }}
+                    <div class="panel">
+                        {{ data_plots_html | safe }}
+                        {{ data_plots_js | safe }}
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -338,7 +345,7 @@
                     Explaining the prices...<br/>
                     <p>Prices are non-linear, just like real energy markets.</p>
                     <p>
-                    The highlighted number of tokesn shows the price for supply and demand being in balance.
+                    The highlighted number of tokens shows the price for supply and demand being in balance.
                     It's cheap to buy tokens to the right of it, but expensive to sell to the left of it.
                     [We should explain the incentives better]
                     </p>
