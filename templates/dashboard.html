@@ -84,14 +84,17 @@
                         Steps
                     </h2>
                     <p>
-                        Each turn you have several options available. For each car in your network of chargers you can
-                        decide:
+                        Each turn you have several options available. For each car currently at one of your stations you can
+                        decide to:
                     </p>
                     <ul>
                         <li>Charge the car (with anything up to the capacity of the charger)</li>
                         <li>Discharge the car (with anything up to the capacity of the charger)</li>
                         <li>Do nothing/wait</li>
                     </ul>
+                    <p>
+                        <i><b>Tip:</b> Use keyboard shortcuts for a in-flow experience (hover-over buttons to learn them).</i>
+                    </p>
                     <p>
                         When you're happy with the changes in all your chargers, you can commit them by clicking 'next
                         turn' or simply hitting the Return key.
@@ -101,8 +104,9 @@
                     <p>
                         Your score will increase of decrease with each turn you play. Starting you will have to make
                         investments to buy energy for the charging EV owners. Soon though you may start seeing your money
-                        back in rewards. Balance and charge to the max to max your charge.
+                        back in rewards.
                     </p>
+                    <p><b>Balance and charge to the max to max your score.</b></p>
                 </div>
 
                 {% if completed_a_move or resetted_the_game%}
@@ -122,11 +126,22 @@
 
                 <div class="col-sm-9">
                     <a name="game"></a>
+                    {% if current_turn < num_turns %}
                     <h1>Fill the cars with energy tokens! Take care of price differences.</h1>
-                    <h2>Your budget is {{ world.money -}}<i class="icon-coin"></i></h2>
-                    <form action="reset" method="get">
-                        <button id="reset_button" class="btn btn-sm btn-warning" type="submit">Reset game</button>
-                    </form>
+                    <h2>
+                        Your budget is {{ world.money -}}<i class="icon-coin"></i>
+                        <button id="reset_button" class="btn btn-sm btn-warning" type="submit">
+                            <a href="/reset" style="color: white;">Reset game</a>
+                        </button>
+                    </h2>
+                    {% else %}
+                    <h1>
+                        Congratulations! Your final score is {{ world.money -}}<i class="icon-coin"></i>
+                        <button id="reset_button" class="btn btn-sm btn-warning" type="submit">
+                            <a href="/reset" style="color: white;">Start a new game</a>
+                        </button>
+                    </h1>
+                    {% endif %}
                     <br>
                     <form action="next" method="post">
                         <table class="table col-sm-8">
@@ -145,12 +160,9 @@
                                 <th>
                                     Hour
                                     {% if current_turn < num_turns %}
-                                        <br><br>
+                                        <br/><br/>
                                         <button id="next_turn" class="btn btn-sm btn-primary" type="submit"
                                                 data-toggle="tooltip" title="Finish this move and start the next. Shortcut: [Enter]">Next turn</button>
-                                    {% else %}
-                                        <br>
-                                        Great score. Want to try again?
                                     {% endif %}
                                 </th>
                                 {% for market_token in range(max_tokens) %}

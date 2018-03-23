@@ -78,8 +78,8 @@
 
 #alerts {
     position: absolute;
-    left: 20px;
-    top: 100px;
+    left: 50px;
+    bottom: 50px;
     width: 25%;
     min-width: 200px;
 }
