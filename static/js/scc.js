@@ -7,6 +7,7 @@ var enterKeyCode = 13;
 var cKeyCode = 67;
 var dKeyCode = 68;
 var oneKeyCode = 49;
+var escKeyCode = 27;
 
 $(document).keydown(function (e) {
     keysDown[e.which] = true;
@@ -24,6 +25,12 @@ function executeShortCuts() {
     if (enterKeyCode in keysDown) {
         console.log("Enter key pressed - clicking next move.");
         $("#next_turn").click();
+    }
+
+    // Close dialog
+    if (escKeyCode in keysDown) {
+        console.log("Escape key pressed - closing dialog.");
+        $('.alert').alert('close');
     }
 
     // Station 1
