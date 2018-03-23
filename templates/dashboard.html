@@ -43,12 +43,14 @@
                     </h1>
                     <p>
                         What happens after you plug in your electric car?
-                        Every time you and your friends plug in you create a problem: who should charge when?
+                        A big underlying problem of the energy transition is this: who should charge when?
                     </p>
                     <p>
                         This game challenges you to find the best schedule.
                         <i>Can you beat the score of your friends?</i>
-                        Remember: you can earn a little extra by helping to balance the grid.
+                    </p>
+                    <p>
+                        Remember: The smartest charge is doing it for him/herself, but also for a balanced grid and for clean energy!
                     </p>
 
                     <h1>
@@ -60,10 +62,15 @@
                         will have to pay a penalty.
                     </p>
                     <p>
-                        On the other hand, you must buy the energy that you charge with from the grid. You pay a
-                        variable price, depending on the supply in the system at the moment. When there is little energy
-                        (negative imbalance, i.e. more demand than supply), you pay a higher price than when there is a
-                        lot available (imbalance is positive, i.e. more supply than demand).
+                        On the other hand, you must buy the energy that you charge with from the grid.
+                        You pay a variable price, depending on the supply in the system at the moment.
+                        <br/>
+                        <i><b>Note:</b> You'll always buy or sell the next cheapest token. Exactly like in a market.</i>
+                    </p>
+                    <p>
+                        When there is little energy (negative imbalance, i.e. more demand than supply),
+                        you pay a higher price than when there is a lot of energy availabl
+                        (imbalance is positive, i.e. more supply than demand).
                     </p>
                     <p>
                         You can also use this to your advantage, by using the stationed cars as batteries. Charge when
@@ -88,21 +95,20 @@
                         decide to:
                     </p>
                     <ul>
-                        <li>Charge the car (with anything up to the capacity of the charger)</li>
-                        <li>Discharge the car (with anything up to the capacity of the charger)</li>
-                        <li>Do nothing/wait</li>
+                        <li><b>Charge the car</b> (with anything up to the capacity of the charger).
+                            <i>Shortcuts: [c+1],[c+2],[c+3],[c+4]</i></li>
+                        <li><b>Discharge the car</b> (with anything up to the capacity of the charger).
+                            <i>Shortcuts: [d+1],[d+2],[d+3],[d+4]</i></li>
+                        <li><b>Do nothing/wait</b></li>
                     </ul>
                     <p>
-                        <i><b>Tip:</b> Use keyboard shortcuts for a in-flow experience (hover-over buttons to learn them).</i>
-                    </p>
-                    <p>
                         When you're happy with the changes in all your chargers, you can commit them by clicking 'next
-                        turn' or simply hitting the Return key.
+                        turn' <i>Shortcut: [Return key]</i>.
                         The transactions are now included in the game grid and the active turn-line now moves down
                         one.
                     </p>
                     <p>
-                        Your score will increase of decrease with each turn you play. Starting you will have to make
+                        Your score will increase or decrease with each turn you play. At the start, you will have to make
                         investments to buy energy for the charging EV owners. Soon though you may start seeing your money
                         back in rewards.
                     </p>
@@ -130,19 +136,19 @@
                     <h1>Fill the cars with energy tokens! Take care of price differences.</h1>
                     <h2>
                         Your budget is {{ world.money -}}<i class="icon-coin"></i>
-                        <button id="reset_button" class="btn btn-sm btn-warning" type="submit">
+                        <button class="btn btn-sm btn-warning" type="submit">
                             <a href="/reset" style="color: white;">Reset game</a>
                         </button>
                     </h2>
                     {% else %}
                     <h1>
                         Congratulations! Your final score is {{ world.money -}}<i class="icon-coin"></i>
-                        <button id="reset_button" class="btn btn-sm btn-warning" type="submit">
+                        <button class="btn btn-sm btn-warning" type="submit">
                             <a href="/reset" style="color: white;">Start a new game</a>
                         </button>
                     </h1>
                     {% endif %}
-                    <br>
+                    <br/>
                     <form action="next" method="post">
                         <table class="table col-sm-8">
                             <tr>
@@ -150,7 +156,7 @@
 
                                 </th>
                                 <th colspan={{max_tokens}}>
-                                    Available tokens (<i class="icon-token" style="font-size: 100%;"></i>) and their worth (<i class="icon-coin"></i>)
+                                    Available tokens (<i class="icon-token" style="font-size: 100%;"></i>) and their price (<i class="icon-coin"></i>).
                                 </th>
                                 <th colspan={{ world.charging_stations | length }}>
                                     Charging stations<!-- (max <i class="icon-token" style="font-size: 100%;"></i> per turn)-->
@@ -168,27 +174,16 @@
                                 {% for market_token in range(max_tokens) %}
                                     <th style="text-align: center; padding-left: 0; padding-right: 0;">
                                         {% if market_token==0 %}
-                                            <!--<i class="icon-coin-10"></i>-->
-                                            <!--200-->
-                                            <!--128-->
                                             100<i class="icon-coin"></i>
                                         {% elif market_token==1 %}
-                                            <!--100-->
-                                            <!--64-->
                                             60<i class="icon-coin"></i>
                                         {% elif market_token==2 %}
-                                            <!--50-->
-                                            <!--32-->
                                             30<i class="icon-coin"></i>
                                         {% elif market_token==3 %}
-                                            <!--20-->
-                                            <!--16-->
                                             15<i class="icon-coin"></i>
                                         {% elif market_token==4 %}
-                                            <!--10-->
                                             8<i class="icon-coin"></i>
                                         {% elif market_token==5 %}
-                                            <!--5-->
                                             4<i class="icon-coin"></i>
                                         {% elif market_token==6 %}
                                             2<i class="icon-coin"></i>
