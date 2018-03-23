@@ -1,3 +1,4 @@
 pandas
 flask
 Flask-SSlify
+bokeh

@@ -8,8 +8,13 @@
         <!-- Bootstrap -->
         <link href="static/css/external/bootstrap.min.css" rel="stylesheet"/>
 
+        <!-- Bokeh -->
+        {{ bokeh_css_resources|indent(4)|safe }}
+        {{ bokeh_js_resources|indent(4)|safe }}
+
         <!-- Custom CSS -->
         <link href="static/css/scc.css" rel="stylesheet"/>
+
 
     </head>
     <body>
@@ -29,6 +34,10 @@
                               <a href="https://www.linkedin.com/in/daphne-van-leeuwen-0856b049/" target="_blank">Daphne van Leeuwen</a>,
                               <a href="https://www.linkedin.com/in/felix-c-337039144/" target="_blank">Felix Claessen</a> (<a href="https://seita.nl/" target="_blank">Seita B.V.</a>)
                               and <a href="https://www.linkedin.com/in/nhoening/" target="_blank">Nicolas H&ouml;ning</a> (<a href="https://seita.nl/" target="_blank">Seita B.V.</a>).
+                              </p>
+
+                              <p>
+                                  We explain the underlying game mechanics and data sources <a href="#data">here</a>.
                               </p>
                           </div>
                       </div>
@@ -302,11 +311,43 @@
             </div>
 
             <div class="row">
+                <a name="physical-board-img"></a>
+                <h2>The real-world game lab at the Smart Charging Hackathon</h2>
                 <div class="imgwrapper">
-                    <a name="physical-board-img"></a>
+                    <a href="#game">Back to top</a>
                     <img src="static/board.jpg" class="img-responsive"/>
                 </div>
             </div>
+
+
+            <div class="row">
+                <a name="data"></a>
+                <h2>Background information on the data used in the game engine</h2>
+                <a href="#game">Back to top</a>
+
+                <div class="col-sm-12">
+                {{ data_plots_html | safe }}
+                {{ data_plots_js | safe }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    Explaining the supply/demand...
+                </div>
+                <div class="col-sm-4">
+                    Explaining the prices...<br/>
+                    <p>Prices are non-linear, just like real energy markets.</p>
+                    <p>
+                    The highlighted number of tokesn shows the price for supply and demand being in balance.
+                    It's cheap to buy tokens to the right of it, but expensive to sell to the left of it.
+                    [We should explain the incentives better]
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    Explaining the arrival probabilities...
+                </div>
+            </div>
+
         </div>
         <div id="alerts">
             {% if completed_a_move and move_summary%}

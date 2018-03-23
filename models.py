@@ -82,6 +82,7 @@ class World:
 
     solar_park: SolarPark
     demand: List[int]
+    market_prices: List[int]
     charging_stations: Dict[str, ChargingStation]
     current_step: int
     money: int
@@ -95,6 +96,7 @@ class World:
         
         self.solar_park = SolarPark(solar_generation)
         self.demand = [7, 7, 5, 3, 6, 6, 7, 2]
+        self.market_prices = [100, 60, 30, 15, 8, 4, 2, 1]
         self.charging_stations = charging_stations
 
         self.current_step = 0
@@ -128,15 +130,14 @@ class World:
 
     def calculate_profits(self, action: int) -> int:
         result = 0
-        costs = [100, 60, 30, 15, 8, 4, 2, 1]
         index = self.imbalance_at(self.current_step) + 4
         if action > 0:  # buy
             for _ in range(action):
-                result -= costs[index - 1]
+                result -= self.market_prices[index - 1]
                 index -= 1
         elif action < 0:  # sell
             for _ in range(abs(action)):
-                result += costs[index]
+                result += self.market_prices[index]
                 index += 1
         return result
 
