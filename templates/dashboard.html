@@ -69,7 +69,7 @@
                     </p>
                     <p>
                         When there is little energy (negative imbalance, i.e. more demand than supply),
-                        you pay a higher price than when there is a lot of energy availabl
+                        you pay a higher price than when there is a lot of energy available
                         (imbalance is positive, i.e. more supply than demand).
                     </p>
                     <p>
@@ -103,7 +103,7 @@
                     </ul>
                     <p>
                         When you're happy with the changes in all your chargers, you can commit them by clicking 'next
-                        turn' <i>Shortcut: [Return key]</i>.
+                        turn'. <i>Shortcut: [Enter]</i>
                         The transactions are now included in the game grid and the active turn-line now moves down
                         one.
                     </p>
@@ -112,6 +112,7 @@
                         investments to buy energy for the charging EV owners. Soon though you may start seeing your money
                         back in rewards.
                     </p>
+                    <p>Finished (or screwed up beyond repair)? Better reset the game. <i>Shortcut: [Shift+r]</i></p>
                     <p><b>Balance and charge to the max to max your score.</b></p>
                 </div>
 
@@ -133,20 +134,25 @@
                 <div class="col-sm-9">
                     <a name="game"></a>
                     {% if current_turn < num_turns %}
-                    <h1>Fill the cars with energy tokens! Take care of price differences.</h1>
-                    <h2>
-                        Your budget is {{ world.money -}}<i class="icon-coin"></i>
-                        <button class="btn btn-sm btn-warning" type="submit">
-                            <a href="/reset" style="color: white;">Reset game</a>
-                        </button>
-                    </h2>
+                        <h1>Fill the cars with energy tokens! Take care of price differences.</h1>
+                        <form class="form-inline" action="reset" method="get">
+                            <h2>Your budget is {{ world.money -}}<i class="icon-coin"></i></h2>
+                            <button id="reset_game" class="btn btn-sm btn-warning" type="submit"
+                                    data-toggle="tooltip"
+                                    title="Reset the game. Shortcut: [Shift+r]">
+                                Reset game
+                            </button>
+                        </form>
                     {% else %}
-                    <h1>
-                        Congratulations! Your final score is {{ world.money -}}<i class="icon-coin"></i>
-                        <button class="btn btn-sm btn-warning" type="submit">
-                            <a href="/reset" style="color: white;">Start a new game</a>
-                        </button>
-                    </h1>
+                        <h1>Congratulations!</h1>
+                        <form class="form-inline" action="reset" method="get">
+                            <h2>Your final score is {{ world.money -}}<i class="icon-coin"></i></h2>
+                            <button id="reset_game" class="btn btn-sm btn-warning" type="submit"
+                                    data-toggle="tooltip"
+                                    title="Start a new game. Shortcut: [Shift+r]">
+                                Reset game
+                            </button>
+                        </form>
                     {% endif %}
                     <br/>
                     <form action="next" method="post">
@@ -168,7 +174,10 @@
                                     {% if current_turn < num_turns %}
                                         <br/><br/>
                                         <button id="next_turn" class="btn btn-sm btn-primary" type="submit"
-                                                data-toggle="tooltip" title="Finish this move and start the next. Shortcut: [Enter]">Next turn</button>
+                                                data-toggle="tooltip"
+                                                title="Finish this move and start the next. Shortcut: [Enter]">
+                                            Next turn
+                                        </button>
                                     {% endif %}
                                 </th>
                                 {% for market_token in range(max_tokens) %}

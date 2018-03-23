@@ -8,9 +8,12 @@ var cKeyCode = 67;
 var dKeyCode = 68;
 var oneKeyCode = 49;
 var escKeyCode = 27;
+var shiftKeyCode = 16;
+var rKeyCode = 82;
 
 $(document).keydown(function (e) {
     keysDown[e.which] = true;
+    keysDown[shiftKeyCode] = e.shiftKey;
     executeShortCuts();
 });
 
@@ -21,9 +24,15 @@ $(document).keyup(function (e) {
 
 function executeShortCuts() {
 
+    // Reset game on Shift+R
+    if (rKeyCode in keysDown && keysDown[shiftKeyCode] == true) {
+        console.log("Shift+r pressed - clicking reset game.");
+        $("#reset_game").click();
+    }
+
     // Move to next on Enter
     if (enterKeyCode in keysDown) {
-        console.log("Enter key pressed - clicking next move.");
+        console.log("Enter key pressed - clicking next turn.");
         $("#next_turn").click();
     }
 
