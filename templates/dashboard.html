@@ -146,49 +146,41 @@
                                     Hour
                                     {% if current_turn < num_turns %}
                                         <br><br>
-                                        <button id="next_turn" class="btn btn-sm btn-primary" type="submit">Next turn</button>
+                                        <button id="next_turn" class="btn btn-sm btn-primary" type="submit"
+                                                data-toggle="tooltip" title="Finish this move and start the next. Shortcut: [Enter]">Next turn</button>
                                     {% else %}
                                         <br>
                                         Great score. Want to try again?
                                     {% endif %}
                                 </th>
-                                <!--<th>-->
-                                    <!--<i class="icon-solar"></i>-->
-                                <!--</th>-->
-                                <!--<th>-->
-                                    <!--<i class="icon-iron"></i>-->
-                                <!--</th>-->
-                                <!--<th>-->
-                                    <!--<i class="icon-balance"></i>-->
-                                <!--</th>-->
-                                {% for imbalance_token in range(max_tokens) %}
+                                {% for market_token in range(max_tokens) %}
                                     <th style="text-align: center; padding-left: 0; padding-right: 0;">
-                                        {% if imbalance_token==0 %}
+                                        {% if market_token==0 %}
                                             <!--<i class="icon-coin-10"></i>-->
                                             <!--200-->
                                             <!--128-->
                                             100<i class="icon-coin"></i>
-                                        {% elif imbalance_token==1 %}
+                                        {% elif market_token==1 %}
                                             <!--100-->
                                             <!--64-->
                                             60<i class="icon-coin"></i>
-                                        {% elif imbalance_token==2 %}
+                                        {% elif market_token==2 %}
                                             <!--50-->
                                             <!--32-->
                                             30<i class="icon-coin"></i>
-                                        {% elif imbalance_token==3 %}
+                                        {% elif market_token==3 %}
                                             <!--20-->
                                             <!--16-->
                                             15<i class="icon-coin"></i>
-                                        {% elif imbalance_token==4 %}
+                                        {% elif market_token==4 %}
                                             <!--10-->
                                             8<i class="icon-coin"></i>
-                                        {% elif imbalance_token==5 %}
+                                        {% elif market_token==5 %}
                                             <!--5-->
                                             4<i class="icon-coin"></i>
-                                        {% elif imbalance_token==6 %}
+                                        {% elif market_token==6 %}
                                             2<i class="icon-coin"></i>
-                                        {% elif imbalance_token==7 %}
+                                        {% elif market_token==7 %}
                                             1<i class="icon-coin"></i>
                                         {% endif %}
                                     </th>
@@ -200,18 +192,19 @@
                                         <br/>
                                         {% if station.has_car_at(step=current_turn) %}
                                             {% set car = station.get_car_at(step=current_turn) %}
-                                            {% set car_id = car.id %}
-                                            {% set car_target = car.target_charge %}
-                                            {% set car_current = car.current_charge %}
-                                            {% if car_current < car_target and available_tokens[current_turn] > 0 %}
-                                                <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button">Charge</button>
+                                            {% if car.current_charge < car.target_charge and available_tokens[current_turn] > 0 %}
+                                                <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button"
+                                                        data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [{{car.id[-1]}}]">Charge</button>
                                             {% else %}
-                                                <button id="add_one_{{ station_id }}" class="btn btn-sm" type="button" disabled>Charge</button>
+                                                <button id="add_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
+                                                        data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [{{car.id[-1]}}]">Charge</button>
                                             {% endif %}
-                                            {% if car_current > 0 and available_tokens[current_turn] < max_tokens %}
-                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm btn-danger" type="button">Discharge</button>
+                                            {% if car.current_charge > 0 and available_tokens[current_turn] < max_tokens %}
+                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm btn-danger" type="button"
+                                                        data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [{{car.id[-1] | int + 4}}]">Discharge</button>
                                             {% else %}
-                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm" type="button" disabled>Discharge</button>
+                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
+                                                        data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [{{car.id[-1] | int + 4}}]">Discharge</button>
                                             {% endif %}
                                         {% endif %}
                                         <input id="my_input_{{ station_id }}" type="hidden" name="order_{{ station_id }}" value="0">
@@ -227,8 +220,8 @@
                                     {{ turn_hours[turn_j] }}:00
                                 </td>
 
-                                {% for imbalance_token in range(available_tokens[turn_j]|int) %}
-                                    <th {% if turn_j==current_turn %}id="token-holder-{{imbalance_token}}"{% endif %} style="text-align: center; padding-left: 0; padding-right: 0;">
+                                {% for market_token in range(available_tokens[turn_j]|int) %}
+                                    <th {% if turn_j==current_turn %}id="token-holder-{{market_token}}"{% endif %} style="text-align: center; padding-left: 0; padding-right: 0;">
                                         <i class="icon-token"></i>
                                     </th>
                                 {% endfor %}

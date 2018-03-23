@@ -19,7 +19,6 @@ def init(is_reset=False):
     num_turns = len(world.solar_park.generation)
     # production = world.solar_park.generation
     # consumption = world.demand
-    # imbalance = [world.imbalance_at(i) for i in range(num_turns)]
     available_tokens = [world.available_tokens(i) for i in range(num_turns)]
     max_tokens = int(max(available_tokens))
     turn_hours = [str(h).rjust(2, "0") for h in range(9, 9+num_turns)]
@@ -51,7 +50,6 @@ def next_step():
     num_turns = len(world.solar_park.generation)
     # production = world.solar_park.generation
     # consumption = world.demand
-    # imbalance = [world.imbalance_at(i) for i in range(num_turns)]
     available_tokens = [world.available_tokens(i) for i in range(num_turns)]
     max_tokens = int(max(available_tokens))
     turn_hours = [str(h).rjust(2, "0") for h in range(9, 9+num_turns)]
