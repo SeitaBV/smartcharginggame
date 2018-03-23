@@ -194,17 +194,17 @@
                                             {% set car = station.get_car_at(step=current_turn) %}
                                             {% if car.current_charge < car.target_charge and available_tokens[current_turn] > 0 %}
                                                 <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button"
-                                                        data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [{{car.id[-1]}}]">Charge</button>
+                                                        data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">Charge</button>
                                             {% else %}
                                                 <button id="add_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
-                                                        data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [{{car.id[-1]}}]">Charge</button>
+                                                        data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">Charge</button>
                                             {% endif %}
                                             {% if car.current_charge > 0 and available_tokens[current_turn] < max_tokens %}
                                                 <button id="remove_one_{{ station_id }}" class="btn btn-sm btn-danger" type="button"
-                                                        data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [{{car.id[-1] | int + 4}}]">Discharge</button>
+                                                        data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">Discharge</button>
                                             {% else %}
                                                 <button id="remove_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
-                                                        data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [{{car.id[-1] | int + 4}}]">Discharge</button>
+                                                        data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">Discharge</button>
                                             {% endif %}
                                         {% endif %}
                                         <input id="my_input_{{ station_id }}" type="hidden" name="order_{{ station_id }}" value="0">
