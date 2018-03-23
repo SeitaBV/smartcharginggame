@@ -77,9 +77,9 @@
 
 
 #alerts {
-    position: absolute;
-    left: 50px;
-    bottom: 50px;
+    position: fixed;
+    left: 45%;
+    bottom: 45%;
     width: 25%;
     min-width: 200px;
 }

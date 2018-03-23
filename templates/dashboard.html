@@ -171,7 +171,7 @@
 
                                 </th>
                                 <th colspan={{max_tokens}}>
-                                    Available tokens (<i class="icon-token" style="font-size: 100%;"></i>) and their price (<i class="icon-coin"></i>).
+                                    Available tokens (<i class="icon-token" style="font-size: 100%;"></i>) and their price (<i class="icon-coin"></i>)
                                 </th>
                                 <th colspan={{ world.charging_stations | length }}>
                                     Charging stations<!-- (max <i class="icon-token" style="font-size: 100%;"></i> per turn)-->
@@ -278,22 +278,8 @@
                                                     {%- endfor -%}
                                                 </span>
                                             {% endif %}
-                                            <!--<button id="remove_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-danger" type="button">Discharge</button>-->
-                                            <!--<button id="add_one_{{ station_i }}_{{ current_turn }}" class="btn btn-sm btn-success" type="button">Charge</button>-->
                                             <meta id="car-at-station-{{station_id}}-{{turn_j}}" data-car_id="{{car_id}}" data-target="{{car_target}}" data-current="{{car_current}}">
 
-                                            <!--<div class="station-status"></div>-->
-                                            <!--<button onclick="doFunction();"></button>-->
-                                            <!--<i class="icon-token"></i>-->
-                                            <!--<i class="icon-token"></i>-->
-                                            <!--<button class="btn btn-xs btn-danger" type="button">-->
-                                                <!--<span class="fa-stack">-->
-                                                    <!--<i class="icon-token-empty fa-stack-2x"></i>-->
-                                                    <!--<i class="icon-plus fa-stack-1x"></i>-->
-                                                <!--</span>-->
-                                            <!--</button>-->
-                                            <!--<i class="icon-token-empty"></i>-->
-                                            <!--<i class="icon-token-empty"></i>-->
                                             <p class="{{ car_id }}">
                                                 <i class="icon-ev {{ car_id }}" style="margin-right:50px;"
                                                    data-toggle="tooltip" data-html="true" title='Wants {{car_target-}} <i class="icon-token" style="font-size: 100%;"></i> at departure'></i>
@@ -336,6 +322,8 @@
                         {{ data_plots_js | safe }}
                     </div>
                 </div>
+
+                <p>This shows the game dynamics. We explain how we got to the data, but it can be changed with more fitting/realistic data.</p>
             </div>
             <div class="row">
                 <div class="col-sm-4">
