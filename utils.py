@@ -91,12 +91,17 @@ def make_custom_js(charging_stations, max_tokens, current_turn):
             }}
         }}
         
-        function update_station_tokens(station_id) {{
+        function update_station_tokens(station_id, turn_j) {{
             
-            car_target = parseInt($('#target-station-' + station_id).data("target"));
-            car_current = parseInt($('#target-station-' + station_id).data("current"));
+            car_target = parseInt($('#car-at-station-' + station_id + '-' + turn_j).data("target"));
+            car_current = parseInt($('#car-at-station-' + station_id + '-' + turn_j).data("current"));
             car_change = parseInt($('#my_input_' + station_id).val());
-            car_id = $('#target-station-' + station_id).data("car_id");
+            car_id = $('#car-at-station-' + station_id + '-' + turn_j).data("car_id");
+            
+            console.log(car_target)
+            console.log(car_current)
+            console.log(car_change)
+            console.log(car_id)
             
             tokenstring = '';
             for (i = 0; i < (car_current + car_change); i++) {{
@@ -125,8 +130,8 @@ def make_custom_js(charging_stations, max_tokens, current_turn):
     """
     for station_id, station in charging_stations.items():
         safe_js = safe_js + f"""
-            car_target = parseInt($('#target-station-' + '{station_id}').data("target"));
-            car_current = parseInt($('#target-station-' + '{station_id}').data("current"));
+            car_target = parseInt($('#car-at-station-' + '{station_id}' + '-' + {current_turn}).data("target"));
+            car_current = parseInt($('#car-at-station-' + '{station_id}' + '-' + {current_turn}).data("current"));
             car_change = parseInt($('#my_input_' + '{station_id}').val());
             if (car_change < {station.capacity} && car_current + car_change < car_target && $('#my_input_market').val() > 0) {{
                 $('#add_one_' + '{station_id}').addClass('btn-success').prop("disabled", false);
@@ -150,14 +155,14 @@ def make_custom_js(charging_stations, max_tokens, current_turn):
                     $('#my_input_{station_id}').val(function(i, val) {{ return +val+1 }});
                     $('#my_input_market').val(function(i, val) {{ return +val-1 }});
                     update_market();
-                    update_station_tokens('{station_id}', {station.capacity});
+                    update_station_tokens('{station_id}', '{current_turn}');
                     update_all_station_actions();
                 }});
                 $('#remove_one_{station_id}').click(function() {{
                     $('#my_input_{station_id}').val(function(i, val) {{ return +val-1 }});
                     $('#my_input_market').val(function(i, val) {{ return +val+1 }});
                     update_market();
-                    update_station_tokens('{station_id}', {station.capacity});
+                    update_station_tokens('{station_id}', '{current_turn}');
                     update_all_station_actions();
                 }});
             """
