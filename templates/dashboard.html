@@ -26,17 +26,17 @@
                 <header class="page-header font-small pt-4 mt-4">
                       <div class="header text-center">
                           <div class="container-fluid">
-                              <p>Made first as <a href="#physical-board-img">a serious boardgame</a>, then as a digital prototype for the
+                              <p style="text-align: center;">
+                                  Made first as <a href="#physical-board-img">a serious boardgame</a>, then as a digital prototype for the
                                   <a href="https://www.livinglabsmartcharging.nl/nl/smartchargingchallenge/smartchargingchallenge" target="_blank">Smart Charging Challenge 2018</a>.
                               </p>
-
-                              <p>Team: <a href="https://www.linkedin.com/in/janaendemann" target="_blank">Jana Endemann</a>,
-                              <a href="https://www.linkedin.com/in/daphne-van-leeuwen-0856b049/" target="_blank">Daphne van Leeuwen</a>,
-                              <a href="https://www.linkedin.com/in/felix-c-337039144/" target="_blank">Felix Claessen</a> (<a href="https://seita.nl/" target="_blank">Seita B.V.</a>)
-                              and <a href="https://www.linkedin.com/in/nhoening/" target="_blank">Nicolas H&ouml;ning</a> (<a href="https://seita.nl/" target="_blank">Seita B.V.</a>).
+                              <p style="text-align: center;">
+                                  Team: <a href="https://www.linkedin.com/in/janaendemann" target="_blank">Jana Endemann</a>,
+                                  <a href="https://www.linkedin.com/in/daphne-van-leeuwen-0856b049/" target="_blank">Daphne van Leeuwen</a>,
+                                  <a href="https://www.linkedin.com/in/felix-c-337039144/" target="_blank">Felix Claessen</a> (<a href="https://seita.nl/" target="_blank">Seita B.V.</a>)
+                                  and <a href="https://www.linkedin.com/in/nhoening/" target="_blank">Nicolas H&ouml;ning</a> (<a href="https://seita.nl/" target="_blank">Seita B.V.</a>).
                               </p>
-
-                              <p>
+                              <p style="text-align: center;">
                                   We explain the underlying game mechanics and data sources <a href="#data">here</a>.
                               </p>
                           </div>
@@ -340,18 +340,26 @@
                     <p>The demand data comes from ... TODO</p>
                 </div>
                 <div class="col-sm-4">
-                    Explaining the prices...<br/>
-                    <p>Here, we chose for a generic function to represent pricing dynamics.
-                        Prices are non-linear, just like real energy markets.
-                    </p>
                     <p>
-                    The highlighted number of tokens shows the price for supply and demand being in balance.
-                    It's cheap to buy tokens to the right of it, but expensive to sell to the left of it.
-                    [We should explain the incentives better]
+                        The in-game market is a generic function representing pricing dynamics on real energy markets:
+                        supply and demand that change throughout the day,
+                        and prices that increase non-linearly with scarcity.
+                        The highlighted number of tokens shows the price for supply and demand being in balance.
+                        It's cheap to buy tokens to the right of it, but expensive to sell to the left of it.
+                        This market motivates the player to 1) make most of its purchases when the market has the most abundant supply,
+                        and 2) to feed back energy to the grid when the market is coming up way short.
                     </p>
                 </div>
                 <div class="col-sm-4">
-                    Explaining the arrival probabilities of cars w.r.t. to time in the game ... TODO
+                    <p>
+                        Probabilities bring an element of chance (and luck) into a game. In this game,
+                        cars arrive at charging stations throughout the day with a certain probability of arrival and duration.
+                        For each new game the board is initialised using random draws from the shown probability distribution for car arrivals.
+                        The time that each car spends at a charging station is also randomised.
+                        They can remain at a charging station for up to 8 hours, but 4 hours parking is most common.
+                        The probabilities used here are based on data from office parking stations,
+                        but it's easy to set up the game for other situations, such as parking on public streets or at houses.
+                    </p>
                 </div>
             </div>
 

@@ -6,7 +6,7 @@ import pandas as pd
 
 """
 Models for the scc game. At the moment, we play on a simple 8 by 8 grid.
-(eight hours, eight possible chargin values)
+(eight hours, eight possible charging values)
 """
 
 

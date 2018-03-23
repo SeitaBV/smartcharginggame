@@ -18,7 +18,7 @@ def make_supply_demand_figure(world: World, tools: List[str]) -> Figure:
     start_time = datetime(2018, 3, 9, 9)
     x_range = Range1d(start=start_time, end=start_time + timedelta(hours=7))
 
-    fig = figure(title="Supply versus Demand",
+    fig = figure(title="Supply versus demand",
                  x_range=x_range,
                  height=250,
                  min_border=0,
@@ -36,7 +36,7 @@ def make_supply_demand_figure(world: World, tools: List[str]) -> Figure:
     demand_source = ColumnDataSource(dict(x=x, y=world.demand))
     fig.line(x='x', y='y', source=demand_source, legend="Demand", alpha=0.5, color="blue", line_width=4)
 
-    fig.xaxis.axis_label = "Hours"
+    fig.xaxis.axis_label = "Time of day"
 
     return fig
 
@@ -70,7 +70,7 @@ def make_arrival_prob_figure(probabilities: List[float], tools: List[str]) -> Fi
     start_time = datetime(2018, 3, 9, 9)
     x_range = Range1d(start=start_time, end=start_time + timedelta(hours=7))
 
-    fig = figure(title="Car arrival Probabilities",
+    fig = figure(title="Car arrival probabilities",
                  x_range=x_range,
                  height=250,
                  min_border=0,
@@ -85,7 +85,7 @@ def make_arrival_prob_figure(probabilities: List[float], tools: List[str]) -> Fi
     fig.line(x='x', y='y', source=arrival_prob_source, legend="Probability of arrival",
              alpha=0.5, color="red", line_width=4)
 
-    fig.xaxis.axis_label = "Hour"
+    fig.xaxis.axis_label = "Time of day"
 
     return fig
 

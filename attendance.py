@@ -6,11 +6,13 @@ Created on Fri Mar  9 16:06:41 2018
 """
 
 import random
+from numpy.random import choice
 from typing import List
 
 
-DURATION_OF_STAY = [2, 4]
-prob_arrival = [0.5, 0.4, 0.5, 0.2, 0.2, 0.2, 0.9, 0.9, 0.8, 0.6]
+DURATION_OF_STAY = range(1, 8)
+prob_duration = [0.01, 0.2, 0.3, 0.4, 0.3, 0.2, 0.1]
+prob_arrival = [0.5, 0.4, 0.5, 0.2, 0.2, 0.2, 0.9, 0.9]#, 0.8, 0.6]
 CHARGING_STATIONS = 4
 SIMULATION_TIME = 8
 
@@ -25,7 +27,7 @@ def make_attendance_grid() -> List[List[int]]:
         if val < prob_arrival[i]:
             cars = cars + 1
             cars_available = 1
-            duration_of_stay = random.randint(*DURATION_OF_STAY)
+            duration_of_stay = choice(DURATION_OF_STAY, p=[float(i)/sum(prob_duration ) for i in prob_duration])
             charge_station = 0
             while cars_available > 0 and charge_station < CHARGING_STATIONS:
                 if attendance_grid[i][charge_station] == 0:

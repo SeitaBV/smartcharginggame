@@ -1,3 +1,4 @@
+/* Hardcoded car colors up to 9 cars */
 .Car1 {
     color: rgb(240,90,100);
 }
@@ -27,18 +28,27 @@
 }
 
 
-.table td{
+/* Justify every paragraph except those in tables */
+:not(th):not(td) > p {
+    text-align: justify;
+}
+
+/* Center align all table contents */
+.table td {
     text-align: center;
 }
-.table th{
+.table th {
     text-align: center;
 }
+
+/* Nice big tokens by default */
 .icon-token {
     font-size: 150%;
 }
 .icon-token-empty {
     font-size: 150%;
 }
+
 
 .edit_hover_class a{
   visibility:hidden;
@@ -76,6 +86,7 @@
 }
 
 
+/* Alerts shown on top of the game board */
 #alerts {
     position: fixed;
     left: 45%;
@@ -85,7 +96,7 @@
 }
 
 
-/* custom icons - replace this when updating seita-webfonts with Fontello */
+/* Custom icons - replace this when updating seita-webfonts with Fontello */
 
 @font-face {
   font-family: 'seita-webfont';
