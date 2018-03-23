@@ -310,12 +310,21 @@
                 <a name="data"></a>
                 <h2>Background information on the data used in the game engine</h2>
                 <a href="#game">Back to top</a>
+            </div>
 
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
                 <p>
-                    We got this data from ...
-                    The game can of course also be based on other data sources.
+                    Below we show the game dynamics. We explain how we got to the data, but it can be changed with more fitting/realistic data.
+                    The main design challenge was using realistic data, but still fit the game into a 8 by 8 matrix (where the dimensions
+                    represent time and market quantities).
                 </p>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
 
+            <div class="row">
                 <div class="col-sm-12">
                     <div class="panel">
                         {{ data_plots_html | safe }}
@@ -323,15 +332,18 @@
                     </div>
                 </div>
 
-                <p>This shows the game dynamics. We explain how we got to the data, but it can be changed with more fitting/realistic data.</p>
             </div>
             <div class="row">
                 <div class="col-sm-4">
-                    Explaining the supply/demand...
+                    <p>The supply data represents solar production in Noord-Holland on March 9, 2018 (9am to 16pm).
+                    We got the data from <a href="https://icarus.energy/">the iCarus API</a>.</p>
+                    <p>The demand data comes from ... TODO</p>
                 </div>
                 <div class="col-sm-4">
                     Explaining the prices...<br/>
-                    <p>Prices are non-linear, just like real energy markets.</p>
+                    <p>Here, we chose for a generic function to represent pricing dynamics.
+                        Prices are non-linear, just like real energy markets.
+                    </p>
                     <p>
                     The highlighted number of tokens shows the price for supply and demand being in balance.
                     It's cheap to buy tokens to the right of it, but expensive to sell to the left of it.
@@ -339,7 +351,7 @@
                     </p>
                 </div>
                 <div class="col-sm-4">
-                    Explaining the arrival probabilities...
+                    Explaining the arrival probabilities of cars w.r.t. to time in the game ... TODO
                 </div>
             </div>
 
