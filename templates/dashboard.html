@@ -160,7 +160,7 @@
                             <button id="reset_game" class="btn btn-sm btn-warning" type="submit"
                                     data-toggle="tooltip"
                                     title="Start a new game. Shortcut: [Shift+r]">
-                                Reset game
+                                Start a new game
                             </button>
                         </form>
                     {% endif %}
@@ -338,8 +338,9 @@
             <div class="row">
                 <div class="col-sm-4">
                     <p>
-                        The supply data represents solar production in Noord-Holland on March 9, 2018 (9am to 16pm).
-                        We got the data from <a href="https://icarus.energy/">the iCarus API</a>.</p>
+                        The supply data represents solar production in Castricum, Noord-Holland on March 9, 2018 (9am to 16pm).
+                        We got the data from <a href="https://icarus.energy/">the iCarus API</a>, and downsampled and divided
+                        it until it could be represented by eight tokens.</p>
                     <p>
                         The demand data represents two well-known peaks in energy markets in the morning and evening when people get up or come home.
                         The peaks are shifted somewhat to improve game play.
