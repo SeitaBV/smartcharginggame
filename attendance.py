@@ -12,8 +12,8 @@ from typing import List
 
 DURATION_OF_STAY = range(1, 8)
 prob_duration = [0.01, 0.2, 0.3, 0.4, 0.3, 0.2, 0.1]  # Don't worry about normalising here
-prob_arrival = [0.9, 0.6, 0.4, 0.2, 0.6, 0.4, 0.1, 0.01]  # Don't worry about normalising here
-average_num_cars = 3.5
+prob_arrival = [0.9, 0.6, 0.4, 0.3, 0.8, 0.4, 0.1, 0.01]  # Don't worry about normalising here
+average_num_cars = 5
 CHARGING_STATIONS = 4
 SIMULATION_TIME = 8
 

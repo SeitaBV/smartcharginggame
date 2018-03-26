@@ -70,7 +70,7 @@
                         In this game you are the operator of several EV charging stations. EV owners will come to one of
                         your stations and want to charge their cars. When they leave, the car should be charged
                         (you get 50<i class="icon-coin"></i> per energy token).
-                        But if you let the car leave empty, you will have to pay a penalty (100<i class="icon-coin""></i>).
+                        But if you let the car leave empty, you will have to pay a penalty (100<i class="icon-coin"></i>).
                     </p>
                     <p>
                         On the other hand, you must buy the energy that you charge with from the grid.
@@ -129,27 +129,40 @@
 
                 <div class="col-sm-9">
                     <a name="game"></a>
-                    {% if current_turn < num_turns %}
-                        <h1>Fill the cars with energy tokens! Take care of price differences.</h1>
-                        <form class="form-inline" action="reset" method="get">
-                            <h2>Your budget is {{ world.money -}}<i class="icon-coin"></i></h2>
-                            <button id="reset_game" class="btn btn-sm btn-warning" type="submit"
-                                    data-toggle="tooltip"
-                                    title="Reset the game. Shortcut: [Shift+r]">
-                                Reset game
-                            </button>
-                        </form>
-                    {% else %}
-                        <h1>Congratulations!</h1>
-                        <form class="form-inline" action="reset" method="get">
-                            <h2>Your final score is {{ world.money -}}<i class="icon-coin"></i></h2>
-                            <button id="reset_game" class="btn btn-sm btn-warning" type="submit"
-                                    data-toggle="tooltip"
-                                    title="Start a new game. Shortcut: [Shift+r]">
-                                Start a new game
-                            </button>
-                        </form>
-                    {% endif %}
+                        {% if current_turn < num_turns %}
+                            <h1>Fill the cars with energy tokens! Take care of price differences.</h1>
+                        {% else %}
+                            <h1>Congratulations!</h1>
+                        {% endif %}
+                    <div class="row">
+                        <div class="col-sm-8">
+                            {% if current_turn < num_turns %}
+                                <h2>Your budget is {{ world.money -}}<i class="icon-coin"></i></h2>
+                            {% else %}
+                                <h2>Your final score is {{ world.money -}}<i class="icon-coin"></i></h2>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-2">
+                            <br/>
+                            <form class="form-inline" action="reset" method="get">
+                                <button id="reset_game" class="btn btn-sm btn-info" type="submit"
+                                        data-toggle="tooltip"
+                                        title="Reset the game. Shortcut: [Shift+r]">
+                                    Reset game
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-sm-2">
+                            <br/>
+                            <form class="form-inline" action="new" method="get">
+                                <button id="new_game" class="btn btn-sm btn-warning" type="submit"
+                                        data-toggle="tooltip"
+                                        title="Start a new game. Shortcut: [Shift+n]">
+                                    Start a new game
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                     <br/>
                     <form action="next" method="post">
                         <table class="table col-sm-8">
@@ -205,20 +218,22 @@
                                             <br/>
                                             {% if station.has_car_at(step=current_turn) %}
                                                 {% set car = station.get_car_at(step=current_turn) %}
-                                                {% if car.current_charge < car.target_charge and available_tokens[current_turn] > 0 %}
-                                                    <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button"
-                                                            data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">Charge</button>
-                                                {% else %}
-                                                    <button id="add_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
-                                                            data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">Charge</button>
-                                                {% endif %}
-                                                {% if car.current_charge > 0 and available_tokens[current_turn] < max_tokens %}
-                                                    <button id="remove_one_{{ station_id }}" class="btn btn-sm btn-danger" type="button"
-                                                            data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">Discharge</button>
-                                                {% else %}
-                                                    <button id="remove_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
-                                                            data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">Discharge</button>
-                                                {% endif %}
+                                                <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button"
+                                                        {% if car.current_charge == car.target_charge or available_tokens[current_turn] == 0 %}
+                                                            disabled
+                                                        {% endif %}
+                                                        data-toggle="tooltip" data-trigger="hover"
+                                                        title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">
+                                                    Charge
+                                                </button>
+                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm btn-danger" type="button"
+                                                        {% if car.current_charge == 0 or available_tokens[current_turn] == max_tokens %}
+                                                            disabled
+                                                        {% endif %}
+                                                        data-toggle="tooltip" data-trigger="hover"
+                                                        title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">
+                                                    Discharge
+                                                </button>
                                             {% endif %}
                                             <input id="my_input_{{ station_id }}" type="hidden" name="order_{{ station_id }}" value="0">
                                         </th>
@@ -308,8 +323,8 @@
                 <div class="col-sm-6">
                     <p>
                         Below we explain the game dynamics and show some of the underlying data.
-                        The data can easily be changed with data fitting a specific real-world case.
-                        One of our design challenges for the hackathon was to use realistic data that still fits the game into an 8 by 8 matrix
+                        This data can easily be changed with data fitting a specific real-world case.
+                        One of our main design challenges for the hackathon was to use realistic data that still fits the game into an 8 by 8 matrix
                         (where the dimensions represent time and market quantities) <em>and is fun to play</em>.
                     </p>
                 </div>

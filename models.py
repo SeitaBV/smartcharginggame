@@ -99,7 +99,7 @@ class World:
             assert(gen in range(1, 9))
         
         self.solar_park = SolarPark(solar_generation)
-        self.demand = [7, 7, 5, 3, 6, 6, 7, 2]
+        self.demand = [4, 9, 5, 3, 10, 6, 7, 1]
         self.market_prices = [100, 60, 30, 15, 8, 4, 2, 1]
         self.charging_stations = charging_stations
 
@@ -206,3 +206,15 @@ class World:
                 profits -= abs(action)
         self.current_step += 1
         return summary
+
+    def reset(self):
+        for station_id in self.charging_stations:
+            station = self.charging_stations.get(station_id)
+            for turn_j in range(0, self.current_step):
+                car = station.get_car_at(turn_j)
+                if car is not None:
+                    car.charging_actions[turn_j] = 0
+                    car.current_charge = 0
+        self.money = 1000
+        self.current_step = 0
+        return

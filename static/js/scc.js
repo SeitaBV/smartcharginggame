@@ -9,6 +9,7 @@ var dKeyCode = 68;
 var oneKeyCode = 49;
 var escKeyCode = 27;
 var shiftKeyCode = 16;
+var nKeyCode = 78;
 var rKeyCode = 82;
 
 $(document).keydown(function (e) {
@@ -28,6 +29,12 @@ function executeShortCuts() {
     if (rKeyCode in keysDown && keysDown[shiftKeyCode] == true) {
         console.log("Shift+r pressed - clicking reset game.");
         $("#reset_game").click();
+    }
+
+    // New game on Shift+N
+    if (nKeyCode in keysDown && keysDown[shiftKeyCode] == true) {
+        console.log("Shift+n pressed - clicking new game.");
+        $("#new_game").click();
     }
 
     // Move to next on Enter

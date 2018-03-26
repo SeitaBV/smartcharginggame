@@ -82,6 +82,14 @@ def next_step():
 
 @app.route('/reset', methods=['GET'])
 def reset():
+    world = load_world()
+    world.reset()
+    save_world(world)
+    return init(is_reset=True)
+
+
+@app.route('/new', methods=['GET'])
+def new():
     if "world_id" in session:
         del session["world_id"]
     return init(is_reset=True)

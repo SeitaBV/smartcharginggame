@@ -131,17 +131,18 @@ def make_custom_js(charging_stations, max_tokens, current_turn):
             if (car_change < {station.capacity} &&
                 car_current + car_change < car_target &&
                 $('#my_input_market').val() > 0) {{
-                $('#add_one_' + '{station_id}').addClass('btn-success').prop("disabled", false);
+                $('#add_one_' + '{station_id}').prop("disabled", false);
             }} else {{
-                $('#add_one_' + '{station_id}').removeClass('btn-success').prop("disabled", true);
+                $('#add_one_' + '{station_id}').prop("disabled", true);
             }}
             if (-car_change < {station.capacity} &&
                 car_current + car_change > 0 &&
                 $('#my_input_market').val() < {max_tokens}) {{
-                $('#remove_one_' + '{station_id}').addClass('btn-danger').prop("disabled", false);
+                $('#remove_one_' + '{station_id}').prop("disabled", false);
             }} else {{
-                $('#remove_one_' + '{station_id}').removeClass('btn-danger').prop("disabled", true);
+                $('#remove_one_' + '{station_id}').prop("disabled", true);
             }}
+            $('[data-toggle="tooltip"]').tooltip("hide");
     """
     safe_js = safe_js + f"""
         }}

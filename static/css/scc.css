@@ -31,6 +31,7 @@
 /* Table scrolling headers */
 .floatThead-container thead {
     background-color: #FFF;
+    z-index: 1000;
 }
 .floatThead-container thead>tr>th {
     vertical-align: top;
@@ -97,15 +98,14 @@
 /* Alerts shown on top of the game board */
 #alerts {
     position: fixed;
+    z-index: 2000;
     left: 45%;
     bottom: 45%;
     width: 25%;
     min-width: 200px;
 }
 
-
 /* Custom icons - replace this when updating seita-webfonts with Fontello */
-
 @font-face {
   font-family: 'seita-webfont';
   src: url('../font/seita-webfont.eot?12471679');
