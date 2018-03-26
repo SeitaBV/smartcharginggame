@@ -36,7 +36,11 @@ class Car:
         self.current_charge = 0
 
     def get_final_payoff(self) -> int:
-        return 50 * self.current_charge  # - self.target_charge
+        if self.current_charge is 0:
+            payoff = -100  # Penalty if you let the car leave empty
+        else:
+            payoff = 50 * self.current_charge  # Reward for each energy token in the car
+        return payoff
 
 
 class ChargingStation:
@@ -188,12 +192,15 @@ class World:
                     final_payoff = car.get_final_payoff()
                     self.money += final_payoff
                     profits += final_payoff
-                    if final_payoff != 0:
-                        if summary != "":
-                            summary += "<br/>"
-                        summary += "The car at %s left." \
-                                   "Your reward for achieving a charge level of %d was %d coins."\
-                                   % (station_id, car.current_charge, final_payoff)
+                    if summary != "":
+                        summary += "<br/>"
+                    summary += "The car at %s left." % station_id
+                    if final_payoff > 0:
+                        summary += "Your reward for achieving a charge level of %d was %d coins."\
+                                   % (car.current_charge, final_payoff)
+                    else:
+                        summary += "Your penalty for achieving a charge level of %d was %d coins." \
+                                   % (car.current_charge, -final_payoff)
                 # account transaction costs for charging
                 self.money -= abs(action)
                 profits -= abs(action)

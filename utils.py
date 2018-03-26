@@ -98,32 +98,27 @@ def make_custom_js(charging_stations, max_tokens, current_turn):
             car_change = parseInt($('#my_input_' + station_id).val());
             car_id = $('#car-at-station-' + station_id + '-' + turn_j).data("car_id");
             
-            console.log(car_target)
-            console.log(car_current)
-            console.log(car_change)
-            console.log(car_id)
-            
-            tokenstring = '';
+            token_string = '';
             for (i = 0; i < (car_current + car_change); i++) {{
                 if (i < car_current) {{
-                    tokenstring += '<i class="icon-token ' + car_id + '"></i>';                    
+                    token_string += '<i class="icon-token ' + car_id + '"></i>';                    
                 }} else {{
-                    tokenstring += '<i class="icon-token"></i>';
+                    token_string += '<i class="icon-token"></i>';
                 }}
             }}
             if (car_change > 0) {{
                 for (i = 0; i < (car_target - (car_current + car_change)); i++) {{
-                    tokenstring += '<i class="icon-token-empty"></i>';
+                    token_string += '<i class="icon-token-empty"></i>';
                 }}
             }} else {{
                 for (i = 0; i < -car_change; i++) {{
-                    tokenstring += '<i class="icon-token-empty ' + car_id + '"></i>';
+                    token_string += '<i class="icon-token-empty ' + car_id + '"></i>';
                 }}
                 for (i = 0; i < (car_target - car_current); i++) {{
-                    tokenstring += '<i class="icon-token-empty"></i>';
+                    token_string += '<i class="icon-token-empty"></i>';
                 }}
             }}
-            $('#token-holder-station-' + station_id + '-{current_turn}').html(tokenstring);
+            $('#token-holder-station-' + station_id + '-{current_turn}').html(token_string);
         }}
     
         function update_all_station_actions() {{    
@@ -133,12 +128,16 @@ def make_custom_js(charging_stations, max_tokens, current_turn):
             car_target = parseInt($('#car-at-station-' + '{station_id}' + '-' + {current_turn}).data("target"));
             car_current = parseInt($('#car-at-station-' + '{station_id}' + '-' + {current_turn}).data("current"));
             car_change = parseInt($('#my_input_' + '{station_id}').val());
-            if (car_change < {station.capacity} && car_current + car_change < car_target && $('#my_input_market').val() > 0) {{
+            if (car_change < {station.capacity} &&
+                car_current + car_change < car_target &&
+                $('#my_input_market').val() > 0) {{
                 $('#add_one_' + '{station_id}').addClass('btn-success').prop("disabled", false);
             }} else {{
                 $('#add_one_' + '{station_id}').removeClass('btn-success').prop("disabled", true);
             }}
-            if (-car_change < {station.capacity} && car_current + car_change > 0 && $('#my_input_market').val() < {max_tokens}) {{
+            if (-car_change < {station.capacity} &&
+                car_current + car_change > 0 &&
+                $('#my_input_market').val() < {max_tokens}) {{
                 $('#remove_one_' + '{station_id}').addClass('btn-danger').prop("disabled", false);
             }} else {{
                 $('#remove_one_' + '{station_id}').removeClass('btn-danger').prop("disabled", true);

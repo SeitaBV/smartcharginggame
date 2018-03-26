@@ -67,8 +67,9 @@
                     </h1>
                     <p>
                         In this game you are the operator of several EV charging stations. EV owners will come to one of
-                        your stations and want to charge their cars. When they leave, the car should be charged, or you
-                        will have to pay a penalty.
+                        your stations and want to charge their cars. When they leave, the car should be charged
+                        (you get 50<i class="icon-coin""></i> per energy token).
+                        But if you let the car leave empty, you will have to pay a penalty (100<i class="icon-coin""></i>).
                     </p>
                     <p>
                         On the other hand, you must buy the energy that you charge with from the grid.
@@ -315,11 +316,12 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6">
-                <p>
-                    Below we show the game dynamics. We explain how we got to the data, but it can be changed with more fitting/realistic data.
-                    The main design challenge was using realistic data, but still fit the game into a 8 by 8 matrix (where the dimensions
-                    represent time and market quantities).
-                </p>
+                    <p>
+                        Below we explain the game dynamics and show some of the underlying data.
+                        The data can easily be changed with data fitting a specific real-world case.
+                        One of our design challenges for the hackathon was to use realistic data that still fits the game into an 8 by 8 matrix
+                        (where the dimensions represent time and market quantities) <em>and is fun to play</em>.
+                    </p>
                 </div>
                 <div class="col-sm-3"></div>
             </div>
@@ -335,9 +337,13 @@
             </div>
             <div class="row">
                 <div class="col-sm-4">
-                    <p>The supply data represents solar production in Noord-Holland on March 9, 2018 (9am to 16pm).
-                    We got the data from <a href="https://icarus.energy/">the iCarus API</a>.</p>
-                    <p>The demand data comes from ... TODO</p>
+                    <p>
+                        The supply data represents solar production in Noord-Holland on March 9, 2018 (9am to 16pm).
+                        We got the data from <a href="https://icarus.energy/">the iCarus API</a>.</p>
+                    <p>
+                        The demand data represents two well-known peaks in energy markets in the morning and evening when people get up or come home.
+                        The peaks are shifted somewhat to improve game play.
+                    </p>
                 </div>
                 <div class="col-sm-4">
                     <p>
@@ -346,17 +352,17 @@
                         and prices that increase non-linearly with scarcity.
                         The highlighted number of tokens shows the price for supply and demand being in balance.
                         It's cheap to buy tokens to the right of it, but expensive to sell to the left of it.
-                        This market motivates the player to 1) make most of its purchases when the market has the most abundant supply,
+                        This market motivates players to 1) make most of their purchases when the market has the most abundant supply,
                         and 2) to feed back energy to the grid when the market is coming up way short.
                     </p>
                 </div>
                 <div class="col-sm-4">
                     <p>
-                        Probabilities bring an element of chance (and luck) into a game. In this game,
+                        Probabilities bring an element of chance (and luck) into games. In this game,
                         cars arrive at charging stations throughout the day with a certain probability of arrival and duration.
                         For each new game the board is initialised using random draws from the shown probability distribution for car arrivals.
                         The time that each car spends at a charging station is also randomised.
-                        They can remain at a charging station for up to 8 hours, but 4 hours parking is most common.
+                        They can remain at a charging station for up to 8 hours, but 4 hours of parking is the most common.
                         The probabilities used here are based on data from office parking stations,
                         but it's easy to set up the game for other situations, such as parking on public streets or at houses.
                     </p>
