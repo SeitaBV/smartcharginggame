@@ -17,10 +17,7 @@ def init(is_reset=False):
     if not os.path.exists("worlds"):
         raise Exception("Admin, please create the 'worlds' directory to save worlds!")
     world = load_world()
-    current_turn = world.current_step  # We start at turn 0
     num_turns = len(world.solar_park.generation)
-    # production = world.solar_park.generation
-    # consumption = world.demand
     available_tokens = [world.available_tokens(i) for i in range(num_turns)]
     max_tokens = int(max(available_tokens))
     turn_hours = [str(h).rjust(2, "0") for h in range(9, 9+num_turns)]
@@ -30,7 +27,6 @@ def init(is_reset=False):
 
     return render_template("dashboard.html", **dict(world=world),
                            num_turns=num_turns,
-                           current_turn=current_turn,
                            available_tokens=available_tokens,
                            max_tokens=max_tokens,
                            turn_hours=turn_hours,
@@ -53,13 +49,12 @@ def next_step():
     move_summary = world.next_step(orders)
     save_world(world)
 
-    current_turn = world.current_step  # We start at turn 0
     num_turns = len(world.solar_park.generation)
     available_tokens = [world.available_tokens(i) for i in range(num_turns)]
     max_tokens = int(max(available_tokens))
     turn_hours = [str(h).rjust(2, "0") for h in range(9, 9+num_turns)]
 
-    if current_turn < num_turns:
+    if world.current_step < num_turns:
         safe_js = make_custom_js(world.charging_stations, max_tokens, world.current_step)
     else:
         safe_js = ""
@@ -67,7 +62,6 @@ def next_step():
 
     return render_template("dashboard.html", **dict(world=world),
                            num_turns=num_turns,
-                           current_turn=current_turn,
                            available_tokens=available_tokens,
                            max_tokens=max_tokens,
                            completed_a_move=True,

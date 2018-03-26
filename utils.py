@@ -30,8 +30,14 @@ def load_world() -> World:
     """Load an existing or otherwise new world"""
     if "world_id" not in session:
         init_world()
-    print("Loading world %s" % session["world_id"])
-    with open("worlds/%s.pickle" % session["world_id"], "rb") as world_pickle:
+    session_location = "worlds/%s.pickle" % session["world_id"]
+    if not os.path.exists(session_location):
+        init_world()
+        session_location = "worlds/%s.pickle" % session["world_id"]
+        print("Creating new world %s" % session["world_id"])
+    else:
+        print("Loading world %s" % session["world_id"])
+    with open(session_location, "rb") as world_pickle:
         world = pickle.load(world_pickle)
     return world
 

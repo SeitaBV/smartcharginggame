@@ -129,14 +129,17 @@
 
                 <div class="col-sm-9">
                     <a name="game"></a>
-                        {% if current_turn < num_turns %}
+                        {% if world.current_step < num_turns %}
                             <h1>Fill the cars with energy tokens! Take care of price differences.</h1>
+                            {% if world.current_step == 0 %}
+                                <h2>This is a new game. Do your first move.</h2>
+                            {% endif %}
                         {% else %}
                             <h1>Congratulations!</h1>
                         {% endif %}
                     <div class="row">
                         <div class="col-sm-8">
-                            {% if current_turn < num_turns %}
+                            {% if world.current_step < num_turns %}
                                 <h2>Your budget is {{ world.money -}}<i class="icon-coin"></i></h2>
                             {% else %}
                                 <h2>Your final score is {{ world.money -}}<i class="icon-coin"></i></h2>
@@ -181,7 +184,7 @@
                                 <tr>
                                     <th>
                                         Hour
-                                        {% if current_turn < num_turns %}
+                                        {% if world.current_step < num_turns %}
                                             <br/><br/>
                                             <button id="next_turn" class="btn btn-sm btn-primary" type="submit"
                                                     data-toggle="tooltip"
@@ -216,8 +219,8 @@
                                             <i class="icon-charging_station" data-toggle="tooltip" data-html="true" title='Max {{ station.capacity -}} <i class="icon-token" style="font-size: 100%;"></i> per turn'></i>
                                             <br/>
                                             <br/>
-                                            {% if station.has_car_at(step=current_turn) %}
-                                                {% set car = station.get_car_at(step=current_turn) %}
+                                            {% if station.has_car_at(step=world.current_step) %}
+                                                {% set car = station.get_car_at(step=world.current_step) %}
                                                 <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button"
                                                         {% if car.current_charge == car.target_charge or available_tokens[current_turn] == 0 %}
                                                             disabled
@@ -242,21 +245,21 @@
                             </thead>
                             <tbody>
                             {% for turn_j in range(num_turns) %}
-                                {% if turn_j==current_turn %}
+                                {% if turn_j==world.current_step %}
                                     <input id="my_input_market" type="hidden" name="market" value="{{ available_tokens[turn_j] }}">
                                 {% endif %}
-                                <tr {% if turn_j==current_turn %}class="info current-turn"{% endif %}>
+                                <tr {% if turn_j==world.current_step %}class="info current-turn"{% endif %}>
                                     <td>
                                         {{ turn_hours[turn_j] }}:00
                                     </td>
 
                                     {% for market_token in range(available_tokens[turn_j]|int) %}
-                                        <th {% if turn_j==current_turn %}id="token-holder-{{market_token}}"{% endif %} style="text-align: center; padding-left: 0; padding-right: 0;">
+                                        <th {% if turn_j==world.current_step %}id="token-holder-{{market_token}}"{% endif %} style="text-align: center; padding-left: 0; padding-right: 0;">
                                             <i class="icon-token"></i>
                                         </th>
                                     {% endfor %}
                                     {% for empty_token in range((max_tokens - available_tokens[turn_j])|int) %}
-                                        <th {% if turn_j==current_turn %}id="token-holder-{{empty_token+available_tokens[turn_j]}}"{% endif %}></th>
+                                        <th {% if turn_j==world.current_step %}id="token-holder-{{empty_token+available_tokens[turn_j]}}"{% endif %}></th>
                                     {% endfor %}
 
                                     {% for station_id, station in world.charging_stations.items() %}
@@ -267,13 +270,13 @@
                                                 {% set car_target = car.target_charge %}
                                                 {% set car_actions = car.charging_actions[0:turn_j+1]|sum %}
                                                 {% set car_current = car.current_charge %}
-                                                {% if turn_j <= current_turn %}
+                                                {% if turn_j <= world.current_step %}
                                                     <span id="token-holder-station-{{station_id}}-{{turn_j}}">
                                                         {%- for i in range(car_actions) -%}
                                                             <i class="icon-token {{car_id}}"></i>
                                                         {%- endfor -%}
                                                         {%- for i in range(car_target - car_actions) -%}
-                                                            <i class="icon-token-empty {% if turn_j < current_turn %}{{car_id}}{% endif %}"></i>
+                                                            <i class="icon-token-empty {% if turn_j < world.current_step %}{{car_id}}{% endif %}"></i>
                                                         {%- endfor -%}
                                                     </span>
                                                 {% else %}
