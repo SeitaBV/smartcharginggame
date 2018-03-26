@@ -18,8 +18,9 @@
 
     </head>
     <body>
-        <script src="static/js/external/jquery-3.1.0.min.js"></script>
-        <script src="static/js/external/bootstrap.min.js"></script>
+        <script type="text/javascript" src="static/js/external/jquery-3.1.0.min.js"></script>
+        <script type="text/javascript" src="static/js/external/jquery.floatThead.min.js"></script>
+        <script type="text/javascript" src="static/js/external/bootstrap.min.js"></script>
 
         <div class="container-fluid">
 
@@ -69,7 +70,7 @@
                         In this game you are the operator of several EV charging stations. EV owners will come to one of
                         your stations and want to charge their cars. When they leave, the car should be charged
                         (you get 50<i class="icon-coin"></i> per energy token).
-                        But if you let the car leave empty, you will have to pay a penalty (100<i class="icon-coin"></i>).
+                        But if you let the car leave empty, you will have to pay a penalty (100<i class="icon-coin""></i>).
                     </p>
                     <p>
                         On the other hand, you must buy the energy that you charge with from the grid.
@@ -126,21 +127,6 @@
                     <p><b>Balance and charge to the max to max your score.</b></p>
                 </div>
 
-                {% if completed_a_move or resetted_the_game%}
-                    <script type="text/javascript">
-                        $(document).ready(function(){
-                            location.hash = "#game";
-                            $('[data-toggle="tooltip"]').tooltip();
-                        });
-                    </script>
-                {% else %}
-                    <script type="text/javascript">
-                        $(document).ready(function(){
-                            $('[data-toggle="tooltip"]').tooltip();
-                        });
-                    </script>
-                {% endif %}
-
                 <div class="col-sm-9">
                     <a name="game"></a>
                     {% if current_turn < num_turns %}
@@ -167,130 +153,134 @@
                     <br/>
                     <form action="next" method="post">
                         <table class="table col-sm-8">
-                            <tr>
-                                <th>
+                            <thead>
+                                <tr>
+                                    <th>
 
-                                </th>
-                                <th colspan={{max_tokens}}>
-                                    Available tokens (<i class="icon-token" style="font-size: 100%;"></i>) and their price (<i class="icon-coin"></i>)
-                                </th>
-                                <th colspan={{ world.charging_stations | length }}>
-                                    Charging stations<!-- (max <i class="icon-token" style="font-size: 100%;"></i> per turn)-->
-                                </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Hour
-                                    {% if current_turn < num_turns %}
-                                        <br/><br/>
-                                        <button id="next_turn" class="btn btn-sm btn-primary" type="submit"
-                                                data-toggle="tooltip"
-                                                title="Finish this move and start the next. Shortcut: [Enter]">
-                                            Next turn
-                                        </button>
-                                    {% endif %}
-                                </th>
-                                {% for market_token in range(max_tokens) %}
-                                    <th style="text-align: center; padding-left: 0; padding-right: 0;">
-                                        {% if market_token==0 %}
-                                            100<i class="icon-coin"></i>
-                                        {% elif market_token==1 %}
-                                            60<i class="icon-coin"></i>
-                                        {% elif market_token==2 %}
-                                            30<i class="icon-coin"></i>
-                                        {% elif market_token==3 %}
-                                            15<i class="icon-coin"></i>
-                                        {% elif market_token==4 %}
-                                            8<i class="icon-coin"></i>
-                                        {% elif market_token==5 %}
-                                            4<i class="icon-coin"></i>
-                                        {% elif market_token==6 %}
-                                            2<i class="icon-coin"></i>
-                                        {% elif market_token==7 %}
-                                            1<i class="icon-coin"></i>
+                                    </th>
+                                    <th colspan={{max_tokens}}>
+                                        Available tokens (<i class="icon-token" style="font-size: 100%;"></i>) and their price (<i class="icon-coin"></i>)
+                                    </th>
+                                    <th colspan={{ world.charging_stations | length }}>
+                                        Charging stations<!-- (max <i class="icon-token" style="font-size: 100%;"></i> per turn)-->
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Hour
+                                        {% if current_turn < num_turns %}
+                                            <br/><br/>
+                                            <button id="next_turn" class="btn btn-sm btn-primary" type="submit"
+                                                    data-toggle="tooltip"
+                                                    title="Finish this move and start the next. Shortcut: [Enter]">
+                                                Next turn
+                                            </button>
                                         {% endif %}
                                     </th>
-                                {% endfor %}
-                                {% for station_id, station in world.charging_stations.items() %}
-                                    <th style="text-align: center;">
-                                        <i class="icon-charging_station" data-toggle="tooltip" data-html="true" title='Max {{ station.capacity -}} <i class="icon-token" style="font-size: 100%;"></i> per turn'></i>
-                                        <br/>
-                                        <br/>
-                                        {% if station.has_car_at(step=current_turn) %}
-                                            {% set car = station.get_car_at(step=current_turn) %}
-                                            {% if car.current_charge < car.target_charge and available_tokens[current_turn] > 0 %}
-                                                <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button"
-                                                        data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">Charge</button>
-                                            {% else %}
-                                                <button id="add_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
-                                                        data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">Charge</button>
+                                    {% for market_token in range(max_tokens) %}
+                                        <th style="text-align: center; padding-left: 0; padding-right: 0;">
+                                            {% if market_token==0 %}
+                                                100<i class="icon-coin"></i>
+                                            {% elif market_token==1 %}
+                                                60<i class="icon-coin"></i>
+                                            {% elif market_token==2 %}
+                                                30<i class="icon-coin"></i>
+                                            {% elif market_token==3 %}
+                                                15<i class="icon-coin"></i>
+                                            {% elif market_token==4 %}
+                                                8<i class="icon-coin"></i>
+                                            {% elif market_token==5 %}
+                                                4<i class="icon-coin"></i>
+                                            {% elif market_token==6 %}
+                                                2<i class="icon-coin"></i>
+                                            {% elif market_token==7 %}
+                                                1<i class="icon-coin"></i>
                                             {% endif %}
-                                            {% if car.current_charge > 0 and available_tokens[current_turn] < max_tokens %}
-                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm btn-danger" type="button"
-                                                        data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">Discharge</button>
-                                            {% else %}
-                                                <button id="remove_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
-                                                        data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">Discharge</button>
+                                        </th>
+                                    {% endfor %}
+                                    {% for station_id, station in world.charging_stations.items() %}
+                                        <th style="text-align: center;">
+                                            <i class="icon-charging_station" data-toggle="tooltip" data-html="true" title='Max {{ station.capacity -}} <i class="icon-token" style="font-size: 100%;"></i> per turn'></i>
+                                            <br/>
+                                            <br/>
+                                            {% if station.has_car_at(step=current_turn) %}
+                                                {% set car = station.get_car_at(step=current_turn) %}
+                                                {% if car.current_charge < car.target_charge and available_tokens[current_turn] > 0 %}
+                                                    <button id="add_one_{{ station_id }}" class="btn btn-sm btn-success" type="button"
+                                                            data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">Charge</button>
+                                                {% else %}
+                                                    <button id="add_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
+                                                            data-toggle="tooltip" title="Charge one token on the car parked at this station. Shortcut: [c+{{car.id[-1]}}]">Charge</button>
+                                                {% endif %}
+                                                {% if car.current_charge > 0 and available_tokens[current_turn] < max_tokens %}
+                                                    <button id="remove_one_{{ station_id }}" class="btn btn-sm btn-danger" type="button"
+                                                            data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">Discharge</button>
+                                                {% else %}
+                                                    <button id="remove_one_{{ station_id }}" class="btn btn-sm" type="button" disabled
+                                                            data-toggle="tooltip" title="Discharge one token from the car parked at this station. Shortcut: [d+{{car.id[-1]}}]">Discharge</button>
+                                                {% endif %}
                                             {% endif %}
-                                        {% endif %}
-                                        <input id="my_input_{{ station_id }}" type="hidden" name="order_{{ station_id }}" value="0">
-                                    </th>
-                                {% endfor %}
-                            </tr>
-                        {% for turn_j in range(num_turns) %}
-                            {% if turn_j==current_turn %}
-                                <input id="my_input_market" type="hidden" name="market" value="{{ available_tokens[turn_j] }}">
-                            {% endif %}
-                            <tr {% if turn_j==current_turn %}class="info current-turn"{% endif %}>
-                                <td>
-                                    {{ turn_hours[turn_j] }}:00
-                                </td>
-
-                                {% for market_token in range(available_tokens[turn_j]|int) %}
-                                    <th {% if turn_j==current_turn %}id="token-holder-{{market_token}}"{% endif %} style="text-align: center; padding-left: 0; padding-right: 0;">
-                                        <i class="icon-token"></i>
-                                    </th>
-                                {% endfor %}
-                                {% for empty_token in range((max_tokens - available_tokens[turn_j])|int) %}
-                                    <th {% if turn_j==current_turn %}id="token-holder-{{empty_token+available_tokens[turn_j]}}"{% endif %}></th>
-                                {% endfor %}
-
-                                {% for station_id, station in world.charging_stations.items() %}
-                                    <td style="white-space: nowrap">
-                                        {%- if station.has_car_at(step=turn_j) %}
-                                            {% set car = station.get_car_at(step=turn_j) %}
-                                            {% set car_id = car.id %}
-                                            {% set car_target = car.target_charge %}
-                                            {% set car_actions = car.charging_actions[0:turn_j+1]|sum %}
-                                            {% set car_current = car.current_charge %}
-                                            {% if turn_j <= current_turn %}
-                                                <span id="token-holder-station-{{station_id}}-{{turn_j}}">
-                                                    {%- for i in range(car_actions) -%}
-                                                        <i class="icon-token {{car_id}}"></i>
-                                                    {%- endfor -%}
-                                                    {%- for i in range(car_target - car_actions) -%}
-                                                        <i class="icon-token-empty {% if turn_j < current_turn %}{{car_id}}{% endif %}"></i>
-                                                    {%- endfor -%}
-                                                </span>
-                                            {% else %}
-                                                <span id="token-holder-station-{{station_id}}-{{turn_j}}">
-                                                    {%- for i in range(car_target) -%}
-                                                        <i class="icon-token-empty"></i>
-                                                    {%- endfor -%}
-                                                </span>
-                                            {% endif %}
-                                            <meta id="car-at-station-{{station_id}}-{{turn_j}}" data-car_id="{{car_id}}" data-target="{{car_target}}" data-current="{{car_current}}">
-
-                                            <p class="{{ car_id }}">
-                                                <i class="icon-ev {{ car_id }}" style="margin-right:50px;"
-                                                   data-toggle="tooltip" data-html="true" title='Wants {{car_target-}} <i class="icon-token" style="font-size: 100%;"></i> at departure'></i>
-                                            </p>
-                                        {% endif -%}
+                                            <input id="my_input_{{ station_id }}" type="hidden" name="order_{{ station_id }}" value="0">
+                                        </th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for turn_j in range(num_turns) %}
+                                {% if turn_j==current_turn %}
+                                    <input id="my_input_market" type="hidden" name="market" value="{{ available_tokens[turn_j] }}">
+                                {% endif %}
+                                <tr {% if turn_j==current_turn %}class="info current-turn"{% endif %}>
+                                    <td>
+                                        {{ turn_hours[turn_j] }}:00
                                     </td>
 
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
+                                    {% for market_token in range(available_tokens[turn_j]|int) %}
+                                        <th {% if turn_j==current_turn %}id="token-holder-{{market_token}}"{% endif %} style="text-align: center; padding-left: 0; padding-right: 0;">
+                                            <i class="icon-token"></i>
+                                        </th>
+                                    {% endfor %}
+                                    {% for empty_token in range((max_tokens - available_tokens[turn_j])|int) %}
+                                        <th {% if turn_j==current_turn %}id="token-holder-{{empty_token+available_tokens[turn_j]}}"{% endif %}></th>
+                                    {% endfor %}
+
+                                    {% for station_id, station in world.charging_stations.items() %}
+                                        <td style="white-space: nowrap">
+                                            {%- if station.has_car_at(step=turn_j) %}
+                                                {% set car = station.get_car_at(step=turn_j) %}
+                                                {% set car_id = car.id %}
+                                                {% set car_target = car.target_charge %}
+                                                {% set car_actions = car.charging_actions[0:turn_j+1]|sum %}
+                                                {% set car_current = car.current_charge %}
+                                                {% if turn_j <= current_turn %}
+                                                    <span id="token-holder-station-{{station_id}}-{{turn_j}}">
+                                                        {%- for i in range(car_actions) -%}
+                                                            <i class="icon-token {{car_id}}"></i>
+                                                        {%- endfor -%}
+                                                        {%- for i in range(car_target - car_actions) -%}
+                                                            <i class="icon-token-empty {% if turn_j < current_turn %}{{car_id}}{% endif %}"></i>
+                                                        {%- endfor -%}
+                                                    </span>
+                                                {% else %}
+                                                    <span id="token-holder-station-{{station_id}}-{{turn_j}}">
+                                                        {%- for i in range(car_target) -%}
+                                                            <i class="icon-token-empty"></i>
+                                                        {%- endfor -%}
+                                                    </span>
+                                                {% endif %}
+                                                <meta id="car-at-station-{{station_id}}-{{turn_j}}" data-car_id="{{car_id}}" data-target="{{car_target}}" data-current="{{car_current}}">
+
+                                                <p class="{{ car_id }}">
+                                                    <i class="icon-ev {{ car_id }}" style="margin-right:50px;"
+                                                       data-toggle="tooltip" data-html="true" title='Wants {{car_target-}} <i class="icon-token" style="font-size: 100%;"></i> at departure'></i>
+                                                </p>
+                                            {% endif -%}
+                                        </td>
+
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
                         </table>
                     </form>
                 </div>
@@ -382,7 +372,7 @@
                     <p><i>([ESC] to close)</i></p>
                     <p>{{ move_summary | safe }}</p>
                 </div>
-                <script>
+                <script type="text/javascript">
                     alert = $('.alert');
                     alert.delay(9000).fadeOut('slow', function () {
                         $(this).alert('close');
@@ -394,5 +384,15 @@
         {{ safe_js|safe }}
 
         <script type="text/javascript" src="/static/js/scc.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                {% if completed_a_move or resetted_the_game%}
+                    location.hash = "#game";
+                {% endif %}
+                $('[data-toggle="tooltip"]').tooltip();
+                $('table').floatThead();
+            });
+        </script>
+
     </body>
 </html>

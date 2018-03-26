@@ -28,6 +28,14 @@
 }
 
 
+/* Table scrolling headers */
+.floatThead-container thead {
+    background-color: #FFF;
+}
+.floatThead-container thead>tr>th {
+    vertical-align: top;
+}
+
 /* Justify every paragraph except those in tables */
 :not(th):not(td) > p {
     text-align: justify;

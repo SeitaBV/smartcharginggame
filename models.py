@@ -194,7 +194,7 @@ class World:
                     profits += final_payoff
                     if summary != "":
                         summary += "<br/>"
-                    summary += "The car at %s left." % station_id
+                    summary += "The car at %s left. " % station_id
                     if final_payoff > 0:
                         summary += "Your reward for achieving a charge level of %d was %d coins."\
                                    % (car.current_charge, final_payoff)
