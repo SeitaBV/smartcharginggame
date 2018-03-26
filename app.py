@@ -25,7 +25,7 @@ def init(is_reset=False):
     safe_js = make_custom_js(world.charging_stations, max_tokens, world.current_step)
     data_plots_html, data_plots_js = build_game_data_plots(world)
 
-    return render_template("dashboard.html", **dict(world=world),
+    return render_template("board.html", **dict(world=world),
                            num_turns=num_turns,
                            available_tokens=available_tokens,
                            max_tokens=max_tokens,
@@ -60,7 +60,7 @@ def next_step():
         safe_js = ""
     data_plots_html, data_plots_js = build_game_data_plots(world)
 
-    return render_template("dashboard.html", **dict(world=world),
+    return render_template("board.html", **dict(world=world),
                            num_turns=num_turns,
                            available_tokens=available_tokens,
                            max_tokens=max_tokens,
