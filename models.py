@@ -99,7 +99,7 @@ class World:
             assert(gen in range(1, 9))
         
         self.solar_park = SolarPark(solar_generation)
-        self.demand = [4, 9, 5, 3, 10, 6, 7, 1]
+        self.demand = [4, 9, 5, 2, 10, 6, 7, 1]
         self.market_prices = [100, 60, 30, 15, 8, 4, 2, 1]
         self.charging_stations = charging_stations
 
@@ -147,7 +147,7 @@ class World:
 
     def check_validity_of_orders(self, orders: Dict[str, int]) -> bool:
         combined_action = sum(orders.values())
-        if self.imbalance_at(self.current_step) - combined_action not in range(-4, 4):
+        if self.imbalance_at(self.current_step) - combined_action not in range(-4, 5):
             raise Exception('Resulting imbalance outside of allowed range')
         for station_id, action in orders.items():
             station = self.charging_stations.get(station_id)

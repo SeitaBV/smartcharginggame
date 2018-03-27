@@ -309,11 +309,19 @@
             </div>
 
             <div class="row">
-                <a name="physical-board-img"></a>
-                <h2>The real-world game lab at the Smart Charging Hackathon</h2>
-                <div class="imgwrapper">
+                <div class="col-sm-12">
+                    <a name="physical-board-img"></a>
+                    <h2>The real-world game lab at the Smart Charging Hackathon</h2>
                     <a href="#game">Back to top</a>
-                    <img src="static/board.jpg" class="img-responsive"/>
+                </div>
+                <div class="imgwrapper col-sm-3">
+                    <img src="static/Car grid.jpg" class="img-responsive visible-md visible-lg" style="max-height:400px; float:left;"/>
+                </div>
+                <div class="imgwrapper col-sm-6">
+                    <img src="static/board.jpg" class="img-responsive" style="max-height:400px; float:center;"/>
+                </div>
+                <div class="imgwrapper col-sm-3">
+                    <img src="static/Car grid.jpg" class="img-responsive visible-md visible-lg" style="max-height:400px; float:right;"/>
                 </div>
             </div>
 
@@ -354,7 +362,16 @@
                         it until it could be represented by eight tokens.</p>
                     <p>
                         The demand data represents two well-known peaks in energy markets in the morning and evening when people get up or come home.
-                        The peaks are shifted somewhat to improve game play.
+                        The peaks are shifted to improve game play.
+                    </p>
+                    <p>
+                        The liquidity of our in-game market has a fixed range,
+                        meaning there is only a limited number of energy tokens.
+                        When demand and supply are equal, the in-game market has 4 tokens.
+                        This represents that there is ample opportunity to both buy and sell.
+                        When demand exceeds supply by 4, there are no tokens to buy.
+                        When supply exceeds demand by 4, there are 8 tokens on the market.
+                        The market is then full, meaning there is no possibility to sell.
                     </p>
                 </div>
                 <div class="col-sm-4">

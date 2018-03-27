@@ -9,7 +9,7 @@ from typing import Dict
 import pandas as pd
 from flask import session
 
-from attendance import make_attendance_grid
+from attendance import make_attendance_grid, custom_default_grid
 from models import World, ChargingStation
 
 
@@ -51,15 +51,17 @@ def save_world(world: World):
 
 
 def init_charging_stations() -> Dict[str, ChargingStation]:
-    """We believe Daphne that attendances will not collide or be interrupted."""
-    attendance_grid = make_attendance_grid()
+    """Initialise charging stations with capacities and car attendance.
+    Attendance is a list stating the car number at each turn.
+    An attendance grid is a list of attendance for each charging station"""
+    default_attendance_grid = custom_default_grid()
+    attendance_grid = make_attendance_grid(default_attendance_grid)
     stations = dict()
-    attendance_df = pd.DataFrame(attendance_grid)
-    for col in attendance_df.columns:
-        station_id = "ChargingStation%s" % int(col)
+    for station_i, attendance_station in enumerate(attendance_grid):
+        station_id = "ChargingStation%s" % int(station_i)
         stations[station_id] = ChargingStation(station_id=station_id,
                                                capacity=random.randint(2, 5),
-                                               attendances=list(attendance_df.loc[:, col].values))
+                                               attendances=attendance_station)
     return stations
 
 
