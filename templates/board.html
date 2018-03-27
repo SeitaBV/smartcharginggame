@@ -245,11 +245,14 @@
                             </thead>
                             <tbody>
                             {% for turn_j in range(num_turns) %}
-                                {% if turn_j==world.current_step %}
-                                    <input id="my_input_market" type="hidden" name="market" value="{{ available_tokens[turn_j] }}">
-                                {% endif %}
-                                <tr {% if turn_j==world.current_step %}class="info current-turn"{% endif %}>
+                                <tr {% if turn_j == world.current_step %}class="info current-turn"{% endif %}>
                                     <td>
+                                        {% if turn_j==world.current_step %}
+                                            <input id="my_input_market" type="hidden" name="market" value="{{ available_tokens[turn_j] }}">
+                                        {% endif %}
+                                        {% if turn_j == world.current_step - 4%}
+                                            <a name="current_turn"></a>
+                                        {% endif %}
                                         {{ turn_hours[turn_j] }}:00
                                     </td>
 
@@ -404,8 +407,12 @@
         <script type="text/javascript" src="/static/js/scc.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                {% if completed_a_move or resetted_the_game%}
+                {% if resetted_the_game or world.current_step == num_turns%}
                     location.hash = "#game";
+                {% else %}
+                    {% if completed_a_move%}
+                        location.hash = "#current_turn";
+                    {% endif %}
                 {% endif %}
                 $('[data-toggle="tooltip"]').tooltip();
                 $('table').floatThead();
